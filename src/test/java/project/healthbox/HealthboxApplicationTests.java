@@ -1,4 +1,4 @@
-package web.healthbox;
+package project.healthbox;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
