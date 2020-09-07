@@ -14,60 +14,46 @@
         <div class="container">
 
             <div class="section-title">
-                <h2>Make an Appointment</h2>
-                <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                <h2>Register</h2>
+                <p>Take your health to next level.</p>
             </div>
 
-            <form action="forms/appointment.php" method="post" role="form" class="php-email-form">
+            <form th:method="post" th:action="@{/user/register}" class="php-email-form">
                 <div class="form-row">
-                    <div class="col-md-4 form-group">
-                        <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                        <div class="validate"></div>
-                    </div>
-                    <div class="col-md-4 form-group">
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email">
-                        <div class="validate"></div>
-                    </div>
-                    <div class="col-md-4 form-group">
-                        <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                    <div class="col-md-4 offset-md-4 form-group">
+                        <input type="text" name="firstName" class="form-control" id="firstName" placeholder="First Name..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
                         <div class="validate"></div>
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md-4 form-group">
-                        <input type="datetime" name="date" class="form-control datepicker" id="date" placeholder="Appointment Date" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                    <div class="col-md-4 offset-md-4 form-group">
+                        <input type="text" name="lastName" class="form-control" id="lastName" placeholder="Last Name..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
                         <div class="validate"></div>
                     </div>
-                    <div class="col-md-4 form-group">
-                        <select name="department" id="department" class="form-control">
-                            <option value="">Select Department</option>
-                            <option value="Department 1">Department 1</option>
-                            <option value="Department 2">Department 2</option>
-                            <option value="Department 3">Department 3</option>
-                        </select>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 offset-md-4 form-group">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Email..." data-rule="email" data-msg="Please enter a valid email">
                         <div class="validate"></div>
                     </div>
-                    <div class="col-md-4 form-group">
-                        <select name="doctor" id="doctor" class="form-control">
-                            <option value="">Select Doctor</option>
-                            <option value="Doctor 1">Doctor 1</option>
-                            <option value="Doctor 2">Doctor 2</option>
-                            <option value="Doctor 3">Doctor 3</option>
-                        </select>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 offset-md-4 form-group">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                        <div class="validate"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 offset-md-4 form-group">
+                        <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
                         <div class="validate"></div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>
-                    <div class="validate"></div>
+
+                <div class="button-holder d-flex justify-content-center">
+                    <button class="text-center btn btn-info text-white mb-3" type="submit">Register</button>
                 </div>
-                <div class="mb-3">
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Your appointment request has been sent successfully. Thank you!</div>
-                </div>
-                <div class="text-center"><button type="submit">Make an Appointment</button></div>
             </form>
 
         </div>
