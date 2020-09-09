@@ -10,6 +10,7 @@ import lombok.Setter;
 public class UserServiceModel extends BaseService {
     private String firstName;
     private String lastName;
+    private String title;
     private String email;
     private String password;
 }

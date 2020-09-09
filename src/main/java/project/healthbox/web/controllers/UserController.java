@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.UserLoginBindingModel;
 import project.healthbox.domain.models.binding.UserRegisterBindingModel;
+import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.service.UserService;
 
@@ -37,7 +38,12 @@ public class UserController extends BaseController {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return super.view("user/register");
         }
-        this.userService.register(this.modelMapper.map(user, UserServiceModel.class));
+        try {
+            this.userService.register(this.modelMapper.map(user, UserServiceModel.class));
+        } catch (Exception e) {
+            return super.redirect("/user" + "/register");
+        }
+
         return super.redirect("/user" + "/login");
     }
 
@@ -48,15 +54,21 @@ public class UserController extends BaseController {
 
     @PostMapping("/login")
     public ModelAndView loginUser(@ModelAttribute UserRegisterBindingModel user, HttpSession httpSession) {
-        UserLoginBindingModel loggedUser = null;
+        UserLoginServiceModel loggedUser = null;
         try {
             loggedUser = this.userService.login(this.modelMapper.map(user, UserLoginBindingModel.class));
         } catch (Exception e) {
             return super.redirect("/user" + "/login");
         }
 
-        httpSession.setAttribute("user-id", loggedUser.getId());
 
-        return super.redirect("/");
+        httpSession.setAttribute("user", loggedUser);
+
+
+        if (loggedUser.getTitle().equals("Doctor")) {
+            return super.redirect("/doctor" + "/complete/" + loggedUser.getId());
+        } else {
+            return super.redirect("/home");
+        }
     }
 }

@@ -7,9 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserLoginBindingModel {
+public class DoctorUpdateBindingModel {
     private String id;
-    private String email;
-    private String password;
-    private String title;
+    private String location;
+    private String education;
+    private String biography;
+    private String workHistory;
 }
