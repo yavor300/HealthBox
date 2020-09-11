@@ -20,6 +20,17 @@
             </div>
 
             <form th:method="post" th:action="@{/doctor/complete/{id}(id=${doctorId})}" class="php-email-form">
+                <div class="form-row">
+                    <div class="col-md-4 offset-md-4 form-group">
+                        <select name="specialty" id="specialty" class="form-control">
+                            <option value="">Select Specialty</option>
+                            <th:block th:each="specialty : ${specialties}">
+                                <option th:value="${specialty.name}">[[${specialty.name}]]</option>
+                            </th:block>
+                        </select>
+                        <div class="validate"></div>
+                    </div>
+                </div>
                 <div class="section-title">
                     <h4>Location</h4>
                 </div>

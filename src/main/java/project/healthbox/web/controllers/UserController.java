@@ -12,6 +12,7 @@ import project.healthbox.domain.models.binding.UserLoginBindingModel;
 import project.healthbox.domain.models.binding.UserRegisterBindingModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
+import project.healthbox.service.DoctorService;
 import project.healthbox.service.UserService;
 
 import javax.servlet.http.HttpSession;
@@ -21,11 +22,13 @@ import javax.servlet.http.HttpSession;
 public class UserController extends BaseController {
     private final UserService userService;
     private final ModelMapper modelMapper;
+    private final DoctorService doctorServicel;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ModelMapper modelMapper, DoctorService doctorServicel) {
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.doctorServicel = doctorServicel;
     }
 
     @GetMapping("/register")
@@ -60,13 +63,13 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             return super.redirect("/user" + "/login");
         }
-
-
         httpSession.setAttribute("user", loggedUser);
-
-
         if (loggedUser.getTitle().equals("Doctor")) {
-            return super.redirect("/doctor" + "/complete/" + loggedUser.getId());
+            if (this.doctorServicel.isAccountCompleted(loggedUser)) {
+                return super.redirect("/doctor" + "/home");
+            } else {
+                return super.redirect("/doctor" + "/complete/" + loggedUser.getId());
+            }
         } else {
             return super.redirect("/home");
         }

@@ -17,4 +17,5 @@ public class DoctorServiceModel {
     private String education;
     private String biography;
     private String workHistory;
+    private SpecialtyServiceModel specialty;
 }

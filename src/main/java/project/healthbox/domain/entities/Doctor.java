@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "doctors")
@@ -32,7 +30,9 @@ public class Doctor extends BaseEntity {
     private String biography;
     @Column(name = "workHistory")
     private String workHistory;
-
+    @ManyToOne
+    @JoinColumn(name = "specialty_id", referencedColumnName = "id")
+    private Specialty specialty;
 
 
 
