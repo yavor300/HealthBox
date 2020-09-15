@@ -4,11 +4,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Doctor;
+import project.healthbox.domain.models.binding.ChooseSpecialistBindingModel;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.SpecialtyRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -40,5 +44,29 @@ public class DoctorServiceImpl implements DoctorService {
         return doctor.getBiography() != null && doctor.getWorkHistory() != null &&
                 doctor.getEducation() != null && doctor.getLocation() != null;
 
+    }
+
+    @Override
+    public List<DoctorServiceModel> getAllBySpecialtyName(String name) {
+        return this.doctorRepository.findBySpecialtyName(name)
+                .stream()
+                .map(d -> this.modelMapper.map(d, DoctorServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<DoctorServiceModel> findAllByGivenCriteria(ChooseSpecialistBindingModel model) {
+        if (model.getSpecialty() != null && !model.getSpecialty().trim().isEmpty() && model.getDoctorName().isEmpty() && model.getLocation().isEmpty()) {
+            return this.getAllBySpecialtyName(model.getSpecialty());
+        }
+        return null; //TODO
+    }
+
+    @Override
+    public DoctorServiceModel getById(String id) {
+        return this.modelMapper.map(
+                this.doctorRepository.getById(id),
+                DoctorServiceModel.class
+        );
     }
 }

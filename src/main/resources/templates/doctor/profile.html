@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{fragments/head}"></th:block>
+</head>
+
+<body>
+<header>
+    <th:block th:include="~{fragments/navbar-user}"></th:block>
+</header>
+<main>
+    <section id="about" class="about">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-stretch">
+                    <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" class="venobox play-btn mb-4" data-vbtype="video" data-autoplay="true"></a>
+                </div>
+
+                <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+                    <h3>[[${doctor.firstName}]] [[${doctor.lastName}]]</h3>
+                    <p>
+                        [[${doctor.biography}]]
+                    </p>
+
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-fingerprint"></i></div>
+                        <h4 class="title"><a href="">Location</a></h4>
+                        <p class="description">[[${doctor.location}]]</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-fingerprint"></i></div>
+                        <h4 class="title"><a href="">Education</a></h4>
+                        <p class="description">[[${doctor.education}]]</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <div class="icon"><i class="bx bx-fingerprint"></i></div>
+                        <h4 class="title"><a href="">Work History</a></h4>
+                        <p class="description">[[${doctor.workHistory}]]</p>
+                    </div>
+
+                    <a th:href="@{/consultation/send/{id}(id=${doctor.id})}" class="text-center btn btn-info text-white mb-3" data-animation="fadeInLeft" data-delay="0.5s">Online Consultation</a>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+<footer>
+    <th:block th:include="~{fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

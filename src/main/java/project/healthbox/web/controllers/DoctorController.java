@@ -27,12 +27,19 @@ public class DoctorController extends BaseController {
         return super.view("user/doctorUpdate", modelAndView);
     }
 
+    @GetMapping("/profile/{id}")
+    public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView) {
+        modelAndView.addObject("doctor", this.doctorService.getById(id));
+        return super.view("doctor/profile", modelAndView);
+    }
+
     @PostMapping("/complete/{id}")
     public ModelAndView updateProfile(@PathVariable String id, @ModelAttribute DoctorUpdateBindingModel doctorUpdateBindingModel) {
         doctorUpdateBindingModel.setId(id);
         this.doctorService.update(doctorUpdateBindingModel);
         return super.redirect("/doctor" + "/home");
     }
+
 
     @GetMapping("/home")
     public ModelAndView getRegisterView() {

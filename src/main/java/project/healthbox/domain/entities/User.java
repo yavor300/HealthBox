@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name = "uesrs")
@@ -24,4 +26,6 @@ public class User extends BaseEntity {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @OneToMany(mappedBy = "user")
+    List<Consultation> consultations;
 }
