@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -27,5 +24,12 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
     @OneToMany(mappedBy = "user")
-    List<Consultation> consultations;
+    private List<Consultation> consultations;
+    @ManyToMany
+    @JoinTable(
+            name = "users_doctors",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "doctor_id") }
+    )
+    private List<Doctor> doctors;
 }

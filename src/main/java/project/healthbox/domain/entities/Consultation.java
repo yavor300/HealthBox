@@ -25,6 +25,9 @@ public class Consultation extends BaseEntity {
     @Column(name = "problem_description", nullable = false)
     private String problemDescription;
     @ManyToOne
-    @JoinColumn(name = "consultaton_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    private Doctor doctor;
 }

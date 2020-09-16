@@ -4,13 +4,19 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.healthbox.domain.entities.Consultation;
 import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.entities.User;
 import project.healthbox.domain.models.binding.UserLoginBindingModel;
+import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
+import project.healthbox.repostory.ConsultationRepository;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.UserRepository;
+
+import java.beans.Transient;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,12 +24,14 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final DoctorRepository doctorRepository;
+    private final ConsultationRepository consultationRepository;
 
     @Autowired
-    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, DoctorRepository doctorRepository) {
+    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, DoctorRepository doctorRepository, ConsultationRepository consultationRepository) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.doctorRepository = doctorRepository;
+        this.consultationRepository = consultationRepository;
     }
 
     @Override
@@ -54,5 +62,10 @@ public class UserServiceImpl implements UserService {
         } else {
             return this.modelMapper.map(user, UserLoginServiceModel.class);
         }
+    }
+
+    @Override
+    public UserServiceModel getById(String id) {
+        return this.modelMapper.map(this.userRepository.getById(id), UserServiceModel.class);
     }
 }

@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,4 +20,6 @@ public class DoctorServiceModel {
     private String biography;
     private String workHistory;
     private SpecialtyServiceModel specialty;
+    private List<ConsultationServiceModel> consultations;
+    private List<UserServiceModel> users;
 }

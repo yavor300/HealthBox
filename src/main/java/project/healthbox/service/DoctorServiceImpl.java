@@ -8,6 +8,7 @@ import project.healthbox.domain.models.binding.ChooseSpecialistBindingModel;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
+import project.healthbox.repostory.ConsultationRepository;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.SpecialtyRepository;
 
@@ -19,12 +20,14 @@ public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
     private final ModelMapper modelMapper;
     private final SpecialtyRepository specialtyRepository;
+    private final ConsultationRepository consultationRepository;
 
     @Autowired
-    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper, SpecialtyRepository specialtyRepository) {
+    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper, SpecialtyRepository specialtyRepository, ConsultationRepository consultationRepository) {
         this.doctorRepository = doctorRepository;
         this.modelMapper = modelMapper;
         this.specialtyRepository = specialtyRepository;
+        this.consultationRepository = consultationRepository;
     }
 
     @Override
