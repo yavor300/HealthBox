@@ -14,5 +14,6 @@ public class ConsultationBindingModel {
     private String diagnoses;
     private String medicaments;
     private String allergy;
+    private String problemTitle;
     private String problemDescription;
 }

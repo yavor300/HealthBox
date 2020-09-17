@@ -67,8 +67,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public DoctorServiceModel getById(String id) {
+        Doctor doctor = this.doctorRepository.getById(id);
         return this.modelMapper.map(
-                this.doctorRepository.getById(id),
+                doctor,
                 DoctorServiceModel.class
         );
     }

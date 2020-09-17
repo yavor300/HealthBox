@@ -14,6 +14,7 @@ public class ConsultationServiceModel extends BaseService {
     private String diagnoses;
     private String medicaments;
     private String allergy;
+    private String problemTitle;
     private String problemDescription;
     private UserServiceModel user;
     private DoctorServiceModel doctor;

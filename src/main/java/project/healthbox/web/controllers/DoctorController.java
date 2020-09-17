@@ -5,8 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
+import project.healthbox.domain.models.service.ConsultationServiceModel;
+import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/doctor")
@@ -37,12 +41,15 @@ public class DoctorController extends BaseController {
     public ModelAndView updateProfile(@PathVariable String id, @ModelAttribute DoctorUpdateBindingModel doctorUpdateBindingModel) {
         doctorUpdateBindingModel.setId(id);
         this.doctorService.update(doctorUpdateBindingModel);
-        return super.redirect("/doctor" + "/home");
+        return super.redirect("/doctor" + "/dashboard/" + id);
     }
 
 
-    @GetMapping("/home")
-    public ModelAndView getRegisterView() {
-        return super.view("doctor/home");
+    @GetMapping("/dashboard/{id}")
+    public ModelAndView getDashboardDoctorView(@PathVariable String id, ModelAndView modelAndView) {
+        DoctorServiceModel doctor = this.doctorService.getById(id);
+        List<ConsultationServiceModel> consultations = doctor.getConsultations();
+        modelAndView.addObject("consultations", consultations);
+        return super.view("doctor/dashboard", modelAndView);
     }
 }

@@ -22,6 +22,8 @@ public class Consultation extends BaseEntity {
     private String medicaments;
     @Column(name = "allergy", nullable = false)
     private String allergy;
+    @Column(name = "problem_title", nullable = false)
+    private String problemTitle;
     @Column(name = "problem_description", nullable = false)
     private String problemDescription;
     @ManyToOne

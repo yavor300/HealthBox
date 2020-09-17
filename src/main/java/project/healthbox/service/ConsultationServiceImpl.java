@@ -35,4 +35,9 @@ public class ConsultationServiceImpl implements ConsultationService {
         consultation.setUser(user);
         this.consultationRepository.saveAndFlush(consultation);
     }
+
+    @Override
+    public ConsultationServiceModel getById(String id) {
+        return this.modelMapper.map(this.consultationRepository.getById(id), ConsultationServiceModel.class);
+    }
 }

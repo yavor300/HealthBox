@@ -35,17 +35,22 @@ public class ConsultationController extends BaseController {
         modelAndView.addObject("doctorId", id);
         return super.view("consultation/sendConsultation", modelAndView);
     }
+
     @PostMapping("/send/{id}")
     public ModelAndView sendConsultationForm(@PathVariable String id, @ModelAttribute ConsultationBindingModel consultationBindingModel, HttpSession httpSession) {
         ConsultationServiceModel consultationServiceModel = this.consultationService.save(this.modelMapper.map(consultationBindingModel, ConsultationServiceModel.class));
         UserLoginServiceModel userInSession = (UserLoginServiceModel) httpSession.getAttribute("user");
         UserServiceModel userServiceModel = this.userService.getById(userInSession.getId());
         DoctorServiceModel doctorServiceModel = this.doctorService.getById(id);
-        //this.userService.addConsultation(consultationServiceModel, userServiceModel);
-        //this.doctorService.addConsultation(consultationServiceModel, doctorServiceModel);
         this.consultationService.setDoctorAndUser(consultationServiceModel, doctorServiceModel, userServiceModel);
-
-
-        return super.redirect("/user" + "/profile/" + userServiceModel.getId());
+        return super.redirect("/user" + "/dashboard/" + userServiceModel.getId());
     }
+
+    @GetMapping("/details/{id}")
+    public ModelAndView getConsultationDetailsView(@PathVariable String id, ModelAndView modelAndView) {
+        modelAndView.addObject("consultation", this.consultationService.getById(id));
+        return super.view("consultation/details", modelAndView);
+    }
+
+
 }

@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.binding.UserLoginBindingModel;
 import project.healthbox.domain.models.binding.UserRegisterBindingModel;
+import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
@@ -71,7 +72,7 @@ public class UserController extends BaseController {
         httpSession.setAttribute("user", loggedUser);
         if (loggedUser.getTitle().equals("Doctor")) {
             if (this.doctorService.isAccountCompleted(loggedUser)) {
-                return super.redirect("/doctor" + "/home");
+                return super.redirect("/doctor" + "/dashboard/" + loggedUser.getId());
             } else {
                 return super.redirect("/doctor" + "/complete/" + loggedUser.getId());
             }
@@ -90,4 +91,13 @@ public class UserController extends BaseController {
     public ModelAndView getNoDoctorsFoundView() {
         return super.view("user/noDoctorsFound");
     }
+
+    @GetMapping("/dashboard/{id}")
+    public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView) {
+        UserServiceModel user = this.userService.getById(id);
+        List<ConsultationServiceModel> consultations = user.getConsultations();
+        modelAndView.addObject("consultations", consultations);
+        return super.view("user/dashboard", modelAndView);
+    }
+
 }
