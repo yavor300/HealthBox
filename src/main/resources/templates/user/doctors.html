@@ -19,20 +19,8 @@
                 <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
             </div>
 
-            <div class="row">
-                <th:block th:each="doctor : ${doctors}">
-                    <div class="col-lg-6">
-                        <div class="member d-flex align-items-start">
-                            <div class="pic"><img src="assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
-                            <div class="member-info">
-                                <h4>[[${doctor.firstName}]] [[${doctor.lastName}]]</h4>
-                                <span>[[${doctor.location}]]</span>
-                                <a th:href="@{/doctor/profile/{id}(id=${doctor.id})}" class="text-center btn btn-info text-white mb-3" data-animation="fadeInLeft" data-delay="0.5s">View Profile</a>
-                            </div>
-                        </div>
-                    </div>
-                </th:block>
-            </div>
+
+            <div id="foundDoctors"></div>
 
         </div>
     </section><!-- End Doctors Section -->
@@ -40,5 +28,11 @@
 <footer>
     <th:block th:include="~{fragments/footer}"></th:block>
 </footer>
+
+<script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+<script src="/js/foundDoctors.js"></script>
 </body>
 </html>

@@ -2,6 +2,8 @@ package project.healthbox.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +14,7 @@ import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
+import project.healthbox.domain.models.view.FoundDoctorViewModel;
 import project.healthbox.repostory.SpecialtyRepository;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
@@ -19,6 +22,7 @@ import project.healthbox.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -82,11 +86,14 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/doctors")
-    public ModelAndView getDoctorsView(HttpSession httpSession, ModelAndView modelAndView) {
-        List<DoctorServiceModel> allByGivenCriteria = (List<DoctorServiceModel>) httpSession.getAttribute("foundDoctors");
-        modelAndView.addObject("doctors", allByGivenCriteria);
-        return super.view("user/doctors", modelAndView);
+    public ModelAndView getDoctorsView() {
+        return super.view("user/doctors");
     }
+
+
+
+
+
     @GetMapping("/noDoctorsFound")
     public ModelAndView getNoDoctorsFoundView() {
         return super.view("user/noDoctorsFound");
