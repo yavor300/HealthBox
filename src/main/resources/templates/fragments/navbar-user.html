@@ -15,7 +15,7 @@
                             <div class="main-menu f-right d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a th:href="@{/user/login}">Add Doctor</a></li>
+                                        <li><a th:href="@{/user/dashboard/{id}(id=${session.user.id})}">Dashboard</a></li>
                                         <li><a th:href="@{/user/register}">Logout</a></li>
                                     </ul>
                                 </nav>

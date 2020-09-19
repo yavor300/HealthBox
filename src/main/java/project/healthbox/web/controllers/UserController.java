@@ -93,7 +93,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/dashboard/{id}")
-    public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView) {
+    public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView, HttpSession httpSession) {
         UserServiceModel user = this.userService.getById(id);
         List<ConsultationServiceModel> consultations = user.getConsultations();
         modelAndView.addObject("consultations", consultations);

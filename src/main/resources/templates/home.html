@@ -16,7 +16,6 @@
             <div class="section-title">
                 <h2>Choose from our specialists.</h2>
                 <p>Find the one who you need.</p>
-
             </div>
 
             <form th:method="post" th:action="@{/home}" class="php-email-form">
@@ -35,9 +34,6 @@
                     <div class="col-md-4 offset-md-4 form-group">
                         <select name="location" id="location" class="form-control">
                             <option value="">Select Location</option>
-                            <option value="Department 1">City 1</option>
-                            <option value="Department 2">City 2</option>
-                            <option value="Department 3">City 3</option>
                         </select>
                         <div class="validate"></div>
                     </div>
@@ -60,5 +56,6 @@
 <footer>
     <th:block th:include="~{fragments/footer}"></th:block>
 </footer>
+<script src="/static/js/foundDoctors.js"></script>
 </body>
 </html>

@@ -1,14 +1,14 @@
 package project.healthbox.web.controllers;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.ConsultationBindingModel;
-import project.healthbox.domain.models.service.ConsultationServiceModel;
-import project.healthbox.domain.models.service.DoctorServiceModel;
-import project.healthbox.domain.models.service.UserLoginServiceModel;
-import project.healthbox.domain.models.service.UserServiceModel;
+import project.healthbox.domain.models.binding.SendAnswerBindingModel;
+import project.healthbox.domain.models.service.*;
+import project.healthbox.service.AnswerService;
 import project.healthbox.service.ConsultationService;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.UserService;
@@ -22,12 +22,15 @@ public class ConsultationController extends BaseController {
     private final ModelMapper modelMapper;
     private final ConsultationService consultationService;
     private final UserService userService;
+    private final AnswerService answerService;
 
-    public ConsultationController(DoctorService doctorService, ModelMapper modelMapper, ConsultationService consultationService, UserService userService) {
+    @Autowired
+    public ConsultationController(DoctorService doctorService, ModelMapper modelMapper, ConsultationService consultationService, UserService userService, AnswerService answerService) {
         this.doctorService = doctorService;
         this.modelMapper = modelMapper;
         this.consultationService = consultationService;
         this.userService = userService;
+        this.answerService = answerService;
     }
 
     @GetMapping("/send/{id}")
@@ -52,5 +55,20 @@ public class ConsultationController extends BaseController {
         return super.view("consultation/details", modelAndView);
     }
 
+    @GetMapping("/answer/{id}")
+    public ModelAndView getConsultationAnswerView(@PathVariable String id, ModelAndView modelAndView) {
+        ConsultationServiceModel consultation = this.consultationService.getById(id);
+        modelAndView.addObject("consultation", consultation);
+        return super.view("consultation/answer", modelAndView);
+    }
 
+    @PostMapping("/answer/{id}")
+    public ModelAndView answerConsultation(@PathVariable String id, @ModelAttribute SendAnswerBindingModel sendAnswerBindingModel, HttpSession httpSession) {
+        AnswerServiceModel answerServiceModel = this.answerService.save(this.modelMapper.map(sendAnswerBindingModel, AnswerServiceModel.class));
+        ConsultationServiceModel consultationServiceModel = this.consultationService.getById(id);
+        this.consultationService.setAnswer(consultationServiceModel, answerServiceModel);
+        UserLoginServiceModel userInSession = (UserLoginServiceModel) httpSession.getAttribute("user");
+        DoctorServiceModel doctorServiceModel = this.doctorService.getById(userInSession.getId());
+        return super.redirect("/doctor" + "/dashboard/" + doctorServiceModel.getId());
+    }
 }

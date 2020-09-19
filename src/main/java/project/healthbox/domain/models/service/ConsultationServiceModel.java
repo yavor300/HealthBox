@@ -18,4 +18,5 @@ public class ConsultationServiceModel extends BaseService {
     private String problemDescription;
     private UserServiceModel user;
     private DoctorServiceModel doctor;
+    private AnswerServiceModel answer;
 }

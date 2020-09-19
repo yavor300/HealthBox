@@ -32,4 +32,7 @@ public class Consultation extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
+    @OneToOne
+    @JoinColumn(name = "answer_id", referencedColumnName = "id")
+    private Answer answer;
 }

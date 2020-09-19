@@ -14,15 +14,15 @@
         <div class="container">
 
             <div class="section-title">
-                <h2>Sent Requests</h2>
-                <p>Here is your requests dashboard sections. Click on the problem title to see whether you have an answer.</p>
+                <h2>Received Requests</h2>
+                <p>Here is your requests dashboard sections. Click on the problem title to answer.</p>
             </div>
 
             <div class="faq-list">
                 <ul>
                     <th:block th:each="consultation : ${consultations}">
                         <li data-aos="fade-up">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" class="collapse" th:href="@{/consultation/details/{id}(id=${consultation.id})}">[[${consultation.problemTitle}]]<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                            <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" class="collapse" th:href="@{/consultation/answer/{id}(id=${consultation.id})}">[[${consultation.problemTitle}]]<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
                         </li>
                     </th:block>
                 </ul>

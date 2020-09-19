@@ -2,9 +2,11 @@ package project.healthbox.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import project.healthbox.domain.entities.Answer;
 import project.healthbox.domain.entities.Consultation;
 import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.entities.User;
+import project.healthbox.domain.models.service.AnswerServiceModel;
 import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
@@ -33,6 +35,14 @@ public class ConsultationServiceImpl implements ConsultationService {
         User user = this.modelMapper.map(userServiceModel, User.class);
         consultation.setDoctor(doctor);
         consultation.setUser(user);
+        this.consultationRepository.saveAndFlush(consultation);
+    }
+
+    @Override
+    public void setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel) {
+        Consultation consultation = this.modelMapper.map(consultationServiceModel, Consultation.class);
+        Answer answer = this.modelMapper.map(answerServiceModel, Answer.class);
+        consultation.setAnswer(answer);
         this.consultationRepository.saveAndFlush(consultation);
     }
 
