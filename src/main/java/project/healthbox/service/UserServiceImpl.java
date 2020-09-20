@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserLoginServiceModel login(UserLoginBindingModel userLoginBindingModel) throws Exception {
+
         String hashedPassword = DigestUtils.sha256Hex(userLoginBindingModel.getPassword());
         User user = this.userRepository.findByEmailAndPassword(userLoginBindingModel.getEmail(), hashedPassword).orElse(null);
         Doctor doctor = this.doctorRepository.findByEmailAndPassword(userLoginBindingModel.getEmail(), hashedPassword).orElse(null);

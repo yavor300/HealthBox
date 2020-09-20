@@ -33,7 +33,10 @@
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
                         <select name="location" id="location" class="form-control">
-                            <option value="">Select Location</option>
+                            <option value="">Select City</option>
+                            <th:block th:each="city : ${cities}">
+                                <option th:value="${city.name}">[[${city.name}]]</option>
+                            </th:block>
                         </select>
                         <div class="validate"></div>
                     </div>

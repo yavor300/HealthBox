@@ -3,12 +3,12 @@ package project.healthbox.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.healthbox.domain.entities.City;
 import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.models.binding.ChooseSpecialistBindingModel;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
-import project.healthbox.repostory.ConsultationRepository;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.SpecialtyRepository;
 
@@ -20,20 +20,21 @@ public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
     private final ModelMapper modelMapper;
     private final SpecialtyRepository specialtyRepository;
-    private final ConsultationRepository consultationRepository;
+    private final CityService cityService;
 
     @Autowired
-    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper, SpecialtyRepository specialtyRepository, ConsultationRepository consultationRepository) {
+    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper, SpecialtyRepository specialtyRepository, CityService cityService) {
         this.doctorRepository = doctorRepository;
         this.modelMapper = modelMapper;
         this.specialtyRepository = specialtyRepository;
-        this.consultationRepository = consultationRepository;
+        this.cityService = cityService;
     }
 
     @Override
     public DoctorServiceModel update(DoctorUpdateBindingModel doctorUpdateBindingModel) {
         Doctor doctor = this.doctorRepository.getById(doctorUpdateBindingModel.getId());
-        doctor.setLocation(doctorUpdateBindingModel.getLocation());
+        City city = this.modelMapper.map(this.cityService.getByName(doctorUpdateBindingModel.getLocation()), City.class);
+        doctor.setLocation(city);
         doctor.setBiography(doctorUpdateBindingModel.getBiography());
         doctor.setWorkHistory(doctorUpdateBindingModel.getWorkHistory());
         doctor.setEducation(doctorUpdateBindingModel.getEducation());

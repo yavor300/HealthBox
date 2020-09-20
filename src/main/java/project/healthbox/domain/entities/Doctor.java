@@ -23,8 +23,9 @@ public class Doctor extends BaseEntity {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "location")
-    private String location;
+    @ManyToOne
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    private City location;
     @Column(name = "education")
     private String education;
     @Column(name = "biography")

@@ -15,7 +15,7 @@ public class DoctorServiceModel {
     private String lastName;
     private String email;
     private String password;
-    private String location;
+    private CityServiceModel location;
     private String education;
     private String biography;
     private String workHistory;
