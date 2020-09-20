@@ -4,19 +4,13 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.healthbox.domain.entities.Consultation;
 import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.entities.User;
 import project.healthbox.domain.models.binding.UserLoginBindingModel;
-import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
-import project.healthbox.repostory.ConsultationRepository;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.UserRepository;
-
-import java.beans.Transient;
-
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,18 +18,16 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final DoctorRepository doctorRepository;
-    private final ConsultationRepository consultationRepository;
 
     @Autowired
-    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, DoctorRepository doctorRepository, ConsultationRepository consultationRepository) {
+    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, DoctorRepository doctorRepository) {
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.doctorRepository = doctorRepository;
-        this.consultationRepository = consultationRepository;
     }
 
     @Override
-    public UserServiceModel register(UserServiceModel userServiceModel) throws Exception {
+    public UserServiceModel register(UserServiceModel userServiceModel) {
         User user = this.modelMapper.map(userServiceModel, User.class);
         Doctor doctor = this.modelMapper.map(userServiceModel, Doctor.class);
         user.setPassword(DigestUtils.sha256Hex(user.getPassword()));
@@ -44,9 +36,8 @@ public class UserServiceImpl implements UserService {
             return this.modelMapper.map(this.doctorRepository.saveAndFlush(doctor), UserServiceModel.class);
         } else if (user.getTitle().equals("Patient") && !this.doctorRepository.existsByEmail(doctor.getEmail())) {
             return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
-        } else {
-            throw new Exception("Email is already taken!");
         }
+        return null;
     }
 
     @Override

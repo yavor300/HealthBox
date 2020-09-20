@@ -19,13 +19,16 @@
 
             </div>
 
-            <form th:method="post" th:action="@{/consultation/send/{id}(id=${doctorId})}" class="php-email-form">
+            <form th:method="post" th:action="@{/consultation/send/{id}(id=${doctorId})}" class="php-email-form" th:object="${model}">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="number" class="form-control" name="age" id="age" placeholder="Age..." data-msg="Please enter a valid location">
-                        <div class="validate"></div>
+                        <input type="number" class="form-control" name="age" id="age" placeholder="Age..." th:value="*{age}">
+                        <th:block th:if="${#fields.hasErrors('age')}">
+                            <p class="error" th:errors="*{age}"></p>
+                        </th:block>
                     </div>
                 </div>
+
                 <div class="section-title">
                     <h4>Gender</h4>
                 </div>
@@ -36,7 +39,9 @@
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
-                        <div class="validate"></div>
+                        <th:block th:if="${#fields.hasErrors('gender')}">
+                            <p class="error" th:errors="*{gender}"></p>
+                        </th:block>
                     </div>
                 </div>
 
@@ -44,30 +49,29 @@
                     <h4>Do you have any set diagnoses or chronic illnesses? If yes, what are they?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="diagnoses" name="diagnoses" rows="5" placeholder="Set diagnoses, chronic illnesses..."></textarea>
-                    <div class="validate"></div>
+                    <textarea class="form-control" id="diagnoses" name="diagnoses" rows="5" placeholder="Set diagnoses, chronic illnesses..." th:value="*{diagnoses}"></textarea>
                 </div>
 
                 <div class="section-title">
                     <h4>Do you take any medicaments, vitamins or supplements on regular basis? If yes, what are they and how much do you take?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="medicaments" name="medicaments" rows="5" placeholder="Medicaments, vitamins, supplements..."></textarea>
-                    <div class="validate"></div>
+                    <textarea class="form-control" id="medicaments" name="medicaments" rows="5" placeholder="Medicaments, vitamins, supplements..." th:value="*{medicaments}"></textarea>
                 </div>
 
                 <div class="section-title">
                     <h4>Do you have any allergies? If yes, what are they?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="allergy" name="allergy" rows="5" placeholder="Allergies..."></textarea>
-                    <div class="validate"></div>
+                    <textarea class="form-control" id="allergy" name="allergy" rows="5" placeholder="Allergies..." th:value="*{allergy}"></textarea>
                 </div>
 
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" class="form-control" name="problemTitle" id="problemTitle" placeholder="Problem title..." data-msg="Please enter a valid location">
-                        <div class="validate"></div>
+                        <input type="text" class="form-control" name="problemTitle" id="problemTitle" placeholder="Problem title..." th:value="*{problemTitle}">
+                        <th:block th:if="${#fields.hasErrors('problemTitle')}">
+                            <p class="error" th:errors="*{problemTitle}"></p>
+                        </th:block>
                     </div>
                 </div>
 
@@ -75,8 +79,10 @@
                     <h4>What is your problem and what do you want to achieve?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="problemDescription" name="problemDescription" rows="5" placeholder="Describe your problem and the desired outcome..."></textarea>
-                    <div class="validate"></div>
+                    <textarea class="form-control" id="problemDescription" name="problemDescription" rows="5" placeholder="Describe your problem and the desired outcome..." th:value="*{problemDescription}"></textarea>
+                    <th:block th:if="${#fields.hasErrors('problemDescription')}">
+                        <p class="error" th:errors="*{problemDescription}"></p>
+                    </th:block>
                 </div>
 
                 <div class="button-holder d-flex justify-content-center">

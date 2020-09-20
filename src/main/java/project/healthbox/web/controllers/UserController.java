@@ -2,27 +2,21 @@ package project.healthbox.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.binding.UserLoginBindingModel;
 import project.healthbox.domain.models.binding.UserRegisterBindingModel;
 import project.healthbox.domain.models.service.ConsultationServiceModel;
-import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
-import project.healthbox.domain.models.view.FoundDoctorViewModel;
-import project.healthbox.repostory.SpecialtyRepository;
 import project.healthbox.service.DoctorService;
-import project.healthbox.service.SpecialtyService;
 import project.healthbox.service.UserService;
+import project.healthbox.validation.user.UserRegisterValidator;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -30,33 +24,45 @@ public class UserController extends BaseController {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final DoctorService doctorService;
-    private final SpecialtyRepository specialtyRepository;
-    private final SpecialtyService specialtyService;
+    private final UserRegisterValidator userRegisterValidator;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper, DoctorService doctorService, SpecialtyRepository specialtyRepository, SpecialtyService specialtyService) {
+    public UserController(UserService userService, ModelMapper modelMapper, DoctorService doctorService, UserRegisterValidator userRegisterValidator) {
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.doctorService = doctorService;
-        this.specialtyRepository = specialtyRepository;
-        this.specialtyService = specialtyService;
+        this.userRegisterValidator = userRegisterValidator;
     }
 
     @GetMapping("/register")
-    public ModelAndView getRegisterView() {
-        return super.view("user/register");
+    public ModelAndView getRegisterView(ModelAndView modelAndView, @ModelAttribute(name = "model") UserRegisterBindingModel model) {
+        modelAndView.addObject("model", model);
+
+        return super.view("user/register", modelAndView);
     }
 
     @PostMapping("/register")
-    public ModelAndView register(@ModelAttribute UserRegisterBindingModel user) {
-        if (!user.getPassword().equals(user.getConfirmPassword())) {
-            return super.view("user/register");
+    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") UserRegisterBindingModel model, BindingResult bindingResult) {
+        this.userRegisterValidator.validate(model, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            model.setPassword(null);
+            model.setConfirmPassword(null);
+            modelAndView.addObject("model", model);
+
+            return super.view("user/register", modelAndView);
         }
-        try {
-            this.userService.register(this.modelMapper.map(user, UserServiceModel.class));
-        } catch (Exception e) {
-            return super.redirect("/user" + "/register");
-        }
+
+
+//        if (!user.getPassword().equals(user.getConfirmPassword())) {
+//            return super.view("user/register");
+//        }
+//        try {
+//            this.userService.register(this.modelMapper.map(user, UserServiceModel.class));
+//        } catch (Exception e) {
+//            return super.redirect("/user" + "/register");
+//        }
+        this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
         return super.redirect("/user" + "/login");
     }
 
@@ -89,10 +95,6 @@ public class UserController extends BaseController {
     public ModelAndView getDoctorsView() {
         return super.view("user/doctors");
     }
-
-
-
-
 
     @GetMapping("/noDoctorsFound")
     public ModelAndView getNoDoctorsFoundView() {

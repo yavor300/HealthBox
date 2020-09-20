@@ -18,7 +18,7 @@
                 <p>You can find the details about your request and the answer of our specialist.</p>
             </div>
 
-            <form th:method="post" th:action="@{/consultation/answer/{id}(id=${consultation.id})}" class="php-email-form">
+            <form th:method="post" th:action="@{/consultation/answer/{id}(id=${consultation.id})}" class="php-email-form" th:object="${model}">
                 <div class="section-title">
                     <h4>Age</h4>
                 </div>
@@ -82,8 +82,10 @@
                         <h4>Your answer</h4>
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" id="problemAnswer" name="problemAnswer" rows="5" placeholder="Type your answer..."></textarea>
-                        <div class="validate"></div>
+                        <textarea class="form-control" id="problemAnswer" name="problemAnswer" rows="5" placeholder="Type your answer..." th:value="*{problemAnswer}"></textarea>
+                        <th:block th:if="${#fields.hasErrors('problemAnswer')}">
+                            <p class="error" th:errors="*{problemAnswer}"></p>
+                        </th:block>
                     </div>
 
                     <div class="button-holder d-flex justify-content-center">

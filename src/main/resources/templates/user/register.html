@@ -18,17 +18,21 @@
                 <p>Take your health to next level.</p>
             </div>
 
-            <form th:method="post" th:action="@{/user/register}" class="php-email-form">
+            <form th:method="post" th:action="@{/user/register}" class="php-email-form" th:object="${model}">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" name="firstName" class="form-control" id="firstName" placeholder="First Name..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                        <div class="validate"></div>
+                        <input type="text" name="firstName" class="form-control" id="firstName" placeholder="First Name..." th:value="*{firstName}">
+                        <th:block th:if="${#fields.hasErrors('firstName')}">
+                            <p class="error" th:errors="*{firstName}"></p>
+                        </th:block>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" name="lastName" class="form-control" id="lastName" placeholder="Last Name..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                        <div class="validate"></div>
+                        <input type="text" name="lastName" class="form-control" id="lastName" placeholder="Last Name..." th:value="*{lastName}">
+                        <th:block th:if="${#fields.hasErrors('lastName')}">
+                            <p class="error" th:errors="*{lastName}"></p>
+                        </th:block>
                     </div>
                 </div>
                 <div class="form-row">
@@ -38,25 +42,33 @@
                             <option value="Patient">Patient</option>
                             <option value="Doctor">Doctor</option>
                         </select>
-                        <div class="validate"></div>
+                        <th:block th:if="${#fields.hasErrors('title')}">
+                            <p class="error" th:errors="*{title}"></p>
+                        </th:block>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Email..." data-rule="email" data-msg="Please enter a valid email">
-                        <div class="validate"></div>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Email...">
+                        <th:block th:if="${#fields.hasErrors('email')}">
+                            <p class="error" th:errors="*{email}"></p>
+                        </th:block>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Password..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                        <div class="validate"></div>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password...">
+                        <th:block th:if="${#fields.hasErrors('password')}">
+                            <p class="error" th:errors="*{password}"></p>
+                        </th:block>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                        <div class="validate"></div>
+                        <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password...">
+                        <th:block th:if="${#fields.hasErrors('confirmPassword')}">
+                            <p class="error" th:errors="*{confirmPassword}"></p>
+                        </th:block>
                     </div>
                 </div>
 

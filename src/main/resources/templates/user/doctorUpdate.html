@@ -19,7 +19,7 @@
 
             </div>
 
-            <form th:method="post" th:action="@{/doctor/complete/{id}(id=${doctorId})}" class="php-email-form">
+            <form th:method="post" th:action="@{/doctor/complete/{id}(id=${doctorId})}" class="php-email-form" th:object="${model}">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
                         <select name="specialty" id="specialty" class="form-control">
@@ -28,7 +28,9 @@
                                 <option th:value="${specialty.name}">[[${specialty.name}]]</option>
                             </th:block>
                         </select>
-                        <div class="validate"></div>
+                        <th:block th:if="${#fields.hasErrors('specialty')}">
+                            <p class="error" th:errors="*{specialty}"></p>
+                        </th:block>
                     </div>
                 </div>
                 <div class="section-title">
@@ -36,8 +38,10 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" class="form-control" name="location" id="location" placeholder="Location..." data-rule="email" data-msg="Please enter a valid location">
-                        <div class="validate"></div>
+                        <input type="text" class="form-control" name="location" id="location" placeholder="Location..." th:value="*{location}">
+                        <th:block th:if="${#fields.hasErrors('location')}">
+                            <p class="error" th:errors="*{location}"></p>
+                        </th:block>
                     </div>
                 </div>
 
@@ -45,24 +49,30 @@
                     <h4>Biography</h4>
                 </div>
                 <div class="form-group">
-                        <textarea class="form-control" id="biography" name="biography" rows="5" placeholder="Your background..."></textarea>
-                        <div class="validate"></div>
+                        <textarea class="form-control" id="biography" name="biography" rows="5" placeholder="Your background..." th:value="*{biography}"></textarea>
+                    <th:block th:if="${#fields.hasErrors('biography')}">
+                        <p class="error" th:errors="*{biography}"></p>
+                    </th:block>
                 </div>
 
                 <div class="section-title">
                     <h4>Education</h4>
                 </div>
                     <div class="form-group">
-                        <textarea class="form-control" id="education" name="education" rows="5" placeholder="Certificates, University, etc."></textarea>
-                        <div class="validate"></div>
+                        <textarea class="form-control" id="education" name="education" rows="5" placeholder="Certificates, University, etc." th:value="*{education}"></textarea>
+                        <th:block th:if="${#fields.hasErrors('education')}">
+                            <p class="error" th:errors="*{education}"></p>
+                        </th:block>
                     </div>
 
                 <div class="section-title">
                     <h4>Work History</h4>
                 </div>
                     <div class="form-group">
-                        <textarea class="form-control" id="workHistory" name="workHistory" rows="5" placeholder="Say something about your experience..."></textarea>
-                        <div class="validate"></div>
+                        <textarea class="form-control" id="workHistory" name="workHistory" rows="5" placeholder="Say something about your experience..." th:value="*{workHistory}"></textarea>
+                        <th:block th:if="${#fields.hasErrors('workHistory')}">
+                            <p class="error" th:errors="*{workHistory}"></p>
+                        </th:block>
                     </div>
 
                 <div class="button-holder d-flex justify-content-center">
