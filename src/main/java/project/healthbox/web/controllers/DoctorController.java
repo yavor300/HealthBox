@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
+import project.healthbox.service.CityService;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
 import project.healthbox.validation.doctor.DoctorUpdateValidator;
@@ -19,12 +20,14 @@ import java.util.List;
 public class DoctorController extends BaseController {
     private final DoctorService doctorService;
     private final SpecialtyService specialtyService;
+    private final CityService cityService;
     private final DoctorUpdateValidator doctorUpdateValidator;
 
     @Autowired
-    public DoctorController(DoctorService doctorService, SpecialtyService specialtyService, DoctorUpdateValidator doctorUpdateValidator) {
+    public DoctorController(DoctorService doctorService, SpecialtyService specialtyService, CityService cityService, DoctorUpdateValidator doctorUpdateValidator) {
         this.doctorService = doctorService;
         this.specialtyService = specialtyService;
+        this.cityService = cityService;
         this.doctorUpdateValidator = doctorUpdateValidator;
     }
 
@@ -32,6 +35,7 @@ public class DoctorController extends BaseController {
     public ModelAndView getRegisterView(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") DoctorUpdateBindingModel model) {
         modelAndView.addObject("doctorId", id);
         modelAndView.addObject("specialties", this.specialtyService.getAll());
+        modelAndView.addObject("cities", this.cityService.getAll());
         modelAndView.addObject("model", model);
         return super.view("user/doctorUpdate", modelAndView);
     }
@@ -43,6 +47,7 @@ public class DoctorController extends BaseController {
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("doctorId", id);
             modelAndView.addObject("specialties", this.specialtyService.getAll());
+            modelAndView.addObject("cities", this.cityService.getAll());
             modelAndView.addObject("model", model);
             return super.view("user/doctorUpdate", modelAndView);
         }

@@ -18,7 +18,7 @@
                 <p>Find the one who you need.</p>
             </div>
 
-            <form th:method="post" th:action="@{/home}" class="php-email-form">
+            <form th:method="post" th:action="@{/home}" class="php-email-form" th:object="${model}">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
                         <select name="specialty" id="specialty" class="form-control">
@@ -38,13 +38,14 @@
                                 <option th:value="${city.name}">[[${city.name}]]</option>
                             </th:block>
                         </select>
-                        <div class="validate"></div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" class="form-control" name="doctorName" id="doctorName" placeholder="Or search by doctor name" data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                        <div class="validate"></div>
+                        <input type="text" class="form-control" name="doctorName" id="doctorName" placeholder="Or search by doctor name" th:value="*{doctorName}">
+                        <th:block th:if="${#fields.hasErrors('doctorName')}">
+                            <p class="error" th:errors="*{doctorName}"></p>
+                        </th:block>
                     </div>
                 </div>
 

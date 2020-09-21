@@ -11,5 +11,5 @@ public class FoundDoctorViewModel {
     private String id;
     private String firstName;
     private String lastName;
-    private String location;
+    private String locationName;
 }

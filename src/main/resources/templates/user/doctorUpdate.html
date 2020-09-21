@@ -33,18 +33,19 @@
                         </th:block>
                     </div>
                 </div>
-                <div class="section-title">
-                    <h4>Location</h4>
-                </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" class="form-control" name="location" id="location" placeholder="Location..." th:value="*{location}">
+                        <select name="location" id="location" class="form-control">
+                            <option value="">Select City</option>
+                            <th:block th:each="city : ${cities}">
+                                <option th:value="${city.name}">[[${city.name}]]</option>
+                            </th:block>
+                        </select>
                         <th:block th:if="${#fields.hasErrors('location')}">
                             <p class="error" th:errors="*{location}"></p>
                         </th:block>
                     </div>
                 </div>
-
                 <div class="section-title">
                     <h4>Biography</h4>
                 </div>

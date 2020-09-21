@@ -17,6 +17,8 @@ public class ValidationConstants {
 
     public final static String EMPTY_PROBLEM_TITLE = "Enter problem title!";
 
+    public final static String NO_CHOSEN_CRITERIA = "Choose at least 1 criteria!";
+
     public final static String INVALID_AGE = "Age must be positive number!";
 
     public final static String PASSWORDS_DO_NOT_MATCH = "Passwords don't match!";
