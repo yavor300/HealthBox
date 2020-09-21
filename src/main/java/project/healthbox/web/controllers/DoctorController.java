@@ -13,6 +13,7 @@ import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
 import project.healthbox.validation.doctor.DoctorUpdateValidator;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -56,6 +57,26 @@ public class DoctorController extends BaseController {
         this.doctorService.update(model);
         return super.redirect("/doctor" + "/dashboard/" + id);
     }
+
+    @GetMapping("/specialty_id={specialtyId}&city_id={cityId}&name={doctorName}")
+    public ModelAndView getDoctorsView(@PathVariable String specialtyId, @PathVariable String cityId, @PathVariable String doctorName, HttpSession session) {
+
+        List<DoctorServiceModel> allByGivenCriteria = this.doctorService.findAllByGivenCriteria(specialtyId, cityId, doctorName);
+
+        if (allByGivenCriteria == null) {
+            return super.view("user/noDoctorsFound");
+        }
+
+        session.setAttribute("foundDoctors", allByGivenCriteria);
+
+        return super.view("user/doctors");
+    }
+
+    @GetMapping("/noDoctorsFound")
+    public ModelAndView getNoDoctorsFoundView() {
+        return super.view("user/noDoctorsFound");
+    }
+
 
     @GetMapping("/profile/{id}")
     public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView) {

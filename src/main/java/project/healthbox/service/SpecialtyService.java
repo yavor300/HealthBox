@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface SpecialtyService {
     List<SpecialtyServiceModel> getAll();
+
     SpecialtyServiceModel findByName(String name);
+
+    String getIdBySpecialtyName(String name);
 }

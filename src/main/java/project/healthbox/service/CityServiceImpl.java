@@ -3,6 +3,7 @@ package project.healthbox.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.healthbox.domain.entities.City;
 import project.healthbox.domain.models.service.CityServiceModel;
 import project.healthbox.repostory.CityRepository;
 
@@ -22,7 +23,12 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityServiceModel getByName(String name) {
-        return this.modelMapper.map(this.cityRepository.getByName(name), CityServiceModel.class);
+        City city = this.cityRepository.getByName(name);
+        if (city != null) {
+            return this.modelMapper.map(city, CityServiceModel.class);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -30,5 +36,14 @@ public class CityServiceImpl implements CityService {
         return this.cityRepository.findAll().stream()
                 .map(c -> this.modelMapper.map(c, CityServiceModel.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getIdByCityName(String name) {
+        CityServiceModel cityServiceModel = this.getByName(name);
+        if (cityServiceModel == null) {
+            return "";
+        }
+        return cityServiceModel.getId();
     }
 }

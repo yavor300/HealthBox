@@ -53,15 +53,6 @@ public class UserController extends BaseController {
             return super.view("user/register", modelAndView);
         }
 
-
-//        if (!user.getPassword().equals(user.getConfirmPassword())) {
-//            return super.view("user/register");
-//        }
-//        try {
-//            this.userService.register(this.modelMapper.map(user, UserServiceModel.class));
-//        } catch (Exception e) {
-//            return super.redirect("/user" + "/register");
-//        }
         this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
         return super.redirect("/user" + "/login");
     }
@@ -72,7 +63,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/login")
-    public ModelAndView loginUser(@ModelAttribute UserRegisterBindingModel user, HttpSession httpSession, ModelAndView modelAndView) {
+    public ModelAndView loginUser(@ModelAttribute UserRegisterBindingModel user, HttpSession httpSession) {
         UserLoginServiceModel loggedUser = null;
         try {
             loggedUser = this.userService.login(this.modelMapper.map(user, UserLoginBindingModel.class));
@@ -91,18 +82,8 @@ public class UserController extends BaseController {
         }
     }
 
-    @GetMapping("/doctors")
-    public ModelAndView getDoctorsView() {
-        return super.view("user/doctors");
-    }
-
-    @GetMapping("/noDoctorsFound")
-    public ModelAndView getNoDoctorsFoundView() {
-        return super.view("user/noDoctorsFound");
-    }
-
     @GetMapping("/dashboard/{id}")
-    public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView, HttpSession httpSession) {
+    public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView) {
         UserServiceModel user = this.userService.getById(id);
         List<ConsultationServiceModel> consultations = user.getConsultations();
         modelAndView.addObject("consultations", consultations);

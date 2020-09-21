@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface CityService {
     CityServiceModel getByName(String name);
+
     List<CityServiceModel> getAll();
+
+    String getIdByCityName(String name);
 }

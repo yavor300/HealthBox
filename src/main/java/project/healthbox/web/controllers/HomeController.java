@@ -8,25 +8,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.ChooseSpecialistBindingModel;
-import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.service.CityService;
-import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
 import project.healthbox.validation.doctor.FindDoctorValidator;
 
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 public class HomeController extends BaseController {
-    private final DoctorService doctorService;
     private final SpecialtyService specialtyService;
     private final CityService cityService;
     private final FindDoctorValidator findDoctorValidator;
 
     @Autowired
-    public HomeController(DoctorService doctorService, SpecialtyService specialtyService, CityService cityService, FindDoctorValidator findDoctorValidator) {
-        this.doctorService = doctorService;
+    public HomeController(SpecialtyService specialtyService, CityService cityService, FindDoctorValidator findDoctorValidator) {
         this.specialtyService = specialtyService;
         this.cityService = cityService;
         this.findDoctorValidator = findDoctorValidator;
@@ -46,7 +40,7 @@ public class HomeController extends BaseController {
     }
 
     @PostMapping("/home")
-    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, BindingResult bindingResult, HttpSession session) {
+    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, BindingResult bindingResult) {
 
         this.findDoctorValidator.validate(model, bindingResult);
 
@@ -57,13 +51,9 @@ public class HomeController extends BaseController {
             return super.view("home", modelAndView);
         }
 
-        List<DoctorServiceModel> allByGivenCriteria = this.doctorService.findAllByGivenCriteria(model);
-        if (allByGivenCriteria != null) {
-            session.setAttribute("foundDoctors", allByGivenCriteria);
-            return super.redirect("/user" + "/doctors");
-            //lekari?specialty_id=52&region_id=&name=
-        } else {
-            return super.redirect("/user" + "/noDoctorsFound");
-        }
+        String specialtyId = this.specialtyService.getIdBySpecialtyName(model.getSpecialty());
+        String cityId = this.cityService.getIdByCityName(model.getLocation());
+
+        return super.redirect("/doctor" + "/specialty_id=" + specialtyId + "&city_id=" + cityId + "&name=" + model.getDoctorName());
     }
 }

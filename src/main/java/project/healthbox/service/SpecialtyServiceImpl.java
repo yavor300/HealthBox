@@ -3,6 +3,7 @@ package project.healthbox.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.healthbox.domain.entities.Specialty;
 import project.healthbox.domain.models.service.SpecialtyServiceModel;
 import project.healthbox.repostory.SpecialtyRepository;
 
@@ -29,6 +30,20 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Override
     public SpecialtyServiceModel findByName(String name) {
-        return this.modelMapper.map(this.specialtyRepository.findByName(name), SpecialtyServiceModel.class);
+        Specialty specialty = this.specialtyRepository.findByName(name);
+        if (specialty != null) {
+            return this.modelMapper.map(specialty, SpecialtyServiceModel.class);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String getIdBySpecialtyName(String name) {
+        SpecialtyServiceModel specialtyServiceModel = this.findByName(name);
+        if (specialtyServiceModel == null) {
+            return "";
+        }
+        return specialtyServiceModel.getId();
     }
 }
