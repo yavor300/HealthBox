@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
+import project.healthbox.error.DoctorsNotFoundException;
 import project.healthbox.service.CityService;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
@@ -61,21 +62,11 @@ public class DoctorController extends BaseController {
 
     @GetMapping("/specialty_id={specialtyId}&city_id={cityId}&name={doctorName}")
     public ModelAndView getDoctorsView(@PathVariable String specialtyId, @PathVariable String cityId, @PathVariable String doctorName, HttpSession session) {
-
         List<DoctorServiceModel> allByGivenCriteria = this.doctorService.findAllByGivenCriteria(specialtyId, cityId, doctorName);
-
-        if (allByGivenCriteria == null) {
-            return super.view("user/noDoctorsFound");
-        }
 
         session.setAttribute("foundDoctors", allByGivenCriteria);
 
         return super.view("user/doctors");
-    }
-
-    @GetMapping("/noDoctorsFound")
-    public ModelAndView getNoDoctorsFoundView() {
-        return super.view("user/noDoctorsFound");
     }
 
     @GetMapping("/profile/{id}")
@@ -90,5 +81,13 @@ public class DoctorController extends BaseController {
         List<ConsultationServiceModel> consultations = doctor.getConsultations();
         modelAndView.addObject("consultations", consultations);
         return super.view("doctor/dashboard", modelAndView);
+    }
+
+    @ExceptionHandler({DoctorsNotFoundException.class})
+    public ModelAndView handleDoctorsNotFoundException(DoctorsNotFoundException e) {
+        ModelAndView modelAndView = new ModelAndView("user/noDoctorsFound");
+        modelAndView.addObject("message", e.getMessage());
+        modelAndView.addObject("statusCode", e.getStatusCode());
+        return modelAndView;
     }
 }

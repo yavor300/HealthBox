@@ -8,6 +8,7 @@ import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
+import project.healthbox.error.DoctorsNotFoundException;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.SpecialtyRepository;
 
@@ -55,25 +56,29 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorServiceModel> findAllByGivenCriteria(String specialtyId, String cityId, String doctorName) {
+        List<DoctorServiceModel> foundDoctorsByGivenCriteria =  null;
+
         if ((specialtyId == null || specialtyId.trim().isEmpty()) && (cityId == null || cityId.trim().isEmpty())) {
-            return this.findAllByFirstNameAndLastName(doctorName.split("\\s+")[0], doctorName.split("\\s+")[1]);
+            foundDoctorsByGivenCriteria = this.findAllByFirstNameAndLastName(doctorName.split("\\s+")[0], doctorName.split("\\s+")[1]);
         } else if ((specialtyId == null || specialtyId.trim().isEmpty()) && (doctorName == null || doctorName.trim().isEmpty())) {
-            return this.findAllByLocationId(cityId);
+            foundDoctorsByGivenCriteria = this.findAllByLocationId(cityId);
         } else if ((cityId == null || cityId.trim().isEmpty()) && (doctorName == null || doctorName.trim().isEmpty())) {
-            return this.findAllBySpecialtyId(specialtyId);
+            foundDoctorsByGivenCriteria = this.findAllBySpecialtyId(specialtyId);
         } else if ((specialtyId == null || specialtyId.trim().isEmpty()) ) {
-            return this.findAllByLocationIdAndFirstNameAndLastName(cityId, doctorName.split("\\s+")[0], doctorName.split("\\s+")[1]);
+            foundDoctorsByGivenCriteria = this.findAllByLocationIdAndFirstNameAndLastName(cityId, doctorName.split("\\s+")[0], doctorName.split("\\s+")[1]);
         } else if ((cityId == null || cityId.trim().isEmpty())) {
-            return this.findAllBySpecialtyIdAndFirstNameAndLastName(specialtyId, doctorName.split("\\s+")[0], doctorName.split("\\s+")[1]);
+            foundDoctorsByGivenCriteria = this.findAllBySpecialtyIdAndFirstNameAndLastName(specialtyId, doctorName.split("\\s+")[0], doctorName.split("\\s+")[1]);
         } else if ((doctorName == null || doctorName.trim().isEmpty())) {
-            return this.findAllBySpecialtyIdAndLocationId(specialtyId, cityId);
+            foundDoctorsByGivenCriteria = this.findAllBySpecialtyIdAndLocationId(specialtyId, cityId);
         } else {
-            return this.findAllBySpecialtyIdAndLocationIdAndFirstNameAndLastName(specialtyId, cityId, doctorName.split("\\s+")[0], doctorName.split("\\s+")[1]);
+            foundDoctorsByGivenCriteria = this.findAllBySpecialtyIdAndLocationIdAndFirstNameAndLastName(specialtyId, cityId, doctorName.split("\\s+")[0], doctorName.split("\\s+")[1]);
         }
 
-//        if (model.getSpecialty() != null && !model.getSpecialty().trim().isEmpty() && model.getDoctorName().isEmpty() && model.getLocation().isEmpty()) {
-//            return this.getAllBySpecialtyName(model.getSpecialty());
-//        }
+        if (foundDoctorsByGivenCriteria == null || foundDoctorsByGivenCriteria.isEmpty()) {
+            throw new DoctorsNotFoundException("No results for your search.");
+        }
+
+        return foundDoctorsByGivenCriteria;
     }
 
     @Override
