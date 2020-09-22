@@ -32,6 +32,8 @@ public class Doctor extends BaseEntity {
     private String biography;
     @Column(name = "workHistory")
     private String workHistory;
+    @Column(name = "image_url")
+    private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "specialty_id", referencedColumnName = "id")
     private Specialty specialty;

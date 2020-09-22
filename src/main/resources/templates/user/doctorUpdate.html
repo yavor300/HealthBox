@@ -19,7 +19,16 @@
 
             </div>
 
-            <form th:method="post" th:action="@{/doctor/complete/{id}(id=${doctorId})}" class="php-email-form" th:object="${model}">
+            <form th:method="post" th:action="@{/doctor/complete/{id}(id=${doctorId})}" class="php-email-form" enctype="multipart/form-data" th:object="${model}">
+                <div class="section-title">
+                    <h4>Upload Profile Picture</h4>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 offset-md-4 form-group">
+                        <input type="file" class="form-control-file" id="image" name="image">
+                    </div>
+                </div>
+
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
                         <select name="specialty" id="specialty" class="form-control">

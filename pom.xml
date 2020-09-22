@@ -69,6 +69,11 @@
             <artifactId>commons-codec</artifactId>
             <version>1.11</version>
         </dependency>
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary</artifactId>
+            <version>1.0.14</version>
+        </dependency>
     </dependencies>
 
     <build>

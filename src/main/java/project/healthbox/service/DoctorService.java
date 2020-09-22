@@ -8,11 +8,12 @@ import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserLoginServiceModel;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 public interface DoctorService {
-    DoctorServiceModel update(DoctorUpdateBindingModel doctorUpdateBindingModel);
+    DoctorServiceModel update(DoctorUpdateBindingModel doctorUpdateBindingModel) throws IOException;
 
     DoctorServiceModel getById(String id);
 

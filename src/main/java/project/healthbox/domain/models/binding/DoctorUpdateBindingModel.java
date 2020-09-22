@@ -3,6 +3,7 @@ package project.healthbox.domain.models.binding;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -14,4 +15,5 @@ public class DoctorUpdateBindingModel {
     private String biography;
     private String workHistory;
     private String specialty;
+    private MultipartFile image;
 }

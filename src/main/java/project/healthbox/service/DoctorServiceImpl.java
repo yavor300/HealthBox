@@ -11,6 +11,7 @@ import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.SpecialtyRepository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,25 +21,28 @@ public class DoctorServiceImpl implements DoctorService {
     private final ModelMapper modelMapper;
     private final SpecialtyRepository specialtyRepository;
     private final CityService cityService;
+    private final CloudinaryService cloudinaryService;
 
     @Autowired
-    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper, SpecialtyRepository specialtyRepository, CityService cityService) {
+    public DoctorServiceImpl(DoctorRepository doctorRepository, ModelMapper modelMapper, SpecialtyRepository specialtyRepository, CityService cityService, CloudinaryService cloudinaryService) {
         this.doctorRepository = doctorRepository;
         this.modelMapper = modelMapper;
         this.specialtyRepository = specialtyRepository;
         this.cityService = cityService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
-    public DoctorServiceModel update(DoctorUpdateBindingModel doctorUpdateBindingModel) {
+    public DoctorServiceModel update(DoctorUpdateBindingModel doctorUpdateBindingModel) throws IOException {
         Doctor doctor = this.doctorRepository.getById(doctorUpdateBindingModel.getId());
         City city = this.modelMapper.map(this.cityService.getByName(doctorUpdateBindingModel.getLocation()), City.class);
         doctor.setLocation(city);
+        doctor.setImageUrl(this.cloudinaryService.uploadImage(doctorUpdateBindingModel.getImage()));
         doctor.setBiography(doctorUpdateBindingModel.getBiography());
         doctor.setWorkHistory(doctorUpdateBindingModel.getWorkHistory());
         doctor.setEducation(doctorUpdateBindingModel.getEducation());
         doctor.setSpecialty(this.specialtyRepository.findByName(doctorUpdateBindingModel.getSpecialty()));
-        return this.modelMapper.map(doctorRepository.saveAndFlush(doctor), DoctorServiceModel.class);
+        return this.modelMapper.map( this.doctorRepository.saveAndFlush(doctor), DoctorServiceModel.class);
     }
 
     @Override

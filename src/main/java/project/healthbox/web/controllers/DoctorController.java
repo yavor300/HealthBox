@@ -14,6 +14,7 @@ import project.healthbox.service.SpecialtyService;
 import project.healthbox.validation.doctor.DoctorUpdateValidator;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -42,7 +43,7 @@ public class DoctorController extends BaseController {
     }
 
     @PostMapping("/complete/{id}")
-    public ModelAndView updateProfile(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") DoctorUpdateBindingModel model, BindingResult bindingResult) {
+    public ModelAndView updateProfile(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") DoctorUpdateBindingModel model, BindingResult bindingResult) throws IOException {
         this.doctorUpdateValidator.validate(model, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -76,7 +77,6 @@ public class DoctorController extends BaseController {
     public ModelAndView getNoDoctorsFoundView() {
         return super.view("user/noDoctorsFound");
     }
-
 
     @GetMapping("/profile/{id}")
     public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView) {

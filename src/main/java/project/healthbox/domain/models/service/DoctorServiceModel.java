@@ -19,6 +19,7 @@ public class DoctorServiceModel {
     private String education;
     private String biography;
     private String workHistory;
+    private String imageUrl;
     private SpecialtyServiceModel specialty;
     private List<ConsultationServiceModel> consultations;
     private List<UserServiceModel> users;

@@ -2,11 +2,11 @@ const URLS = {
     foundDoctors: '/user/foundDoctors',
 };
 
-const toString = ({ id, firstName, lastName, locationName}) => {
+const toString = ({ id, firstName, lastName, locationName, imageUrl}) => {
     let row = `
     <div class="col-lg-6">
                         <div class="member d-flex align-items-start">
-                            <div class="pic"><img src="assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
+                            <div class="pic"><img src="${imageUrl}" class="img-fluid" alt="Doctor Profile Picture"></div>
                             <div class="member-info">
                                 <h4>${firstName} ${lastName}</h4>
                                 <span>${locationName}</span>
