@@ -46,4 +46,20 @@ public class CityServiceImpl implements CityService {
         }
         return cityServiceModel.getId();
     }
+
+    @Override
+    public CityServiceModel getById(String id) {
+        return this.modelMapper.map(this.cityRepository.getById(id), CityServiceModel.class);
+    }
+
+    @Override
+    public void deleteCity(String id) {
+        City city = this.cityRepository.getById(id);
+        this.cityRepository.delete(city);
+    }
+
+    @Override
+    public CityServiceModel createCity(String name) {
+        return this.modelMapper.map(this.cityRepository.saveAndFlush(new City(name)), CityServiceModel.class);
+    }
 }

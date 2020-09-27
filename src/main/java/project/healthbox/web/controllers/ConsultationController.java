@@ -2,6 +2,7 @@ package project.healthbox.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import project.healthbox.validation.answer.AnswerValidator;
 import project.healthbox.validation.consultation.ConsultationFormValidator;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/consultation")
@@ -41,6 +43,7 @@ public class ConsultationController extends BaseController {
     }
 
     @GetMapping("/send/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView getSendConsultationView(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") ConsultationBindingModel model) {
         modelAndView.addObject("doctorId", id);
         modelAndView.addObject("model", model);
@@ -48,7 +51,8 @@ public class ConsultationController extends BaseController {
     }
 
     @PostMapping("/send/{id}")
-    public ModelAndView sendConsultationForm(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") ConsultationBindingModel model, BindingResult bindingResult, HttpSession httpSession) {
+    @PreAuthorize("isAuthenticated()")
+    public ModelAndView sendConsultationForm(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") ConsultationBindingModel model, BindingResult bindingResult, Principal principal) {
 
         this.consultationFormValidator.validate(model, bindingResult);
 
@@ -59,20 +63,21 @@ public class ConsultationController extends BaseController {
         }
 
         ConsultationServiceModel consultationServiceModel = this.consultationService.save(this.modelMapper.map(model, ConsultationServiceModel.class));
-        UserLoginServiceModel userInSession = (UserLoginServiceModel) httpSession.getAttribute("user");
-        UserServiceModel userServiceModel = this.userService.getById(userInSession.getId());
+        UserServiceModel userServiceModel = this.userService.getByEmail(principal.getName());
         DoctorServiceModel doctorServiceModel = this.doctorService.getById(id);
         this.consultationService.setDoctorAndUser(consultationServiceModel, doctorServiceModel, userServiceModel);
-        return super.redirect("/user" + "/dashboard/" + userServiceModel.getId());
+        return super.redirect("/user" + "/dashboard");
     }
 
     @GetMapping("/details/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView getConsultationDetailsView(@PathVariable String id, ModelAndView modelAndView) {
         modelAndView.addObject("consultation", this.consultationService.getById(id));
         return super.view("consultation/details", modelAndView);
     }
 
     @GetMapping("/answer/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ModelAndView getConsultationAnswerView(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") SendAnswerBindingModel model) {
         ConsultationServiceModel consultation = this.consultationService.getById(id);
         modelAndView.addObject("consultation", consultation);
@@ -81,7 +86,8 @@ public class ConsultationController extends BaseController {
     }
 
     @PostMapping("/answer/{id}")
-    public ModelAndView answerConsultation(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") SendAnswerBindingModel model, BindingResult bindingResult, HttpSession httpSession) {
+    @PreAuthorize("isAuthenticated()")
+    public ModelAndView answerConsultation(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") SendAnswerBindingModel model, BindingResult bindingResult) {
 
         this.answerValidator.validate(model, bindingResult);
 
@@ -94,9 +100,9 @@ public class ConsultationController extends BaseController {
 
         AnswerServiceModel answerServiceModel = this.answerService.save(this.modelMapper.map(model, AnswerServiceModel.class));
         ConsultationServiceModel consultationServiceModel = this.consultationService.getById(id);
+
         this.consultationService.setAnswer(consultationServiceModel, answerServiceModel);
-        UserLoginServiceModel userInSession = (UserLoginServiceModel) httpSession.getAttribute("user");
-        DoctorServiceModel doctorServiceModel = this.doctorService.getById(userInSession.getId());
-        return super.redirect("/doctor" + "/dashboard/" + doctorServiceModel.getId());
+
+        return super.redirect("/doctor" + "/dashboard");
     }
 }

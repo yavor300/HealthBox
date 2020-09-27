@@ -2,6 +2,7 @@ package project.healthbox.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Specialty;
 import project.healthbox.domain.models.service.SpecialtyServiceModel;
@@ -45,5 +46,21 @@ public class SpecialtyServiceImpl implements SpecialtyService {
             return "";
         }
         return specialtyServiceModel.getId();
+    }
+
+    @Override
+    public SpecialtyServiceModel getById(String id) {
+        return this.modelMapper.map(this.specialtyRepository.getById(id), SpecialtyServiceModel.class);
+    }
+
+    @Override
+    public void deleteSpecialty(String id) {
+        Specialty specialty = this.specialtyRepository.getById(id);
+        this.specialtyRepository.delete(specialty);
+    }
+
+    @Override
+    public SpecialtyServiceModel createSpecialty(String name) {
+        return this.modelMapper.map(this.specialtyRepository.saveAndFlush(new Specialty(name)), SpecialtyServiceModel.class);
     }
 }

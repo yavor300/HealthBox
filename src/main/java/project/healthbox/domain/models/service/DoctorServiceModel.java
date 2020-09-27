@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,4 +24,5 @@ public class DoctorServiceModel {
     private SpecialtyServiceModel specialty;
     private List<ConsultationServiceModel> consultations;
     private List<UserServiceModel> users;
+    private Set<RoleServiceModel> authorities;
 }

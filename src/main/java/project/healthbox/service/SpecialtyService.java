@@ -10,4 +10,10 @@ public interface SpecialtyService {
     SpecialtyServiceModel findByName(String name);
 
     String getIdBySpecialtyName(String name);
+
+    SpecialtyServiceModel getById(String id);
+
+    void deleteSpecialty(String id);
+
+    SpecialtyServiceModel createSpecialty(String name);
 }

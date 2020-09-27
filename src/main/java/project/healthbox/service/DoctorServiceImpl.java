@@ -55,6 +55,19 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public List<DoctorServiceModel> getAll() {
+        return this.doctorRepository.findAll()
+                .stream().map(d -> this.modelMapper.map(d, DoctorServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteDoctor(String id) {
+        Doctor doctor = this.doctorRepository.getById(id);
+        this.doctorRepository.delete(doctor);
+    }
+
+    @Override
     public List<DoctorServiceModel> findAllByGivenCriteria(String specialtyId, String cityId, String doctorName) {
         List<DoctorServiceModel> foundDoctorsByGivenCriteria =  null;
 
@@ -88,6 +101,17 @@ public class DoctorServiceImpl implements DoctorService {
                 doctor,
                 DoctorServiceModel.class
         );
+    }
+
+    @Override
+    public DoctorServiceModel getByEmail(String email) {
+        Doctor doctor = this.doctorRepository.findByEmail(email).orElse(null);
+
+        if (doctor == null) {
+            return null;
+        }
+
+        return this.modelMapper.map(doctor, DoctorServiceModel.class);
     }
 
     @Override

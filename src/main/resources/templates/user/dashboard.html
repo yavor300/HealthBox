@@ -7,7 +7,7 @@
 
 <body>
 <header>
-    <th:block th:include="~{fragments/navbar-user}"></th:block>
+    <th:block th:include="~{fragments/navbar}"></th:block>
 </header>
 <main>
     <section id="faq" class="faq section-bg">
@@ -22,7 +22,7 @@
                 <ul>
                     <th:block th:each="consultation : ${consultations}">
                     <li data-aos="fade-up">
-                        <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" class="collapse" th:href="@{/consultation/details/{id}(id=${consultation.id})}">[[${consultation.problemTitle}]]<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                        <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" class="collapse" th:href="@{/consultation/details/{id}(id=${consultation.id})}">[[${consultation.problemTitle}]], sent to [[${consultation.doctor.firstName}]] [[${consultation.doctor.lastName}]]<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
                     </li>
                     </th:block>
                 </ul>

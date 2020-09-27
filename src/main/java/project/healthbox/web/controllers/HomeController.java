@@ -1,6 +1,7 @@
 package project.healthbox.web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.ChooseSpecialistBindingModel;
 import project.healthbox.service.CityService;
 import project.healthbox.service.SpecialtyService;
+import project.healthbox.service.UserService;
 import project.healthbox.validation.doctor.FindDoctorValidator;
+
+import java.security.Principal;
 
 
 @Controller
@@ -18,35 +22,42 @@ public class HomeController extends BaseController {
     private final SpecialtyService specialtyService;
     private final CityService cityService;
     private final FindDoctorValidator findDoctorValidator;
+    private final UserService userService;
 
     @Autowired
-    public HomeController(SpecialtyService specialtyService, CityService cityService, FindDoctorValidator findDoctorValidator) {
+    public HomeController(SpecialtyService specialtyService, CityService cityService, FindDoctorValidator findDoctorValidator, UserService userService) {
         this.specialtyService = specialtyService;
         this.cityService = cityService;
         this.findDoctorValidator = findDoctorValidator;
+        this.userService = userService;
     }
 
     @GetMapping("/")
+    @PreAuthorize("isAnonymous()")
     public ModelAndView getIndexView() {
         return super.view("index");
     }
 
     @GetMapping("/home")
-    public ModelAndView getHomeView(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model) {
+    @PreAuthorize("isAuthenticated()")
+    public ModelAndView getHomeView(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, Principal principal) {
+        String userId = this.userService.getByEmail(principal.getName()).getId();
         modelAndView.addObject("specialties", this.specialtyService.getAll());
         modelAndView.addObject("cities", this.cityService.getAll());
+        modelAndView.addObject("userId", userId);
         modelAndView.addObject("model", model);
         return super.view("home", modelAndView);
     }
 
     @PostMapping("/home")
-    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, BindingResult bindingResult) {
-
+    @PreAuthorize("isAuthenticated()")
+    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, BindingResult bindingResult, Principal principal) {
         this.findDoctorValidator.validate(model, bindingResult);
 
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("specialties", this.specialtyService.getAll());
             modelAndView.addObject("cities", this.cityService.getAll());
+            modelAndView.addObject("userId", this.userService.getByEmail(principal.getName()).getId());
             modelAndView.addObject("model", model);
             return super.view("home", modelAndView);
         }

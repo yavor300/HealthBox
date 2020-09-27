@@ -7,4 +7,5 @@ import project.healthbox.domain.entities.Specialty;
 @Repository
 public interface SpecialtyRepository extends JpaRepository<Specialty, String> {
     Specialty findByName(String name);
+    Specialty getById(String id);
 }

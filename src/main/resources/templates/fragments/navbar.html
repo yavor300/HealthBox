@@ -1,33 +1,86 @@
 <th:block th:fragment>
-    <div class="header-area">
-        <div class="main-header header-sticky">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <!-- Logo -->
-                    <div class="col-xl-2 col-lg-2 col-md-1">
-                        <div class="logo">
-                            <a th:href="@{/index}"><img src="/img/logo.png" alt="logo"></a>
-                        </div>
-                    </div>
-                    <div class="col-xl-10 col-lg-10 col-md-10">
-                        <div class="menu-main d-flex align-items-center justify-content-end">
-                            <!-- Main-menu -->
-                            <div class="main-menu f-right d-none d-lg-block">
-                                <nav>
-                                    <ul id="navigation">
-                                        <li><a th:href="@{/user/login}">Login</a></li>
-                                        <li><a th:href="@{/user/register}">Register</a></li>
-                                    </ul>
-                                </nav>
+    <th:block sec:authorize="isAnonymous()">
+        <div class="header-area">
+            <div class="main-header header-sticky">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <!-- Logo -->
+                        <div class="col-xl-2 col-lg-2 col-md-1">
+                            <div class="logo">
+                                <a th:href="@{/}"><img src="/img/logo.png" alt="logo"></a>
                             </div>
                         </div>
-                    </div>
-                    <!-- Mobile Menu -->
-                    <div class="col-12">
-                        <div class="mobile_menu d-block d-lg-none"></div>
+                        <div class="col-xl-10 col-lg-10 col-md-10">
+                            <div class="menu-main d-flex align-items-center justify-content-end">
+                                <!-- Main-menu -->
+                                <div class="main-menu f-right d-none d-lg-block">
+                                    <nav>
+                                        <ul id="navigation">
+                                            <li><a th:href="@{/user/login}">Login</a></li>
+                                            <li><a th:href="@{/user/register}">Register</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Mobile Menu -->
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </th:block>
+    <th:block sec:authorize="isAuthenticated()">
+        <div class="header-area">
+            <div class="main-header header-sticky">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
+                        <!-- Logo -->
+                        <div class="col-xl-2 col-lg-2 col-md-1">
+                            <div class="logo">
+                                <th:block sec:authorize="hasRole('ROLE_USER')">
+                                    <a th:href="@{/home}"><img src="/img/logo.png" alt="logo"></a>
+                                </th:block>
+                                <th:block sec:authorize="hasRole('ROLE_DOCTOR')">
+                                    <a th:href="@{/doctor/dashboard/{id}(id=${userId})}"><img src="/img/logo.png" alt="logo"></a>
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="col-xl-10 col-lg-10 col-md-10">
+                            <div class="menu-main d-flex align-items-center justify-content-end">
+                                <!-- Main-menu -->
+                                <div class="main-menu f-right d-none d-lg-block">
+                                    <nav>
+                                        <ul id="navigation">
+                                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                                <li><a th:href="@{/user/all}">All Users</a></li>
+                                                <li><a th:href="@{/doctor/all}">All Doctors</a></li>
+                                                <li><a th:href="@{/city/all}">All Cities</a></li>
+                                                <li><a th:href="@{/specialty/all}">All Specialties</a></li>
+                                                <li><a th:href="@{/city/create}">Add City</a></li>
+                                                <li><a th:href="@{/specialty/create}">Add Specialty</a></li>
+                                            </th:block>
+                                            <th:block sec:authorize="hasRole('ROLE_USER')">
+                                                <li><a th:href="@{/user/dashboard}">Dashboard</a></li>
+                                            </th:block>
+                                            <th:block sec:authorize="hasRole('ROLE_DOCTOR')">
+                                                <li><a th:href="@{/doctor/dashboard}">Dashboard</a></li>
+                                            </th:block>
+                                            <li><a th:href="@{/logout}">Logout</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Mobile Menu -->
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
 </th:block>

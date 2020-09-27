@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,4 +18,5 @@ public class UserServiceModel extends BaseService {
     private String password;
     private List<ConsultationServiceModel> consultations;
     private List<DoctorServiceModel> doctors;
+    private Set<RoleServiceModel> authorities;
 }

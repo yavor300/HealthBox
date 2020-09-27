@@ -11,14 +11,22 @@ import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.repostory.ConsultationRepository;
+import project.healthbox.repostory.DoctorRepository;
+import project.healthbox.repostory.UserRepository;
+
+import java.util.List;
 
 @Service
 public class ConsultationServiceImpl implements ConsultationService {
     private final ConsultationRepository consultationRepository;
+    private final UserRepository userRepository;
+    private final DoctorRepository doctorRepository;
     private final ModelMapper modelMapper;
 
-    public ConsultationServiceImpl(ConsultationRepository consultationRepository, ModelMapper modelMapper) {
+    public ConsultationServiceImpl(ConsultationRepository consultationRepository, UserRepository userRepository, DoctorRepository doctorRepository, ModelMapper modelMapper) {
         this.consultationRepository = consultationRepository;
+        this.userRepository = userRepository;
+        this.doctorRepository = doctorRepository;
         this.modelMapper = modelMapper;
     }
 

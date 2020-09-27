@@ -7,7 +7,7 @@
 
 <body>
 <header>
-    <th:block th:include="~{fragments/navbar-user}"></th:block>
+    <th:block th:include="~{fragments/navbar}"></th:block>
 </header>
 <main>
     <section id="appointment" class="appointment section-bg">
@@ -19,7 +19,7 @@
 
             </div>
 
-            <form th:method="post" th:action="@{/doctor/complete/{id}(id=${doctorId})}" class="php-email-form" enctype="multipart/form-data" th:object="${model}">
+            <form th:method="post" th:action="@{/doctor/complete}" class="php-email-form" enctype="multipart/form-data" th:object="${model}">
                 <div class="section-title">
                     <h4>Upload Profile Picture</h4>
                 </div>

@@ -20,4 +20,8 @@ public class Specialty extends BaseEntity {
     private String name;
     @OneToMany(mappedBy = "specialty")
     private List<Doctor> doctors;
+
+    public Specialty(String name) {
+        this.name = name;
+    }
 }

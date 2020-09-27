@@ -17,6 +17,8 @@ public interface DoctorService {
 
     DoctorServiceModel getById(String id);
 
+    DoctorServiceModel getByEmail(String email);
+
     List<DoctorServiceModel> findAllByGivenCriteria(String specialtyId, String locationId, String doctorName);
 
     List<DoctorServiceModel> findAllByFirstNameAndLastName(String firstName, String lastName);
@@ -34,4 +36,8 @@ public interface DoctorService {
     List<DoctorServiceModel> findAllBySpecialtyIdAndLocationIdAndFirstNameAndLastName(String specialtyId, String locationId, String firstName, String lastName);
 
     boolean isAccountCompleted(UserLoginServiceModel user);
+
+    List<DoctorServiceModel> getAll();
+
+    void deleteDoctor(String id);
 }

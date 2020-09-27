@@ -7,4 +7,5 @@ import project.healthbox.domain.entities.City;
 @Repository
 public interface CityRepository extends JpaRepository<City, String> {
     City getByName(String name);
+    City getById(String id);
 }
