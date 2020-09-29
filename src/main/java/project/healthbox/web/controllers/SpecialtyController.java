@@ -10,6 +10,7 @@ import project.healthbox.domain.models.binding.CreateSpecialtyBindingModel;
 import project.healthbox.domain.models.service.CityServiceModel;
 import project.healthbox.domain.models.service.SpecialtyServiceModel;
 import project.healthbox.service.SpecialtyService;
+import project.healthbox.web.annotations.PageTitle;
 
 @Controller
 @RequestMapping("/specialty")
@@ -23,6 +24,7 @@ public class SpecialtyController extends BaseController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("All Specialties")
     public ModelAndView getAllView(ModelAndView modelAndView) {
         modelAndView.addObject("specialties", this.specialtyService.getAll());
         return super.view("specialty/all-specialties", modelAndView);
@@ -31,6 +33,7 @@ public class SpecialtyController extends BaseController {
 
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Delete Specialty")
     public ModelAndView deleteQuote(@PathVariable String id, ModelAndView modelAndView) {
         SpecialtyServiceModel specialty = this.specialtyService.getById(id);
         modelAndView.addObject("specialty", specialty);
@@ -46,6 +49,7 @@ public class SpecialtyController extends BaseController {
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Add Specialty")
     public ModelAndView createSpecialty() {
         return super.view("specialty/create-specialty");
     }

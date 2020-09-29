@@ -13,6 +13,7 @@ import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.UserService;
 import project.healthbox.validation.user.UserRegisterValidator;
+import project.healthbox.web.annotations.PageTitle;
 
 import java.security.Principal;
 import java.util.List;
@@ -35,6 +36,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/register")
     @PreAuthorize("isAnonymous()")
+    @PageTitle("Register")
     public ModelAndView getRegisterView(ModelAndView modelAndView, @ModelAttribute(name = "model") UserRegisterBindingModel model) {
         modelAndView.addObject("model", model);
 
@@ -60,12 +62,14 @@ public class UserController extends BaseController {
 
     @GetMapping("/login")
     @PreAuthorize("isAnonymous()")
+    @PageTitle("Login")
     public ModelAndView getLoginView() {
         return super.view("user/login");
     }
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("All Users")
     public ModelAndView getAllView(ModelAndView modelAndView) {
         modelAndView.addObject("users", this.userService.getAll());
         return super.view("user/all-users", modelAndView);
@@ -73,6 +77,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Delete User")
     public ModelAndView deleteQuote(@PathVariable String id, ModelAndView modelAndView) {
         UserServiceModel user = this.userService.getById(id);
         modelAndView.addObject("user", user);
@@ -100,31 +105,10 @@ public class UserController extends BaseController {
 
         return super.redirect("/user" + "/all");
     }
-/*
-    @PostMapping("/login")
-    public ModelAndView loginUser(@ModelAttribute UserRegisterBindingModel user, HttpSession httpSession) {
-        UserLoginServiceModel loggedUser = null;
-        try {
-            loggedUser = this.userService.login(this.modelMapper.map(user, UserLoginBindingModel.class));
-        } catch (Exception e) {
-            return super.redirect("/user" + "/login");
-        }
-        httpSession.setAttribute("user", loggedUser);
-        if (loggedUser.getTitle().equals("Doctor")) {
-            if (this.doctorService.isAccountCompleted(loggedUser)) {
-                return super.redirect("/doctor" + "/dashboard/" + loggedUser.getId());
-            } else {
-                return super.redirect("/doctor" + "/complete/" + loggedUser.getId());
-            }
-        } else {
-            return super.redirect("/home");
-        }
-    }
-
- */
 
     @GetMapping("/dashboard")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Dashboard")
     public ModelAndView getProfileView(Principal principal, ModelAndView modelAndView) {
         UserServiceModel user = this.userService.getByEmail(principal.getName());
         List<ConsultationServiceModel> consultations = user.getConsultations();

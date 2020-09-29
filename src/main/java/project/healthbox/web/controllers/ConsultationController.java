@@ -16,6 +16,7 @@ import project.healthbox.service.DoctorService;
 import project.healthbox.service.UserService;
 import project.healthbox.validation.answer.AnswerValidator;
 import project.healthbox.validation.consultation.ConsultationFormValidator;
+import project.healthbox.web.annotations.PageTitle;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
@@ -44,6 +45,7 @@ public class ConsultationController extends BaseController {
 
     @GetMapping("/send/{id}")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Send Consultation")
     public ModelAndView getSendConsultationView(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") ConsultationBindingModel model) {
         modelAndView.addObject("doctorId", id);
         modelAndView.addObject("model", model);
@@ -71,6 +73,7 @@ public class ConsultationController extends BaseController {
 
     @GetMapping("/details/{id}")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Consultation Details")
     public ModelAndView getConsultationDetailsView(@PathVariable String id, ModelAndView modelAndView) {
         modelAndView.addObject("consultation", this.consultationService.getById(id));
         return super.view("consultation/details", modelAndView);
@@ -78,6 +81,7 @@ public class ConsultationController extends BaseController {
 
     @GetMapping("/answer/{id}")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Answer Consultation")
     public ModelAndView getConsultationAnswerView(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") SendAnswerBindingModel model) {
         ConsultationServiceModel consultation = this.consultationService.getById(id);
         modelAndView.addObject("consultation", consultation);

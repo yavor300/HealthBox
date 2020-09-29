@@ -15,6 +15,7 @@ import project.healthbox.service.CityService;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
 import project.healthbox.validation.doctor.DoctorUpdateValidator;
+import project.healthbox.web.annotations.PageTitle;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class DoctorController extends BaseController {
 
     @GetMapping("/complete")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Complete Doctor Account")
     public ModelAndView getRegisterView(Principal principal, ModelAndView modelAndView, @ModelAttribute(name = "model") DoctorUpdateBindingModel model) {
         modelAndView.addObject("doctorId", this.doctorService.getByEmail(principal.getName()).getId());
         modelAndView.addObject("specialties", this.specialtyService.getAll());
@@ -67,6 +69,7 @@ public class DoctorController extends BaseController {
 
     @GetMapping("/specialty_id={specialtyId}&city_id={cityId}&name={doctorName}")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Found Doctors")
     public ModelAndView getDoctorsView(@PathVariable String specialtyId, @PathVariable String cityId, @PathVariable String doctorName, HttpSession session) {
         List<DoctorServiceModel> allByGivenCriteria = this.doctorService.findAllByGivenCriteria(specialtyId, cityId, doctorName);
 
@@ -77,13 +80,15 @@ public class DoctorController extends BaseController {
 
     @GetMapping("/profile/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView) {
+    @PageTitle("Doctor Profile")
+    public ModelAndView getProfileVie(@PathVariable String id, ModelAndView modelAndView) {
         modelAndView.addObject("doctor", this.doctorService.getById(id));
         return super.view("doctor/profile", modelAndView);
     }
 
     @GetMapping("/dashboard")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Dashboard")
     public ModelAndView getDashboardDoctorView(Principal principal, ModelAndView modelAndView) {
         DoctorServiceModel doctor = this.doctorService.getById(this.doctorService.getByEmail(principal.getName()).getId());
         List<ConsultationServiceModel> consultations = doctor.getConsultations();
@@ -101,6 +106,7 @@ public class DoctorController extends BaseController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("All Doctors")
     public ModelAndView getAllView(ModelAndView modelAndView) {
         modelAndView.addObject("doctors", this.doctorService.getAll());
         return super.view("doctor/all-doctors", modelAndView);
@@ -108,6 +114,7 @@ public class DoctorController extends BaseController {
 
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Delete Doctor")
     public ModelAndView deleteQuote(@PathVariable String id, ModelAndView modelAndView) {
         DoctorServiceModel doctor = this.doctorService.getById(id);
         modelAndView.addObject("doctor", doctor);

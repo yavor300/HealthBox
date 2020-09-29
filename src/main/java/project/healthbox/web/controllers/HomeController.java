@@ -13,6 +13,7 @@ import project.healthbox.service.CityService;
 import project.healthbox.service.SpecialtyService;
 import project.healthbox.service.UserService;
 import project.healthbox.validation.doctor.FindDoctorValidator;
+import project.healthbox.web.annotations.PageTitle;
 
 import java.security.Principal;
 
@@ -34,12 +35,14 @@ public class HomeController extends BaseController {
 
     @GetMapping("/")
     @PreAuthorize("isAnonymous()")
+    @PageTitle("Index")
     public ModelAndView getIndexView() {
         return super.view("index");
     }
 
     @GetMapping("/home")
     @PreAuthorize("isAuthenticated()")
+    @PageTitle("Home")
     public ModelAndView getHomeView(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, Principal principal) {
         String userId = this.userService.getByEmail(principal.getName()).getId();
         modelAndView.addObject("specialties", this.specialtyService.getAll());

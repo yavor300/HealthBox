@@ -10,6 +10,7 @@ import project.healthbox.domain.models.binding.UserRegisterBindingModel;
 import project.healthbox.domain.models.service.CityServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.service.CityService;
+import project.healthbox.web.annotations.PageTitle;
 
 @Controller
 @RequestMapping("/city")
@@ -23,6 +24,7 @@ public class CityController extends BaseController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("All Cities")
     public ModelAndView getAllView(ModelAndView modelAndView) {
         modelAndView.addObject("cities", this.cityService.getAll());
         return super.view("city/all-cities", modelAndView);
@@ -31,6 +33,7 @@ public class CityController extends BaseController {
 
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Delete City")
     public ModelAndView deleteQuote(@PathVariable String id, ModelAndView modelAndView) {
         CityServiceModel city = this.cityService.getById(id);
         modelAndView.addObject("city", city);
@@ -46,6 +49,7 @@ public class CityController extends BaseController {
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PageTitle("Add City")
     public ModelAndView createCity() {
         return super.view("city/create-city");
     }
