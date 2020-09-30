@@ -11,6 +11,8 @@ public class ValidationConstants {
 
     public final static String SPECIALTY_NOT_SELECTED = "Select your specialty!";
 
+    public final static String PROFILE_PICTURE_NOT_UPLOADED = "Upload profile picture!";
+
     public final static String GENDER_NOT_SELECTED = "Select your gender!";
 
     public final static String EMPTY_TEXTAREA = "This text area can't be empty!";

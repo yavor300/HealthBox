@@ -34,7 +34,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public DoctorServiceModel update(DoctorUpdateBindingModel doctorUpdateBindingModel) throws IOException {
+    public DoctorServiceModel update(DoctorUpdateBindingModel doctorUpdateBindingModel) throws IOException{
         Doctor doctor = this.doctorRepository.getById(doctorUpdateBindingModel.getId());
         City city = this.modelMapper.map(this.cityService.getByName(doctorUpdateBindingModel.getLocation()), City.class);
         doctor.setLocation(city);

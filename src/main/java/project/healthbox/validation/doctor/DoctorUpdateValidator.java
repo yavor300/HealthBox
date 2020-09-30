@@ -18,6 +18,15 @@ public class DoctorUpdateValidator  implements org.springframework.validation.Va
     public void validate(Object o, Errors errors) {
         DoctorUpdateBindingModel doctorUpdateBindingModel = (DoctorUpdateBindingModel) o;
 
+        if (doctorUpdateBindingModel.getImage().isEmpty()) {
+            errors.rejectValue(
+                    "image",
+                    ValidationConstants.PROFILE_PICTURE_NOT_UPLOADED,
+                    ValidationConstants.PROFILE_PICTURE_NOT_UPLOADED
+            );
+        }
+
+
         if (doctorUpdateBindingModel.getSpecialty() == null || doctorUpdateBindingModel.getSpecialty().trim().isEmpty()) {
             errors.rejectValue(
                     "specialty",
