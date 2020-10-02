@@ -44,7 +44,7 @@ public class SpecialtyController extends BaseController {
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Delete Specialty")
-    public ModelAndView deleteQuote(@PathVariable String id, ModelAndView modelAndView) {
+    public ModelAndView deleteSpecialty(@PathVariable String id, ModelAndView modelAndView) {
         SpecialtyServiceModel specialtyServiceModel = this.specialtyService.getById(id);
         DeleteSpecialtyViewModel specialty = this.modelMapper.map(specialtyServiceModel, DeleteSpecialtyViewModel.class);
         modelAndView.addObject("specialty", specialty);
@@ -53,7 +53,7 @@ public class SpecialtyController extends BaseController {
 
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView deleteQuoteConfirm(@PathVariable String id) {
+    public ModelAndView deleteSpecialtyConfirm(@PathVariable String id) {
         this.specialtyService.deleteSpecialty(id);
         return super.redirect("/specialty" + "/all");
     }
