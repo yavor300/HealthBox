@@ -36,8 +36,8 @@
                                                       alt="doctor image">
                         </div>
                     </td>
-                    <td class="col-md-2 text-center" th:utext="${doctor.specialty.name}"></td>
-                    <td class="col-md-2 text-center" th:utext="${doctor.location.name}"></td>
+                    <td class="col-md-2 text-center" th:utext="${doctor.specialtyName}"></td>
+                    <td class="col-md-2 text-center" th:utext="${doctor.locationName}"></td>
                     <td class="col-md-3 text-center" th:utext="${doctor.email}"></td>
                     <td class="col-md-1 text-center">
                         <th:block sec:authorize="hasRole('ROLE_ADMIN')">

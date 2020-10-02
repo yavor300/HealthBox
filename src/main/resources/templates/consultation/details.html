@@ -77,17 +77,17 @@
                     </textarea>
                 </div>
 
-                <th:block th:if="${consultation.answer == null}">
+                <th:block th:if="${consultation.problemAnswer == null}">
                     <div class="section-title">
                         <h3>You don't have any answer yet.</h3>
                     </div>
                 </th:block>
-                <th:block th:unless="${consultation.answer == null}">
+                <th:block th:unless="${consultation.problemAnswer == null}">
                     <div class="section-title">
                         <h4>Received answer</h4>
                     </div>
                     <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.answer.problemAnswer}]]
+                        [[${consultation.problemAnswer}]]
                     </textarea>
                 </th:block>
             </form>

@@ -1,32 +1,42 @@
 package project.healthbox.web.controllers;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import project.healthbox.domain.models.binding.CreateCityBindingModel;
 import project.healthbox.domain.models.binding.CreateSpecialtyBindingModel;
-import project.healthbox.domain.models.service.CityServiceModel;
 import project.healthbox.domain.models.service.SpecialtyServiceModel;
+import project.healthbox.domain.models.view.AllSpecialtiesViewModel;
+import project.healthbox.domain.models.view.DeleteSpecialtyViewModel;
 import project.healthbox.service.SpecialtyService;
 import project.healthbox.web.annotations.PageTitle;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/specialty")
 public class SpecialtyController extends BaseController {
     private final SpecialtyService specialtyService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public SpecialtyController(SpecialtyService specialtyService) {
+    public SpecialtyController(SpecialtyService specialtyService, ModelMapper modelMapper) {
         this.specialtyService = specialtyService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("All Specialties")
     public ModelAndView getAllView(ModelAndView modelAndView) {
-        modelAndView.addObject("specialties", this.specialtyService.getAll());
+        List<AllSpecialtiesViewModel> specialties = this.specialtyService.getAll()
+                .stream()
+                .map(c -> this.modelMapper.map(c, AllSpecialtiesViewModel.class))
+                .collect(Collectors.toList());
+        modelAndView.addObject("specialties", specialties);
         return super.view("specialty/all-specialties", modelAndView);
     }
 
@@ -35,7 +45,8 @@ public class SpecialtyController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Delete Specialty")
     public ModelAndView deleteQuote(@PathVariable String id, ModelAndView modelAndView) {
-        SpecialtyServiceModel specialty = this.specialtyService.getById(id);
+        SpecialtyServiceModel specialtyServiceModel = this.specialtyService.getById(id);
+        DeleteSpecialtyViewModel specialty = this.modelMapper.map(specialtyServiceModel, DeleteSpecialtyViewModel.class);
         modelAndView.addObject("specialty", specialty);
         return super.view("specialty/delete-specialty", modelAndView);
     }

@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.ConsultationBindingModel;
 import project.healthbox.domain.models.binding.SendAnswerBindingModel;
 import project.healthbox.domain.models.service.*;
+import project.healthbox.domain.models.view.ConsultationDetailsViewModel;
 import project.healthbox.service.AnswerService;
 import project.healthbox.service.ConsultationService;
 import project.healthbox.service.DoctorService;
@@ -28,19 +29,17 @@ public class ConsultationController extends BaseController {
     private final ModelMapper modelMapper;
     private final ConsultationService consultationService;
     private final UserService userService;
-    private final AnswerService answerService;
+
     private final ConsultationFormValidator consultationFormValidator;
-    private final AnswerValidator answerValidator;
+
 
     @Autowired
-    public ConsultationController(DoctorService doctorService, ModelMapper modelMapper, ConsultationService consultationService, UserService userService, AnswerService answerService, ConsultationFormValidator consultationFormValidator, AnswerValidator answerValidator) {
+    public ConsultationController(DoctorService doctorService, ModelMapper modelMapper, ConsultationService consultationService, UserService userService, ConsultationFormValidator consultationFormValidator) {
         this.doctorService = doctorService;
         this.modelMapper = modelMapper;
         this.consultationService = consultationService;
         this.userService = userService;
-        this.answerService = answerService;
         this.consultationFormValidator = consultationFormValidator;
-        this.answerValidator = answerValidator;
     }
 
     @GetMapping("/send/{id}")
@@ -75,38 +74,9 @@ public class ConsultationController extends BaseController {
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Consultation Details")
     public ModelAndView getConsultationDetailsView(@PathVariable String id, ModelAndView modelAndView) {
-        modelAndView.addObject("consultation", this.consultationService.getById(id));
-        return super.view("consultation/details", modelAndView);
-    }
-
-    @GetMapping("/answer/{id}")
-    @PreAuthorize("isAuthenticated()")
-    @PageTitle("Answer Consultation")
-    public ModelAndView getConsultationAnswerView(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") SendAnswerBindingModel model) {
-        ConsultationServiceModel consultation = this.consultationService.getById(id);
-        modelAndView.addObject("consultation", consultation);
-        modelAndView.addObject("model", model);
-        return super.view("consultation/answer", modelAndView);
-    }
-
-    @PostMapping("/answer/{id}")
-    @PreAuthorize("isAuthenticated()")
-    public ModelAndView answerConsultation(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") SendAnswerBindingModel model, BindingResult bindingResult) {
-
-        this.answerValidator.validate(model, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            ConsultationServiceModel consultation = this.consultationService.getById(id);
-            modelAndView.addObject("consultation", consultation);
-            modelAndView.addObject("model", model);
-            return super.view("consultation/answer", modelAndView);
-        }
-
-        AnswerServiceModel answerServiceModel = this.answerService.save(this.modelMapper.map(model, AnswerServiceModel.class));
         ConsultationServiceModel consultationServiceModel = this.consultationService.getById(id);
-
-        this.consultationService.setAnswer(consultationServiceModel, answerServiceModel);
-
-        return super.redirect("/doctor" + "/dashboard");
+        ConsultationDetailsViewModel consultation = this.modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
+        modelAndView.addObject("consultation", consultation);
+        return super.view("consultation/details", modelAndView);
     }
 }

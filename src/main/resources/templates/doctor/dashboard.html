@@ -22,7 +22,7 @@
                 <ul>
                     <th:block th:each="consultation : ${consultations}">
                         <li data-aos="fade-up">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" class="collapse" th:href="@{/consultation/answer/{id}(id=${consultation.id})}">[[${consultation.problemTitle}]], received by [[${consultation.user.firstName}]] [[${consultation.user.lastName}]]<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+                            <i class="bx bx-help-circle icon-help"></i> <a data-toggle="collapse" class="collapse" th:href="@{/consultation/answer/{id}(id=${consultation.id})}">[[${consultation.problemTitle}]], received by [[${consultation.userFirstName}]] [[${consultation.userLastName}]]<i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
                         </li>
                     </th:block>
                 </ul>

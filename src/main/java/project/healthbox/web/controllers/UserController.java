@@ -8,29 +8,29 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.UserRegisterBindingModel;
-import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
-import project.healthbox.service.DoctorService;
+import project.healthbox.domain.models.view.AllUsersViewModel;
+import project.healthbox.domain.models.view.DeleteUserViewModel;
+import project.healthbox.domain.models.view.UserDashboardViewModel;
 import project.healthbox.service.UserService;
 import project.healthbox.validation.user.UserRegisterValidator;
 import project.healthbox.web.annotations.PageTitle;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
 public class UserController extends BaseController {
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final DoctorService doctorService;
     private final UserRegisterValidator userRegisterValidator;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper, DoctorService doctorService, UserRegisterValidator userRegisterValidator) {
+    public UserController(UserService userService, ModelMapper modelMapper, UserRegisterValidator userRegisterValidator) {
         this.userService = userService;
         this.modelMapper = modelMapper;
-        this.doctorService = doctorService;
         this.userRegisterValidator = userRegisterValidator;
     }
 
@@ -71,7 +71,11 @@ public class UserController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("All Users")
     public ModelAndView getAllView(ModelAndView modelAndView) {
-        modelAndView.addObject("users", this.userService.getAll());
+        List<AllUsersViewModel> users = this.userService.getAll()
+                .stream()
+                .map(u -> this.modelMapper.map(u, AllUsersViewModel.class))
+                .collect(Collectors.toList());
+        modelAndView.addObject("users", users);
         return super.view("user/all-users", modelAndView);
     }
 
@@ -79,7 +83,8 @@ public class UserController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Delete User")
     public ModelAndView deleteUser(@PathVariable String id, ModelAndView modelAndView) {
-        UserServiceModel user = this.userService.getById(id);
+        UserServiceModel userServiceModel = this.userService.getById(id);
+        DeleteUserViewModel user = this.modelMapper.map(userServiceModel, DeleteUserViewModel.class);
         modelAndView.addObject("user", user);
         return super.view("user/delete-user", modelAndView);
     }
@@ -111,7 +116,10 @@ public class UserController extends BaseController {
     @PageTitle("Dashboard")
     public ModelAndView getProfileView(Principal principal, ModelAndView modelAndView) {
         UserServiceModel user = this.userService.getByEmail(principal.getName());
-        List<ConsultationServiceModel> consultations = user.getConsultations();
+        List<UserDashboardViewModel> consultations = user.getConsultations()
+                .stream()
+                .map(u -> this.modelMapper.map(u, UserDashboardViewModel.class))
+                .collect(Collectors.toList());
         modelAndView.addObject("consultations", consultations);
         return super.view("user/dashboard", modelAndView);
     }
