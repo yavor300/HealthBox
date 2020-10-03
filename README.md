@@ -2,9 +2,13 @@
 Spring &amp; Thymeleaf project
 
 Java MVC Frameworks
+
 Individual Project Assignment
+
 This is the Individual Project Assignment for the Spring MVC Frameworks Course @ SoftUni.
+
 General Requirements
+
 Your Web application should use the following technologies, frameworks and development techniques:
 •	The application must be implemented using Spring Framework.
 o	The application must have at least 12 web pages (views).
