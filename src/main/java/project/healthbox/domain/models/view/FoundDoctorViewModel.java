@@ -13,4 +13,5 @@ public class FoundDoctorViewModel {
     private String lastName;
     private String locationName;
     private String imageUrl;
+    private String specialtyName;
 }

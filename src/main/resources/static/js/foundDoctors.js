@@ -2,15 +2,20 @@ const URLS = {
     foundDoctors: '/user/foundDoctors',
 };
 
-const toString = ({ id, firstName, lastName, locationName, imageUrl}) => {
+const toString = ({ id, firstName, lastName, locationName, imageUrl, specialtyName}) => {
     let row = `
     <div class="col-lg-6">
                         <div class="member d-flex align-items-start">
                             <div class="pic"><img src="${imageUrl}" class="img-fluid" alt="Doctor Profile Picture"></div>
                             <div class="member-info">
                                 <h4>${firstName} ${lastName}</h4>
-                                <span>${locationName}</span>
+                                <br/>
+                                <span>City: ${locationName}</span>
+                                <br/>
+                                <span>Specialty: ${specialtyName}</span>
+                                <br/>
                                 <a href="/doctor/profile/${id}" class="text-center btn btn-info text-white mb-3" data-animation="fadeInLeft" data-delay="0.5s">View Profile</a>
+                                <!---<a href="/doctor/profile/${id}" class="text-center btn btn-info text-white mb-3" data-animation="fadeInLeft" data-delay="0.5s">View Profile</a>--!>
                             </div>
                             </div>
                         </div>

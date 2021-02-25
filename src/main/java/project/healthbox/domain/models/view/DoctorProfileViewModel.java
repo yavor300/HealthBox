@@ -19,4 +19,5 @@ public class DoctorProfileViewModel {
     private String biography;
     private String workHistory;
     private String imageUrl;
+    private String specialtyName;
 }
