@@ -20,7 +20,6 @@ import project.healthbox.service.SpecialtyService;
 import project.healthbox.validation.doctor.DoctorUpdateValidator;
 import project.healthbox.web.annotations.PageTitle;
 
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -71,17 +70,6 @@ public class DoctorController extends BaseController {
         model.setId(this.doctorService.getByEmail(principal.getName()).getId());
         this.doctorService.update(model);
         return super.redirect("/doctor" + "/dashboard");
-    }
-
-    @GetMapping("/specialty_id={specialtyId}&city_id={cityId}&name={doctorName}")
-    @PreAuthorize("isAuthenticated()")
-    @PageTitle("Found Doctors")
-    public ModelAndView getDoctorsView(@PathVariable String specialtyId, @PathVariable String cityId, @PathVariable String doctorName, HttpSession session) {
-        List<DoctorServiceModel> allByGivenCriteria = this.doctorService.findAllByGivenCriteria(specialtyId, cityId, doctorName);
-
-        session.setAttribute("foundDoctors", allByGivenCriteria);
-
-        return super.view("user/doctors");
     }
 
     @GetMapping("/profile/{id}")

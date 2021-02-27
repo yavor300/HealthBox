@@ -69,32 +69,32 @@ public class HomeController extends BaseController {
         return super.view("home", modelAndView);
     }
 
-    @PostMapping("/home")
-    @PreAuthorize("isAuthenticated()")
-    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, BindingResult bindingResult, Principal principal) {
-        List<SpecialtySearchViewModel> specialties = this.specialtyService.getAll()
-                .stream()
-                .map(s -> this.modelMapper.map(s, SpecialtySearchViewModel.class))
-                .collect(Collectors.toList());
-
-        List<CitySearchViewModel> cities = this.cityService.getAll()
-                .stream()
-                .map(c -> this.modelMapper.map(c, CitySearchViewModel.class))
-                .collect(Collectors.toList());
-
-        this.findDoctorValidator.validate(model, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            modelAndView.addObject("specialties", specialties);
-            modelAndView.addObject("cities", cities);
-            modelAndView.addObject("userId", this.userService.getByEmail(principal.getName()).getId());
-            modelAndView.addObject("model", model);
-            return super.view("home", modelAndView);
-        }
-
-        String specialtyId = this.specialtyService.getIdBySpecialtyName(model.getSpecialty());
-        String cityId = this.cityService.getIdByCityName(model.getLocation());
-
-        return super.redirect("/doctor" + "/specialty_id=" + specialtyId + "&city_id=" + cityId + "&name=" + model.getDoctorName());
-    }
+//    @PostMapping("/home")
+//    @PreAuthorize("isAuthenticated()")
+//    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, BindingResult bindingResult, Principal principal) {
+//        List<SpecialtySearchViewModel> specialties = this.specialtyService.getAll()
+//                .stream()
+//                .map(s -> this.modelMapper.map(s, SpecialtySearchViewModel.class))
+//                .collect(Collectors.toList());
+//
+//        List<CitySearchViewModel> cities = this.cityService.getAll()
+//                .stream()
+//                .map(c -> this.modelMapper.map(c, CitySearchViewModel.class))
+//                .collect(Collectors.toList());
+//
+//        this.findDoctorValidator.validate(model, bindingResult);
+//
+//        if (bindingResult.hasErrors()) {
+//            modelAndView.addObject("specialties", specialties);
+//            modelAndView.addObject("cities", cities);
+//            modelAndView.addObject("userId", this.userService.getByEmail(principal.getName()).getId());
+//            modelAndView.addObject("model", model);
+//            return super.view("home", modelAndView);
+//        }
+//
+//        String specialtyId = this.specialtyService.getIdBySpecialtyName(model.getSpecialty());
+//        String cityId = this.cityService.getIdByCityName(model.getLocation());
+//
+//        return super.redirect("/doctor" + "/specialty_id=" + specialtyId + "&city_id=" + cityId + "&name=" + model.getDoctorName());
+//    }
 }

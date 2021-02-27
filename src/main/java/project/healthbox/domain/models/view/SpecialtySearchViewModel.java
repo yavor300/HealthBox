@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SpecialtySearchViewModel {
+    private String id;
     private String name;
 }

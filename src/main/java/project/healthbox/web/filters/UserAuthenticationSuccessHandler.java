@@ -37,7 +37,7 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, org.springframework.security.core.Authentication authentication) throws IOException, ServletException {
         String email = authenticatedUserService.getUsername(); //email maybe..
-        System.out.println("Test");
+
 
             UserServiceModel user = userService.getByEmail(email);
             DoctorServiceModel doctor = doctorService.getByEmail(email);

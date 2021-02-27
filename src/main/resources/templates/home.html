@@ -4,12 +4,21 @@
 <head>
     <th:block th:include="~{fragments/head}"></th:block>
 </head>
-
 <body>
 <header>
     <th:block th:include="~{fragments/navbar}"></th:block>
 </header>
 <main>
+    <section id="doctors" class="doctors" hidden="hidden">
+        <div class="container">
+            <div class="section-title">
+                <h2>Doctors</h2>
+                <p>Here are the doctors, who correspond to your search. Choose the best specialist for you!</p>
+                <p id="nothingFound"></p>
+            </div>
+            <div class="row" style="margin-top: 10em;" id="showDoctors"></div>
+        </div>
+    </section>
     <section id="appointment" class="appointment section-bg">
         <div class="container">
 
@@ -24,7 +33,8 @@
                         <select name="specialty" id="specialty" class="form-control">
                             <option value="">Select Specialty</option>
                             <th:block th:each="specialty : ${specialties}">
-                                <option th:value="${specialty.name}">[[${specialty.name}]]</option>
+<!--                                <option th:value="${specialty.name}">[[${specialty.name}]]</option>-->
+                                <option th:value="${specialty.id}">[[${specialty.name}]]</option>
                             </th:block>
                         </select>
                         <div class="validate"></div>
@@ -35,7 +45,8 @@
                         <select name="location" id="location" class="form-control">
                             <option value="">Select City</option>
                             <th:block th:each="city : ${cities}">
-                                <option th:value="${city.name}">[[${city.name}]]</option>
+<!--                                <option th:value="${city.name}">[[${city.name}]]</option>-->
+                                <option th:value="${city.id}">[[${city.name}]]</option>
                             </th:block>
                         </select>
                     </div>
@@ -53,6 +64,9 @@
                     <button class="text-center btn btn-info text-white mb-3" type="submit">Search</button>
                 </div>
             </form>
+            <div class="button-holder d-flex justify-content-center">
+                <button id="loadDoctors" class="text-center btn btn-info text-white mb-3" type="submit">Search</button>
+            </div>
 
         </div>
     </section>
@@ -60,6 +74,9 @@
 <footer>
     <th:block th:include="~{fragments/footer}"></th:block>
 </footer>
-<script src="/static/js/foundDoctors.js"></script>
-</body>
+<script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+<script src="/js/foundDoctors.js"></script></body>
 </html>
