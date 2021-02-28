@@ -1,63 +1,84 @@
 package project.healthbox.web.controllers;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.healthbox.domain.models.binding.UserRegisterBindingModel;
 import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.domain.models.view.AllUsersViewModel;
 import project.healthbox.domain.models.view.DeleteUserViewModel;
 import project.healthbox.domain.models.view.UserDashboardViewModel;
 import project.healthbox.service.UserService;
-import project.healthbox.validation.user.UserRegisterValidator;
 import project.healthbox.web.annotations.PageTitle;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController extends BaseController {
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final UserRegisterValidator userRegisterValidator;
 
-    @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper, UserRegisterValidator userRegisterValidator) {
-        this.userService = userService;
-        this.modelMapper = modelMapper;
-        this.userRegisterValidator = userRegisterValidator;
+    @ModelAttribute("userRegisterBindingModel")
+    public UserRegisterBindingModel userRegisterBindingModel() {
+        return new UserRegisterBindingModel();
     }
 
     @GetMapping("/register")
     @PreAuthorize("isAnonymous()")
     @PageTitle("Register")
-    public ModelAndView getRegisterView(ModelAndView modelAndView, @ModelAttribute(name = "model") UserRegisterBindingModel model) {
-        modelAndView.addObject("model", model);
+    public ModelAndView getRegisterView(ModelAndView modelAndView) {
+        if (modelAndView.getModel().containsKey("passwordsNotEqual")) {
+            modelAndView.addObject("passwordsNotEqual", false);
+        }
 
-        return super.view("user/register", modelAndView);
+        if (modelAndView.getModel().containsKey("userAlreadyExists")) {
+            modelAndView.addObject("userAlreadyExists", false);
+        }
+
+        modelAndView.setViewName("user/register");
+        return modelAndView;
     }
 
     @PostMapping("/register")
     @PreAuthorize("isAnonymous()")
-    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") UserRegisterBindingModel model, BindingResult bindingResult) {
-        this.userRegisterValidator.validate(model, bindingResult);
+    public ModelAndView registerConfirm(@Valid @ModelAttribute UserRegisterBindingModel userRegisterBindingModel, BindingResult bindingResult,
+                                        RedirectAttributes redirectAttributes, ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
-            model.setPassword(null);
-            model.setConfirmPassword(null);
-            modelAndView.addObject("model", model);
-
-            return super.view("user/register", modelAndView);
+            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
+            modelAndView.setViewName("redirect:register");
+            return modelAndView;
         }
 
-        this.userService.register(this.modelMapper.map(model, UserServiceModel.class));
-        return super.redirect("/user" + "/login");
+        if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
+            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("passwordsNotEqual", true);
+            modelAndView.setViewName("redirect:register");
+            return modelAndView;
+        }
+
+        UserServiceModel registeredUser = this.userService.register(this.modelMapper.map(userRegisterBindingModel, UserServiceModel.class));
+
+        if (registeredUser == null) {
+            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
+            redirectAttributes.addFlashAttribute("userAlreadyExists", true);
+            modelAndView.setViewName("redirect:register");
+            return modelAndView;
+        }
+
+        modelAndView.setViewName("redirect:/user/login");
+        return modelAndView;
     }
 
     @GetMapping("/login")

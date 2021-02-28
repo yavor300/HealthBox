@@ -1,8 +1,7 @@
-package project.healthbox.service;
+package project.healthbox.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.entities.Doctor;
@@ -10,6 +9,9 @@ import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.SpecialtyRepository;
+import project.healthbox.service.CityService;
+import project.healthbox.service.CloudinaryService;
+import project.healthbox.service.DoctorService;
 
 import java.io.IOException;
 import java.util.List;

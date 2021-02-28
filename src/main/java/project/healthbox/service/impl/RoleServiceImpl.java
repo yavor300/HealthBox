@@ -1,4 +1,4 @@
-package project.healthbox.service;
+package project.healthbox.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Role;
 import project.healthbox.domain.models.service.RoleServiceModel;
 import project.healthbox.repostory.RoleRepository;
+import project.healthbox.service.RoleService;
 
 import java.util.Set;
 import java.util.stream.Collectors;

@@ -1,6 +1,5 @@
 package project.healthbox.web.filters;
 
-import org.springframework.data.annotation.Transient;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -22,7 +21,7 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
     private final AuthenticatedUserService authenticatedUserService;
     private final UserService userService;
     private final DoctorService doctorService;
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     public UserAuthenticationSuccessHandler(
             UserService userService,
@@ -36,27 +35,26 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
     @Override
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, org.springframework.security.core.Authentication authentication) throws IOException, ServletException {
-        String email = authenticatedUserService.getUsername(); //email maybe..
+        String email = authenticatedUserService.getUsername();
 
 
-            UserServiceModel user = userService.getByEmail(email);
-            DoctorServiceModel doctor = doctorService.getByEmail(email);
+        UserServiceModel user = userService.getByEmail(email);
+        DoctorServiceModel doctor = doctorService.getByEmail(email);
 
-            if (user == null && doctor == null) {
-                redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/user/login");
-            }
+        if (user == null && doctor == null) {
+            redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/user/login");
+        }
 
-            if (doctor == null) {
-                redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/home");
+        if (doctor == null) {
+            redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/home");
+        } else {
+            if (doctor.getBiography() == null || doctor.getBiography().trim().isEmpty()) {
+                //not completed
+                redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/doctor/complete");
             } else {
-                if (doctor.getBiography() == null || doctor.getBiography().trim().isEmpty()) {
-                    //not completed
-                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/doctor/complete");
-                } else {
-                    //is completed
-                    redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/doctor/dashboard");
-
-                }
+                //is completed
+                redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/doctor/dashboard");
             }
+        }
     }
 }

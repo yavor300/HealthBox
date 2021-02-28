@@ -1,9 +1,10 @@
-package project.healthbox.service;
+package project.healthbox.service.impl;
 
 import com.cloudinary.Cloudinary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import project.healthbox.service.CloudinaryService;
 
 import java.io.File;
 import java.io.IOException;

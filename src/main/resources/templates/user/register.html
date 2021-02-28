@@ -12,72 +12,66 @@
 <main>
     <section id="appointment" class="appointment section-bg">
         <div class="container">
-
             <div class="section-title">
                 <h2>Register</h2>
                 <p>Take your health to next level.</p>
+                <p th:if="${userAlreadyExists}" class="text-danger">User with that email already exists!</p>
             </div>
-
-            <form th:method="post" th:action="@{/user/register}" class="php-email-form" th:object="${model}">
+            <form th:method="POST" th:action="@{/user/register}" class="php-email-form"
+                  th:object="${userRegisterBindingModel}">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" name="firstName" class="form-control" id="firstName" placeholder="First Name..." th:value="*{firstName}">
-                        <th:block th:if="${#fields.hasErrors('firstName')}">
-                            <p class="error" th:errors="*{firstName}"></p>
-                        </th:block>
+                        <input th:field="*{firstName}" th:classappend="${#fields.hasErrors('firstName')}? 'is-invalid'" type="text" name="firstName"
+                               class="form-control" id="firstName" placeholder="First Name..." th:value="*{firstName}">
+                        <small th:if="${#fields.hasErrors('firstName')}" class="text-danger"
+                               th:errors="*{firstName}"></small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" name="lastName" class="form-control" id="lastName" placeholder="Last Name..." th:value="*{lastName}">
-                        <th:block th:if="${#fields.hasErrors('lastName')}">
-                            <p class="error" th:errors="*{lastName}"></p>
-                        </th:block>
+                        <input th:field="*{lastName}" th:classappend="${#fields.hasErrors('lastName')}? 'is-invalid'" type="text" name="lastName"
+                               class="form-control" id="lastName" placeholder="Last Name...">
+                        <small th:if="${#fields.hasErrors('lastName')}" class="text-danger"
+                               th:errors="*{lastName}"></small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <select name="title" id="title" class="form-control">
+                        <select th:field="*{title}" th:classappend="${#fields.hasErrors('title')}? 'is-invalid'" name="title" id="title" class="form-control">
                             <option value="">Select Title</option>
                             <option value="Patient">Patient</option>
                             <option value="Doctor">Doctor</option>
                         </select>
-                        <th:block th:if="${#fields.hasErrors('title')}">
-                            <p class="error" th:errors="*{title}"></p>
-                        </th:block>
+                        <small th:if="${#fields.hasErrors('title')}" class="text-danger"
+                               th:errors="*{title}"></small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Email...">
-                        <th:block th:if="${#fields.hasErrors('email')}">
-                            <p class="error" th:errors="*{email}"></p>
-                        </th:block>
+                        <input th:field="*{email}" th:classappend="${#fields.hasErrors('email')}? 'is-invalid'" type="email" class="form-control" name="email" id="email" placeholder="Email...">
+                        <small th:if="${#fields.hasErrors('email')}" class="text-danger"
+                               th:errors="*{email}"></small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Password...">
-                        <th:block th:if="${#fields.hasErrors('password')}">
-                            <p class="error" th:errors="*{password}"></p>
-                        </th:block>
+                        <input th:field="*{password}" th:classappend="${#fields.hasErrors('password')}? 'is-invalid'" type="password" class="form-control" name="password" id="password"
+                               placeholder="Password...">
+                        <small th:if="${#fields.hasErrors('password')}" class="text-danger"
+                               th:errors="*{password}"></small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password...">
-                        <th:block th:if="${#fields.hasErrors('confirmPassword')}">
-                            <p class="error" th:errors="*{confirmPassword}"></p>
-                        </th:block>
+                        <input th:field="*{confirmPassword}" th:classappend="${passwordsNotEqual}? 'is-invalid'" type="password" class="form-control" name="confirmPassword" id="confirmPassword"
+                               placeholder="Confirm Password...">
+                        <small th:if="${passwordsNotEqual}" class="text-danger">Passwords don't match!</small>
                     </div>
                 </div>
-
-
                 <div class="button-holder d-flex justify-content-center">
                     <button class="text-center btn btn-info text-white mb-3" type="submit">Register</button>
                 </div>
             </form>
-
         </div>
     </section>
 </main>

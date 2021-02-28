@@ -1,18 +1,18 @@
-package project.healthbox.service;
+package project.healthbox.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.entities.User;
-import project.healthbox.domain.models.binding.UserLoginBindingModel;
-import project.healthbox.domain.models.service.UserLoginServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.UserRepository;
+import project.healthbox.service.RoleService;
+import project.healthbox.service.UserService;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserRepository userRepository;
@@ -27,18 +28,11 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleService roleService;
 
-    @Autowired
-    public UserServiceImpl(ModelMapper modelMapper, UserRepository userRepository, DoctorRepository doctorRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RoleService roleService) {
-        this.modelMapper = modelMapper;
-        this.userRepository = userRepository;
-        this.doctorRepository = doctorRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.roleService = roleService;
-    }
 
     @Override
     public UserServiceModel register(UserServiceModel userServiceModel) {
         this.roleService.seedRolesInDb();
+
         if (this.userRepository.count() == 0 && this.doctorRepository.count() == 0) {
             userServiceModel.setAuthorities(this.roleService.findAllRoles());
         } else {
@@ -52,30 +46,17 @@ public class UserServiceImpl implements UserService {
 
         User user = this.modelMapper.map(userServiceModel, User.class);
         Doctor doctor = this.modelMapper.map(userServiceModel, Doctor.class);
+
         user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
         doctor.setPassword(this.bCryptPasswordEncoder.encode(doctor.getPassword()));
-        if (user.getTitle().equals("Doctor") && !this.userRepository.existsByEmail(doctor.getEmail())) {
+
+        if (user.getTitle().equals("Doctor") && !this.doctorRepository.existsByEmail(doctor.getEmail())) {
             return this.modelMapper.map(this.doctorRepository.saveAndFlush(doctor), UserServiceModel.class);
-        } else if (user.getTitle().equals("Patient") && !this.doctorRepository.existsByEmail(doctor.getEmail())) {
+        } else if (user.getTitle().equals("Patient") && !this.userRepository.existsByEmail(user.getEmail())) {
             return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
         }
+
         return null;
-    }
-
-    @Override
-    public UserLoginServiceModel login(UserLoginBindingModel userLoginBindingModel) throws Exception {
-
-        String hashedPassword = this.bCryptPasswordEncoder.encode(userLoginBindingModel.getPassword());
-        User user = this.userRepository.findByEmailAndPassword(userLoginBindingModel.getEmail(), hashedPassword).orElse(null);
-        Doctor doctor = this.doctorRepository.findByEmailAndPassword(userLoginBindingModel.getEmail(), hashedPassword).orElse(null);
-
-        if (user == null && doctor == null) {
-            throw new Exception("Invalid User!");
-        } else if (user == null) {
-            return this.modelMapper.map(doctor, UserLoginServiceModel.class);
-        } else {
-            return this.modelMapper.map(user, UserLoginServiceModel.class);
-        }
     }
 
     @Override

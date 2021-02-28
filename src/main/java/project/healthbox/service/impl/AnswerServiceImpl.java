@@ -1,4 +1,4 @@
-package project.healthbox.service;
+package project.healthbox.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Answer;
 import project.healthbox.domain.models.service.AnswerServiceModel;
 import project.healthbox.repostory.AnswerRepository;
+import project.healthbox.service.AnswerService;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {

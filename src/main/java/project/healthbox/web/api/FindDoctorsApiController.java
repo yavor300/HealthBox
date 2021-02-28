@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-public class FoundDoctorsApiController {
+public class FindDoctorsApiController {
     private final ModelMapper modelMapper;
     private final DoctorRepository doctorRepository;
 

@@ -1,4 +1,4 @@
-package project.healthbox.service;
+package project.healthbox.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.repostory.ConsultationRepository;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.UserRepository;
+import project.healthbox.service.ConsultationService;
 
 import java.util.List;
 

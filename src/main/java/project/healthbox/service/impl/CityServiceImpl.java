@@ -1,4 +1,4 @@
-package project.healthbox.service;
+package project.healthbox.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.models.service.CityServiceModel;
 import project.healthbox.repostory.CityRepository;
+import project.healthbox.service.CityService;
 
 import java.util.List;
 import java.util.stream.Collectors;

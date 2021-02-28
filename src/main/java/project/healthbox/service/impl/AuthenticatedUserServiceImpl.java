@@ -1,8 +1,9 @@
-package project.healthbox.service;
+package project.healthbox.service.impl;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import project.healthbox.service.AuthenticatedUserService;
 
 import java.util.List;
 
