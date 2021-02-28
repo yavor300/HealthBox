@@ -6,6 +6,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
+import project.healthbox.repostory.DoctorRepository;
+import project.healthbox.repostory.UserRepository;
 import project.healthbox.service.AuthenticatedUserService;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.UserService;
@@ -25,7 +27,7 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
 
     public UserAuthenticationSuccessHandler(
             UserService userService,
-            DoctorService doctorService, AuthenticatedUserService authenticatedUserService) {
+            DoctorService doctorService, AuthenticatedUserService authenticatedUserService, UserRepository userRepository, DoctorRepository doctorRepository) {
         super();
         this.userService = userService;
         this.authenticatedUserService = authenticatedUserService;
@@ -36,7 +38,6 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, org.springframework.security.core.Authentication authentication) throws IOException, ServletException {
         String email = authenticatedUserService.getUsername();
-
 
         UserServiceModel user = userService.getByEmail(email);
         DoctorServiceModel doctor = doctorService.getByEmail(email);

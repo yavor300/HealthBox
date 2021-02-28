@@ -3,6 +3,7 @@ package project.healthbox.web.controllers;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -84,9 +85,12 @@ public class UserController extends BaseController {
     @GetMapping("/login")
     @PreAuthorize("isAnonymous()")
     @PageTitle("Login")
-    public ModelAndView getLoginView() {
-        return super.view("user/login");
+    public ModelAndView getLoginView(@RequestParam(required = false, name = "error") boolean error, ModelAndView modelAndView) {
+        modelAndView.addObject("error", error);
+        modelAndView.setViewName("user/login");
+        return modelAndView;
     }
+
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

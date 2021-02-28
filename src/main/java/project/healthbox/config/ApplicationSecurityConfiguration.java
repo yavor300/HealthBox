@@ -27,6 +27,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
+                .failureUrl("/user/login?error=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .successForwardUrl("/")
