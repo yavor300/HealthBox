@@ -1,5 +1,8 @@
 package project.healthbox.web.filters;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -47,6 +50,14 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         }
 
         if (doctor == null) {
+//            UserDetails userDetails = userService.loadUserByUsername(email);
+//            authentication = new
+//                    UsernamePasswordAuthenticationToken(
+//                    userDetails,
+//                    null,
+//                    userDetails.getAuthorities()
+//            );
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
             redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/home");
         } else {
             if (doctor.getBiography() == null || doctor.getBiography().trim().isEmpty()) {

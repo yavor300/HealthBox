@@ -91,6 +91,19 @@ public class UserController extends BaseController {
         return modelAndView;
     }
 
+//    @PostMapping("/login-error")
+//    public ModelAndView onLoginError(
+//            @ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY) String user) {
+//        ModelAndView modelAndView = new ModelAndView();
+//
+//        modelAndView.addObject("error", "bad.credentials");
+//        modelAndView.addObject("username", user);
+//
+//        modelAndView.setViewName("user/login");
+//
+//        return modelAndView;
+//    }
+
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

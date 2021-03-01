@@ -44,7 +44,8 @@
                                     <a th:href="@{/home}"><img src="/img/logo.png" alt="logo"></a>
                                 </th:block>
                                 <th:block sec:authorize="hasRole('ROLE_DOCTOR')">
-                                    <a th:href="@{/doctor/dashboard/{id}(id=${userId})}"><img src="/img/logo.png" alt="logo"></a>
+                                    <a th:href="@{/doctor/dashboard/{id}(id=${userId})}"><img src="/img/logo.png"
+                                                                                              alt="logo"></a>
                                 </th:block>
                             </div>
                         </div>
