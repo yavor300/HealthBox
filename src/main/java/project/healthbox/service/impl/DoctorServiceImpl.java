@@ -3,6 +3,7 @@ package project.healthbox.service.impl;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
@@ -28,15 +29,18 @@ public class DoctorServiceImpl implements DoctorService {
 
 
     @Override
-    public DoctorServiceModel update(DoctorUpdateBindingModel doctorUpdateBindingModel) throws IOException {
-        Doctor doctor = this.doctorRepository.getById(doctorUpdateBindingModel.getId());
-        City city = this.modelMapper.map(this.cityService.getByName(doctorUpdateBindingModel.getLocation()), City.class);
+    public DoctorServiceModel update(DoctorServiceModel doctorServiceModel, MultipartFile image) throws IOException {
+        Doctor doctor = this.doctorRepository.getById(doctorServiceModel.getId());
+
+        City city = this.modelMapper.map(this.cityService.getByName(doctorServiceModel.getLocation().getName()), City.class);
+
         doctor.setLocation(city);
-        doctor.setImageUrl(this.cloudinaryService.uploadImage(doctorUpdateBindingModel.getImage()));
-        doctor.setBiography(doctorUpdateBindingModel.getBiography());
-        doctor.setWorkHistory(doctorUpdateBindingModel.getWorkHistory());
-        doctor.setEducation(doctorUpdateBindingModel.getEducation());
-        doctor.setSpecialty(this.specialtyRepository.findByName(doctorUpdateBindingModel.getSpecialty()));
+        doctor.setImageUrl(this.cloudinaryService.uploadImage(image));
+        doctor.setBiography(doctorServiceModel.getBiography());
+        doctor.setWorkHistory(doctorServiceModel.getWorkHistory());
+        doctor.setEducation(doctorServiceModel.getEducation());
+        doctor.setSpecialty(this.specialtyRepository.findByName(doctorServiceModel.getSpecialty().getName()));
+
         return this.modelMapper.map(this.doctorRepository.saveAndFlush(doctor), DoctorServiceModel.class);
     }
 

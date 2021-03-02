@@ -1,12 +1,13 @@
 package project.healthbox.web.controllers;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.view.AllDoctorsViewModel;
@@ -17,9 +18,10 @@ import project.healthbox.error.DoctorsNotFoundException;
 import project.healthbox.service.CityService;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
-import project.healthbox.validation.doctor.DoctorUpdateValidator;
+import project.healthbox.validation.doctor.DoctorUpdateMultipartFileValidator;
 import project.healthbox.web.annotations.PageTitle;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -27,49 +29,59 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/doctor")
-public class DoctorController extends BaseController {
+@AllArgsConstructor
+public class DoctorController {
     private final DoctorService doctorService;
     private final SpecialtyService specialtyService;
     private final CityService cityService;
-    private final DoctorUpdateValidator doctorUpdateValidator;
+    private final DoctorUpdateMultipartFileValidator doctorUpdateMultipartFileValidator;
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public DoctorController(DoctorService doctorService, SpecialtyService specialtyService, CityService cityService, DoctorUpdateValidator doctorUpdateValidator, ModelMapper modelMapper) {
-        this.doctorService = doctorService;
-        this.specialtyService = specialtyService;
-        this.cityService = cityService;
-        this.doctorUpdateValidator = doctorUpdateValidator;
-        this.modelMapper = modelMapper;
+    @ModelAttribute("doctorUpdateBindingModel")
+    public DoctorUpdateBindingModel doctorUpdateBindingModel() {
+        return new DoctorUpdateBindingModel();
     }
 
     @GetMapping("/complete")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Complete Doctor Account")
-    public ModelAndView getRegisterView(Principal principal, ModelAndView modelAndView, @ModelAttribute(name = "model") DoctorUpdateBindingModel model) {
-        modelAndView.addObject("doctorId", this.doctorService.getByEmail(principal.getName()).getId());
-        modelAndView.addObject("specialties", this.specialtyService.getAll());
-        modelAndView.addObject("cities", this.cityService.getAll());
-        modelAndView.addObject("model", model);
-        return super.view("user/doctorUpdate", modelAndView);
+    public ModelAndView getRegisterView(Principal principal, ModelAndView modelAndView) {
+
+        modelAndView.addObject("doctorId", doctorService.getByEmail(principal.getName()).getId());
+        modelAndView.addObject("specialties", specialtyService.getAll());
+        modelAndView.addObject("cities", cityService.getAll());
+
+        modelAndView.setViewName("user/doctorUpdate");
+        return modelAndView;
     }
 
     @PostMapping("/complete")
     @PreAuthorize("isAuthenticated()")
-    public ModelAndView updateProfile(Principal principal, ModelAndView modelAndView, @ModelAttribute(name = "model") DoctorUpdateBindingModel model, BindingResult bindingResult) throws IOException {
-        this.doctorUpdateValidator.validate(model, bindingResult);
+    public ModelAndView updateProfile(@Valid @ModelAttribute DoctorUpdateBindingModel doctorUpdateBindingModel, BindingResult bindingResult,
+                                      Principal principal, ModelAndView modelAndView,
+                                      RedirectAttributes redirectAttributes) throws IOException {
+
+        this.doctorUpdateMultipartFileValidator.validate(doctorUpdateBindingModel, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("doctorId", this.doctorService.getByEmail(principal.getName()).getId());
-            modelAndView.addObject("specialties", this.specialtyService.getAll());
-            modelAndView.addObject("cities", this.cityService.getAll());
-            modelAndView.addObject("model", model);
-            return super.view("user/doctorUpdate", modelAndView);
+            redirectAttributes.addFlashAttribute("doctorUpdateBindingModel", doctorUpdateBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.doctorUpdateBindingModel", bindingResult);
+            modelAndView.setViewName("redirect:complete");
+            return modelAndView;
+//            modelAndView.addObject("doctorId", this.doctorService.getByEmail(principal.getName()).getId());
+//            modelAndView.addObject("specialties", this.specialtyService.getAll());
+//            modelAndView.addObject("cities", this.cityService.getAll());
+//            modelAndView.addObject("model", model);
+//            return super.view("user/doctorUpdate", modelAndView);
         }
 
-        model.setId(this.doctorService.getByEmail(principal.getName()).getId());
-        this.doctorService.update(model);
-        return super.redirect("/doctor" + "/dashboard");
+        DoctorServiceModel doctorServiceModel = modelMapper.map(doctorUpdateBindingModel, DoctorServiceModel.class);
+        doctorServiceModel.setId(this.doctorService.getByEmail(principal.getName()).getId());
+
+        this.doctorService.update(doctorServiceModel, doctorUpdateBindingModel.getImage());
+        modelAndView.setViewName("redirect:/doctor/dashboard");
+        return modelAndView;
+        //return super.redirect("/doctor" + "/dashboard");
     }
 
     @GetMapping("/profile/{id}")
@@ -79,7 +91,9 @@ public class DoctorController extends BaseController {
         DoctorServiceModel doctorServiceModel = this.doctorService.getById(id);
         DoctorProfileViewModel doctor = this.modelMapper.map(doctorServiceModel, DoctorProfileViewModel.class);
         modelAndView.addObject("doctor", doctor);
-        return super.view("doctor/profile", modelAndView);
+        modelAndView.setViewName("doctor/profile");
+        return modelAndView;
+        //return super.view("doctor/profile", modelAndView);
     }
 
     @GetMapping("/dashboard")
@@ -92,7 +106,10 @@ public class DoctorController extends BaseController {
                 .map(d -> this.modelMapper.map(d, DoctorDashboardViewModel.class))
                 .collect(Collectors.toList());
         modelAndView.addObject("consultations", consultations);
-        return super.view("doctor/dashboard", modelAndView);
+
+        modelAndView.setViewName("doctor/dashboard");
+        return modelAndView;
+        //return super.view("doctor/dashboard", modelAndView);
     }
 
     @GetMapping("/all")
@@ -104,7 +121,10 @@ public class DoctorController extends BaseController {
                 .map(d -> this.modelMapper.map(d, AllDoctorsViewModel.class))
                 .collect(Collectors.toList());
         modelAndView.addObject("doctors", doctors);
-        return super.view("doctor/all-doctors", modelAndView);
+
+        modelAndView.setViewName("doctor/all-doctors");
+        return modelAndView;
+        //return super.view("doctor/all-doctors", modelAndView);
     }
 
     @GetMapping("/delete/{id}")
@@ -114,14 +134,19 @@ public class DoctorController extends BaseController {
         DoctorServiceModel doctorServiceModel = this.doctorService.getById(id);
         DoctorDeleteViewModel doctor = this.modelMapper.map(doctorServiceModel, DoctorDeleteViewModel.class);
         modelAndView.addObject("doctor", doctor);
-        return super.view("doctor/delete-doctor", modelAndView);
+
+        modelAndView.setViewName("doctor/delete-doctor");
+        return modelAndView;
+        //return super.view("doctor/delete-doctor", modelAndView);
     }
 
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView deleteDoctorConfirm(@PathVariable String id) {
+    public ModelAndView deleteDoctorConfirm(@PathVariable String id, ModelAndView modelAndView) {
         this.doctorService.deleteDoctor(id);
-        return super.redirect("/doctor" + "/all");
+        modelAndView.setViewName("redirect:/doctor/all");
+        return modelAndView;
+        //return super.redirect("/doctor" + "/all");
     }
 
     @ExceptionHandler({DoctorsNotFoundException.class})
