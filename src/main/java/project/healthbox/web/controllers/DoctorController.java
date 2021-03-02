@@ -78,7 +78,7 @@ public class DoctorController {
         DoctorServiceModel doctorServiceModel = modelMapper.map(doctorUpdateBindingModel, DoctorServiceModel.class);
         doctorServiceModel.setId(this.doctorService.getByEmail(principal.getName()).getId());
 
-        this.doctorService.update(doctorServiceModel, doctorUpdateBindingModel.getImage());
+        this.doctorService.update(doctorServiceModel);
         modelAndView.setViewName("redirect:/doctor/dashboard");
         return modelAndView;
         //return super.redirect("/doctor" + "/dashboard");

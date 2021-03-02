@@ -29,13 +29,13 @@ public class DoctorServiceImpl implements DoctorService {
 
 
     @Override
-    public DoctorServiceModel update(DoctorServiceModel doctorServiceModel, MultipartFile image) throws IOException {
+    public DoctorServiceModel update(DoctorServiceModel doctorServiceModel) throws IOException {
         Doctor doctor = this.doctorRepository.getById(doctorServiceModel.getId());
 
         City city = this.modelMapper.map(this.cityService.getByName(doctorServiceModel.getLocation().getName()), City.class);
 
         doctor.setLocation(city);
-        doctor.setImageUrl(this.cloudinaryService.uploadImage(image));
+        doctor.setImageUrl(this.cloudinaryService.uploadImage(doctorServiceModel.getImage()));
         doctor.setBiography(doctorServiceModel.getBiography());
         doctor.setWorkHistory(doctorServiceModel.getWorkHistory());
         doctor.setEducation(doctorServiceModel.getEducation());
