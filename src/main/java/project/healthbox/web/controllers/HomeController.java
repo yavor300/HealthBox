@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
-public class HomeController extends BaseController {
+public class HomeController {
     private final SpecialtyService specialtyService;
     private final CityService cityService;
     private final FindDoctorValidator findDoctorValidator;
@@ -43,14 +43,16 @@ public class HomeController extends BaseController {
     @GetMapping("/")
     @PreAuthorize("isAnonymous()")
     @PageTitle("Index")
-    public ModelAndView getIndexView() {
-        return super.view("index");
+    public ModelAndView getIndexView(ModelAndView modelAndView) {
+        modelAndView.setViewName("index");
+        return modelAndView;
+        //return super.view("index");
     }
 
     @GetMapping("/home")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Home")
-    public ModelAndView getHomeView(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, Principal principal) {
+    public ModelAndView getHomeView(ModelAndView modelAndView, Principal principal) {
         List<SpecialtySearchViewModel> specialties = this.specialtyService.getAll()
                 .stream()
                 .map(s -> this.modelMapper.map(s, SpecialtySearchViewModel.class))
@@ -65,8 +67,10 @@ public class HomeController extends BaseController {
         modelAndView.addObject("specialties", specialties);
         modelAndView.addObject("cities", cities);
         modelAndView.addObject("userId", userId);
-        modelAndView.addObject("model", model);
-        return super.view("home", modelAndView);
+
+        modelAndView.setViewName("home");
+        return modelAndView;
+        //return super.view("home", modelAndView);
     }
 
 //    @PostMapping("/home")

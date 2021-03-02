@@ -27,13 +27,13 @@
                 <p>Find the one who you need.</p>
             </div>
 
-            <form th:method="post" th:action="@{/home}" class="php-email-form" th:object="${model}">
+            <form th:method="post" th:action="@{/home}" class="php-email-form">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
                         <select name="specialty" id="specialty" class="form-control">
                             <option value="">Select Specialty</option>
                             <th:block th:each="specialty : ${specialties}">
-<!--                                <option th:value="${specialty.name}">[[${specialty.name}]]</option>-->
+                                <!--                                <option th:value="${specialty.name}">[[${specialty.name}]]</option>-->
                                 <option th:value="${specialty.id}">[[${specialty.name}]]</option>
                             </th:block>
                         </select>
@@ -45,7 +45,7 @@
                         <select name="location" id="location" class="form-control">
                             <option value="">Select City</option>
                             <th:block th:each="city : ${cities}">
-<!--                                <option th:value="${city.name}">[[${city.name}]]</option>-->
+                                <!--                                <option th:value="${city.name}">[[${city.name}]]</option>-->
                                 <option th:value="${city.id}">[[${city.name}]]</option>
                             </th:block>
                         </select>
@@ -53,16 +53,17 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" class="form-control" name="doctorName" id="doctorName" placeholder="Or search by doctor name" th:value="*{doctorName}">
-                        <th:block th:if="${#fields.hasErrors('doctorName')}">
-                            <p class="error" th:errors="*{doctorName}"></p>
-                        </th:block>
+                        <input type="text" class="form-control" name="doctorName" id="doctorName"
+                               placeholder="Or search by doctor name">
+<!--                        <th:block th:if="${#fields.hasErrors('doctorName')}">-->
+<!--                            <p class="error" th:errors="*{doctorName}"></p>-->
+<!--                        </th:block>-->
                     </div>
                 </div>
 
-<!--                <div class="button-holder d-flex justify-content-center">-->
-<!--                    <button class="text-center btn btn-info text-white mb-3" type="submit">Search</button>-->
-<!--                </div>-->
+                <!--                <div class="button-holder d-flex justify-content-center">-->
+                <!--                    <button class="text-center btn btn-info text-white mb-3" type="submit">Search</button>-->
+                <!--                </div>-->
             </form>
 
             <div class="button-holder d-flex justify-content-center">
@@ -78,5 +79,6 @@
         src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
         crossorigin="anonymous"></script>
-<script src="/js/findDoctors.js"></script></body>
+<script src="/js/findDoctors.js"></script>
+</body>
 </html>
