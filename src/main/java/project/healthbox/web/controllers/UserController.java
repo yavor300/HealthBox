@@ -3,7 +3,6 @@ package project.healthbox.web.controllers;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.healthbox.domain.models.binding.UserRegisterBindingModel;
 import project.healthbox.domain.models.service.UserServiceModel;
-import project.healthbox.domain.models.view.AllUsersViewModel;
-import project.healthbox.domain.models.view.DeleteUserViewModel;
+import project.healthbox.domain.models.view.UsersAllViewModel;
+import project.healthbox.domain.models.view.UserDeleteViewModel;
 import project.healthbox.domain.models.view.UserDashboardViewModel;
 import project.healthbox.service.UserService;
 import project.healthbox.web.annotations.PageTitle;
@@ -109,9 +108,9 @@ public class UserController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("All Users")
     public ModelAndView getAllView(ModelAndView modelAndView) {
-        List<AllUsersViewModel> users = this.userService.getAll()
+        List<UsersAllViewModel> users = this.userService.getAll()
                 .stream()
-                .map(u -> this.modelMapper.map(u, AllUsersViewModel.class))
+                .map(u -> this.modelMapper.map(u, UsersAllViewModel.class))
                 .collect(Collectors.toList());
         modelAndView.addObject("users", users);
         return super.view("user/all-users", modelAndView);
@@ -122,7 +121,7 @@ public class UserController extends BaseController {
     @PageTitle("Delete User")
     public ModelAndView deleteUser(@PathVariable String id, ModelAndView modelAndView) {
         UserServiceModel userServiceModel = this.userService.getById(id);
-        DeleteUserViewModel user = this.modelMapper.map(userServiceModel, DeleteUserViewModel.class);
+        UserDeleteViewModel user = this.modelMapper.map(userServiceModel, UserDeleteViewModel.class);
         modelAndView.addObject("user", user);
         return super.view("user/delete-user", modelAndView);
     }

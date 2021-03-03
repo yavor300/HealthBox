@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class SpecialtyServiceModel extends BaseService {
+public class SpecialtyServiceModel extends BaseServiceModel {
     private String name;
     private List<DoctorServiceModel> doctors;
 }

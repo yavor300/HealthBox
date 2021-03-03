@@ -34,7 +34,7 @@
                             <option value="">Select Specialty</option>
                             <th:block th:each="specialty : ${specialties}">
                                 <!--                                <option th:value="${specialty.name}">[[${specialty.name}]]</option>-->
-                                <option th:value="${specialty.id}">[[${specialty.name}]]</option>
+                                <option th:value="${specialty.id}" th:text="${specialty.name}"></option>
                             </th:block>
                         </select>
                         <div class="validate"></div>
@@ -46,7 +46,7 @@
                             <option value="">Select City</option>
                             <th:block th:each="city : ${cities}">
                                 <!--                                <option th:value="${city.name}">[[${city.name}]]</option>-->
-                                <option th:value="${city.id}">[[${city.name}]]</option>
+                                <option th:value="${city.id}" th:text="${city.name}"></option>
                             </th:block>
                         </select>
                     </div>

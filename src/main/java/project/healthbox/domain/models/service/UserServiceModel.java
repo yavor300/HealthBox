@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserServiceModel extends BaseService {
+public class UserServiceModel extends BaseServiceModel {
     private String firstName;
     private String lastName;
     private String title;

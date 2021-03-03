@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.CityAddBindingModel;
 import project.healthbox.domain.models.service.CityServiceModel;
-import project.healthbox.domain.models.view.CityViewModel;
+import project.healthbox.domain.models.view.CitiesAllViewModel;
 import project.healthbox.service.CityService;
 import project.healthbox.web.annotations.PageTitle;
 
@@ -31,9 +31,9 @@ public class CityController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("All Cities")
     public ModelAndView getAllView(ModelAndView modelAndView) {
-        List<CityViewModel> cities = this.cityService.getAll()
+        List<CitiesAllViewModel> cities = this.cityService.getAll()
                 .stream()
-                .map(c -> this.modelMapper.map(c, CityViewModel.class))
+                .map(c -> this.modelMapper.map(c, CitiesAllViewModel.class))
                 .collect(Collectors.toList());
         modelAndView.addObject("cities", cities);
         return super.view("city/all-cities", modelAndView);
@@ -45,7 +45,7 @@ public class CityController extends BaseController {
     @PageTitle("Delete City")
     public ModelAndView deleteCity(@PathVariable String id, ModelAndView modelAndView) {
         CityServiceModel cityServiceModel = this.cityService.getById(id);
-        CityViewModel city = this.modelMapper.map(cityServiceModel, CityViewModel.class);
+        CitiesAllViewModel city = this.modelMapper.map(cityServiceModel, CitiesAllViewModel.class);
         modelAndView.addObject("city", city);
         return super.view("city/delete-city", modelAndView);
     }

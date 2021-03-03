@@ -7,11 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AllDoctorsViewModel {
+public class DoctorFoundViewModel {
     private String id;
     private String firstName;
     private String lastName;
-    private String email;
     private String locationName;
     private String imageUrl;
     private String specialtyName;

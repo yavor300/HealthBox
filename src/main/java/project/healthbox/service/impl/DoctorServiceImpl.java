@@ -57,7 +57,6 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.getConsultations()
                 .forEach(consultation -> consultation.setDoctor(null));
         this.doctorRepository.delete(doctor);
-        //TODO FIX THE DELETING, CONSULTATIONS RELATIONSHIP
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RoleServiceModel extends BaseService {
+public class RoleServiceModel extends BaseServiceModel {
     private String authority;
     private Set<UserServiceModel> users;
     private Set<DoctorServiceModel> doctors;

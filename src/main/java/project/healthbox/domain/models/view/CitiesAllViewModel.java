@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DeleteSpecialtyViewModel {
+public class CitiesAllViewModel {
     private String id;
     private String name;
 }

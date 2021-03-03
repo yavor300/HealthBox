@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.SpecialtyAddBindingModel;
 import project.healthbox.domain.models.service.SpecialtyServiceModel;
-import project.healthbox.domain.models.view.AllSpecialtiesViewModel;
-import project.healthbox.domain.models.view.DeleteSpecialtyViewModel;
+import project.healthbox.domain.models.view.SpecialtiesAllViewModel;
+import project.healthbox.domain.models.view.SpecialtyDeleteViewModel;
 import project.healthbox.service.SpecialtyService;
 import project.healthbox.web.annotations.PageTitle;
 
@@ -32,9 +32,9 @@ public class SpecialtyController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("All Specialties")
     public ModelAndView getAllView(ModelAndView modelAndView) {
-        List<AllSpecialtiesViewModel> specialties = this.specialtyService.getAll()
+        List<SpecialtiesAllViewModel> specialties = this.specialtyService.getAll()
                 .stream()
-                .map(c -> this.modelMapper.map(c, AllSpecialtiesViewModel.class))
+                .map(c -> this.modelMapper.map(c, SpecialtiesAllViewModel.class))
                 .collect(Collectors.toList());
         modelAndView.addObject("specialties", specialties);
         return super.view("specialty/all-specialties", modelAndView);
@@ -45,7 +45,7 @@ public class SpecialtyController extends BaseController {
     @PageTitle("Delete Specialty")
     public ModelAndView deleteSpecialty(@PathVariable String id, ModelAndView modelAndView) {
         SpecialtyServiceModel specialtyServiceModel = this.specialtyService.getById(id);
-        DeleteSpecialtyViewModel specialty = this.modelMapper.map(specialtyServiceModel, DeleteSpecialtyViewModel.class);
+        SpecialtyDeleteViewModel specialty = this.modelMapper.map(specialtyServiceModel, SpecialtyDeleteViewModel.class);
         modelAndView.addObject("specialty", specialty);
         return super.view("specialty/delete-specialty", modelAndView);
     }

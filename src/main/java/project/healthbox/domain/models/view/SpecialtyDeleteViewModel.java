@@ -7,10 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DeleteUserViewModel {
+public class SpecialtyDeleteViewModel {
     private String id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String title;
+    private String name;
 }

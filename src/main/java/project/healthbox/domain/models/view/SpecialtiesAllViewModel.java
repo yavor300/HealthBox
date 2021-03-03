@@ -1,4 +1,4 @@
-package project.healthbox.domain.models.service;
+package project.healthbox.domain.models.view;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class BaseService {
+public class SpecialtiesAllViewModel {
     private String id;
+    private String name;
 }

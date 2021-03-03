@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ConsultationServiceModel extends BaseService {
+public class ConsultationServiceModel extends BaseServiceModel {
     private Integer age;
     private String gender;
     private String diagnoses;

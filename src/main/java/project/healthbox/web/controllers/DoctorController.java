@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
-import project.healthbox.domain.models.view.AllDoctorsViewModel;
+import project.healthbox.domain.models.view.DoctorsAllViewModel;
 import project.healthbox.domain.models.view.DoctorDashboardViewModel;
 import project.healthbox.domain.models.view.DoctorDeleteViewModel;
 import project.healthbox.domain.models.view.DoctorProfileViewModel;
@@ -49,7 +49,9 @@ public class DoctorController {
 
         //TODO ADD VIEW MODELS FOR THAT PAGE
         modelAndView.addObject("doctorId", doctorService.getByEmail(principal.getName()).getId());
+
         modelAndView.addObject("specialties", specialtyService.getAll());
+
         modelAndView.addObject("cities", cityService.getAll());
 
         modelAndView.setViewName("user/doctorUpdate");
@@ -117,9 +119,9 @@ public class DoctorController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("All Doctors")
     public ModelAndView getAllView(ModelAndView modelAndView) {
-        List<AllDoctorsViewModel> doctors = this.doctorService.getAll()
+        List<DoctorsAllViewModel> doctors = this.doctorService.getAll()
                 .stream()
-                .map(d -> this.modelMapper.map(d, AllDoctorsViewModel.class))
+                .map(d -> this.modelMapper.map(d, DoctorsAllViewModel.class))
                 .collect(Collectors.toList());
         modelAndView.addObject("doctors", doctors);
 
