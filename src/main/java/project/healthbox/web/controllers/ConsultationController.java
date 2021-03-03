@@ -69,10 +69,11 @@ public class ConsultationController {
 //            return super.view("consultation/sendConsultation", modelAndView);
         }
 
-        ConsultationServiceModel consultationServiceModel = this.consultationService.save(this.modelMapper.map(consultationSendBindingModel, ConsultationServiceModel.class));
-        UserServiceModel userServiceModel = this.userService.getByEmail(principal.getName());
-        DoctorServiceModel doctorServiceModel = this.doctorService.getById(id);
-        this.consultationService.setDoctorAndUser(consultationServiceModel, doctorServiceModel, userServiceModel);
+        ConsultationServiceModel consultationServiceModel = consultationService.save(modelMapper.map(consultationSendBindingModel, ConsultationServiceModel.class));
+        UserServiceModel userServiceModel = userService.getByEmail(principal.getName());
+        DoctorServiceModel doctorServiceModel = doctorService.getById(id);
+        consultationService.setDoctorAndUser(consultationServiceModel, doctorServiceModel, userServiceModel);
+
         modelAndView.setViewName("redirect:/user/dashboard");
         return modelAndView;
         //return super.redirect("/user" + "/dashboard");
@@ -82,8 +83,8 @@ public class ConsultationController {
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Consultation Details")
     public ModelAndView getConsultationDetailsView(@PathVariable String id, ModelAndView modelAndView) {
-        ConsultationServiceModel consultationServiceModel = this.consultationService.getById(id);
-        ConsultationDetailsViewModel consultation = this.modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
+        ConsultationServiceModel consultationServiceModel = consultationService.getById(id);
+        ConsultationDetailsViewModel consultation = modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
         modelAndView.addObject("consultation", consultation);
         modelAndView.setViewName("consultation/details");
         return modelAndView;

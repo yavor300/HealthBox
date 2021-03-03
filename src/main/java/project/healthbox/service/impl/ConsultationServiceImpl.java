@@ -1,5 +1,6 @@
 package project.healthbox.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Answer;
@@ -11,25 +12,13 @@ import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.repostory.ConsultationRepository;
-import project.healthbox.repostory.DoctorRepository;
-import project.healthbox.repostory.UserRepository;
 import project.healthbox.service.ConsultationService;
 
-import java.util.List;
-
 @Service
+@AllArgsConstructor
 public class ConsultationServiceImpl implements ConsultationService {
     private final ConsultationRepository consultationRepository;
-    private final UserRepository userRepository;
-    private final DoctorRepository doctorRepository;
     private final ModelMapper modelMapper;
-
-    public ConsultationServiceImpl(ConsultationRepository consultationRepository, UserRepository userRepository, DoctorRepository doctorRepository, ModelMapper modelMapper) {
-        this.consultationRepository = consultationRepository;
-        this.userRepository = userRepository;
-        this.doctorRepository = doctorRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public ConsultationServiceModel save(ConsultationServiceModel model) {

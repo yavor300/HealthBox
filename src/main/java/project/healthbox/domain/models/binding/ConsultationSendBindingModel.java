@@ -13,9 +13,6 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 public class ConsultationSendBindingModel {
-    //TODO REMOVE THE ID -> UNNECESSARY INFORMATION
-    private String id;
-
     @Positive(message = "Age must be a positive number!")
     @NotNull(message = "Age cannot be empty!")
     private Integer age;
