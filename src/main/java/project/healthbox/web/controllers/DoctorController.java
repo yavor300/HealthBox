@@ -47,6 +47,7 @@ public class DoctorController {
     @PageTitle("Complete Doctor Account")
     public ModelAndView getRegisterView(Principal principal, ModelAndView modelAndView) {
 
+        //TODO ADD VIEW MODELS FOR THAT PAGE
         modelAndView.addObject("doctorId", doctorService.getByEmail(principal.getName()).getId());
         modelAndView.addObject("specialties", specialtyService.getAll());
         modelAndView.addObject("cities", cityService.getAll());

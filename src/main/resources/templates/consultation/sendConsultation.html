@@ -19,13 +19,14 @@
 
             </div>
 
-            <form th:method="post" th:action="@{/consultation/send/{id}(id=${doctorId})}" class="php-email-form" th:object="${model}">
+            <form th:method="POST" th:action="@{/consultation/send/{id}(id=${doctorId})}" class="php-email-form"
+                  th:object="${consultationSendBindingModel}">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="number" class="form-control" name="age" id="age" placeholder="Age..." th:value="*{age}">
-                        <th:block th:if="${#fields.hasErrors('age')}">
-                            <p class="error" th:errors="*{age}"></p>
-                        </th:block>
+                        <input th:field="*{age}" th:classappend="${#fields.hasErrors('age')}? 'is-invalid'"
+                               type="number" class="form-control" name="age" id="age" placeholder="Age...">
+                        <small th:if="${#fields.hasErrors('age')}" class="text-danger"
+                               th:errors="*{age}"></small>
                     </div>
                 </div>
 
@@ -34,14 +35,14 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <select name="gender" id="gender" class="form-control">
+                        <select th:field="*{gender}" th:classappend="${#fields.hasErrors('gender')}? 'is-invalid'"
+                                name="gender" id="gender" class="form-control">
                             <option value="">Select Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
-                        <th:block th:if="${#fields.hasErrors('gender')}">
-                            <p class="error" th:errors="*{gender}"></p>
-                        </th:block>
+                        <small th:if="${#fields.hasErrors('gender')}" class="text-danger"
+                               th:errors="*{gender}"></small>
                     </div>
                 </div>
 
@@ -49,29 +50,45 @@
                     <h4>Do you have any set diagnoses or chronic illnesses? If yes, what are they?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="diagnoses" name="diagnoses" rows="5" placeholder="Set diagnoses, chronic illnesses..." th:value="*{diagnoses}"></textarea>
+                    <textarea th:field="*{diagnoses}" th:classappend="${#fields.hasErrors('diagnoses')}? 'is-invalid'"
+                              class="form-control" id="diagnoses" name="diagnoses" rows="5"
+                              placeholder="Set diagnoses, chronic illnesses..."></textarea>
+                    <small th:if="${#fields.hasErrors('diagnoses')}" class="text-danger"
+                           th:errors="*{diagnoses}"></small>
                 </div>
 
                 <div class="section-title">
-                    <h4>Do you take any medicaments, vitamins or supplements on regular basis? If yes, what are they and how much do you take?</h4>
+                    <h4>Do you take any medicaments, vitamins or supplements on regular basis? If yes, what are they and
+                        how much do you take?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="medicaments" name="medicaments" rows="5" placeholder="Medicaments, vitamins, supplements..." th:value="*{medicaments}"></textarea>
+                    <textarea th:field="*{medicaments}"
+                              th:classappend="${#fields.hasErrors('medicaments')}? 'is-invalid'" class="form-control"
+                              id="medicaments" name="medicaments" rows="5"
+                              placeholder="Medicaments, vitamins, supplements..."></textarea>
+                    <small th:if="${#fields.hasErrors('medicaments')}" class="text-danger"
+                           th:errors="*{medicaments}"></small>
                 </div>
 
                 <div class="section-title">
                     <h4>Do you have any allergies? If yes, what are they?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="allergy" name="allergy" rows="5" placeholder="Allergies..." th:value="*{allergy}"></textarea>
+                    <textarea th:field="*{allergy}" th:classappend="${#fields.hasErrors('allergy')}? 'is-invalid'"
+                              class="form-control" id="allergy" name="allergy" rows="5"
+                              placeholder="Allergies..."></textarea>
+                    <small th:if="${#fields.hasErrors('allergy')}" class="text-danger"
+                           th:errors="*{allergy}"></small>
                 </div>
 
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" class="form-control" name="problemTitle" id="problemTitle" placeholder="Problem title..." th:value="*{problemTitle}">
-                        <th:block th:if="${#fields.hasErrors('problemTitle')}">
-                            <p class="error" th:errors="*{problemTitle}"></p>
-                        </th:block>
+                        <input th:field="*{problemTitle}"
+                               th:classappend="${#fields.hasErrors('problemTitle')}? 'is-invalid'" type="text"
+                               class="form-control" name="problemTitle" id="problemTitle"
+                               placeholder="Problem title...">
+                        <small th:if="${#fields.hasErrors('problemTitle')}" class="text-danger"
+                               th:errors="*{problemTitle}"></small>
                     </div>
                 </div>
 
@@ -79,10 +96,12 @@
                     <h4>What is your problem and what do you want to achieve?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="problemDescription" name="problemDescription" rows="5" placeholder="Describe your problem and the desired outcome..." th:value="*{problemDescription}"></textarea>
-                    <th:block th:if="${#fields.hasErrors('problemDescription')}">
-                        <p class="error" th:errors="*{problemDescription}"></p>
-                    </th:block>
+                    <textarea th:field="*{problemDescription}"
+                              th:classappend="${#fields.hasErrors('problemDescription')}? 'is-invalid'"
+                              class="form-control" id="problemDescription" name="problemDescription" rows="5"
+                              placeholder="Describe your problem and the desired outcome..."></textarea>
+                    <small th:if="${#fields.hasErrors('problemDescription')}" class="text-danger"
+                           th:errors="*{problemDescription}"></small>
                 </div>
 
                 <div class="button-holder d-flex justify-content-center">
