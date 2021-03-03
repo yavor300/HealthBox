@@ -2,8 +2,6 @@ package project.healthbox.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Doctor;
@@ -16,7 +14,6 @@ import project.healthbox.service.UserService;
 
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -111,20 +108,5 @@ public class UserServiceImpl implements UserService {
         userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
 
         this.userRepository.saveAndFlush(this.modelMapper.map(userServiceModel, User.class));
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = this.userRepository
-                .findByEmail(s)
-                .orElse(null);
-
-        Doctor doctor = this.doctorRepository.findByEmail(s).orElse(null);
-
-        if (user == null && doctor == null) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-
-        return Objects.requireNonNullElse(doctor, user);
     }
 }

@@ -1,11 +1,10 @@
 package project.healthbox.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
 import project.healthbox.domain.models.service.UserServiceModel;
 
 import java.util.List;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
     UserServiceModel register(UserServiceModel userServiceModel);
 
     UserServiceModel getByEmail(String email);
