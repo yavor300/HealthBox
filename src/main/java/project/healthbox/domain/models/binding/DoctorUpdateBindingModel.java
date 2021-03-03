@@ -3,18 +3,15 @@ package project.healthbox.domain.models.binding;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class DoctorUpdateBindingModel {
-    @NotNull(message = "Image must be added!")
     private MultipartFile image;
 
     @NotBlank(message = "Specialty cannot be empty!")
