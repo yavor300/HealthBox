@@ -33,7 +33,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Consultation> consultations;
 
     @ManyToMany(fetch = FetchType.EAGER)
