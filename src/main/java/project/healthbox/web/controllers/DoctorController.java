@@ -10,10 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
-import project.healthbox.domain.models.view.DoctorsAllViewModel;
-import project.healthbox.domain.models.view.DoctorDashboardViewModel;
-import project.healthbox.domain.models.view.DoctorDeleteViewModel;
-import project.healthbox.domain.models.view.DoctorProfileViewModel;
+import project.healthbox.domain.models.view.*;
 import project.healthbox.error.DoctorsNotFoundException;
 import project.healthbox.service.CityService;
 import project.healthbox.service.DoctorService;
@@ -46,13 +43,17 @@ public class DoctorController {
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Complete Doctor Account")
     public ModelAndView getRegisterView(Principal principal, ModelAndView modelAndView) {
-
-        //TODO ADD VIEW MODELS FOR THAT PAGE
         modelAndView.addObject("doctorId", doctorService.getByEmail(principal.getName()).getId());
 
-        modelAndView.addObject("specialties", specialtyService.getAll());
+        modelAndView.addObject("specialties", specialtyService.getAll()
+                .stream()
+                .map(specialtyServiceModel -> modelMapper.map(specialtyServiceModel, SpecialtyDoctorCompleteViewModel.class))
+                .collect(Collectors.toList()));
 
-        modelAndView.addObject("cities", cityService.getAll());
+        modelAndView.addObject("cities", cityService.getAll()
+                .stream()
+                .map(cityServiceModel -> modelMapper.map(cityServiceModel, CityDoctorCompleteViewModel.class))
+                .collect(Collectors.toList()));
 
         modelAndView.setViewName("user/doctorUpdate");
         return modelAndView;
