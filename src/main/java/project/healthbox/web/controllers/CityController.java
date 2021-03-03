@@ -1,73 +1,69 @@
 package project.healthbox.web.controllers;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.domain.models.binding.CityAddBindingModel;
-import project.healthbox.domain.models.service.CityServiceModel;
 import project.healthbox.domain.models.view.CitiesAllViewModel;
+import project.healthbox.domain.models.view.CityDeleteViewModel;
 import project.healthbox.service.CityService;
 import project.healthbox.web.annotations.PageTitle;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/city")
-public class CityController extends BaseController {
+@AllArgsConstructor
+public class CityController {
     private final CityService cityService;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public CityController(CityService cityService, ModelMapper modelMapper) {
-        this.cityService = cityService;
-        this.modelMapper = modelMapper;
-    }
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("All Cities")
     public ModelAndView getAllView(ModelAndView modelAndView) {
-        List<CitiesAllViewModel> cities = this.cityService.getAll()
+        modelAndView.addObject("cities", cityService.getAll()
                 .stream()
-                .map(c -> this.modelMapper.map(c, CitiesAllViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("cities", cities);
-        return super.view("city/all-cities", modelAndView);
+                .map(cityServiceModel -> modelMapper.map(cityServiceModel, CitiesAllViewModel.class))
+                .collect(Collectors.toList()));
+        modelAndView.setViewName("city/all-cities");
+        return modelAndView;
     }
-
 
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Delete City")
     public ModelAndView deleteCity(@PathVariable String id, ModelAndView modelAndView) {
-        CityServiceModel cityServiceModel = this.cityService.getById(id);
-        CitiesAllViewModel city = this.modelMapper.map(cityServiceModel, CitiesAllViewModel.class);
-        modelAndView.addObject("city", city);
-        return super.view("city/delete-city", modelAndView);
+        modelAndView.addObject("city", modelMapper.map(cityService.getById(id), CityDeleteViewModel.class));
+        modelAndView.setViewName("city/delete-city");
+        return modelAndView;
     }
 
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView deleteCityConfirm(@PathVariable String id) {
-        this.cityService.deleteCity(id);
-        return super.redirect("/city" + "/all");
+    public ModelAndView deleteCityConfirm(@PathVariable String id, ModelAndView modelAndView) {
+        cityService.deleteCity(id);
+        modelAndView.setViewName("redirect:/city/all");
+        return modelAndView;
     }
 
     @GetMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Add City")
-    public ModelAndView createCity() {
-        return super.view("city/create-city");
+    public ModelAndView createCity(ModelAndView modelAndView) {
+        modelAndView.setViewName("city/create-city");
+        return modelAndView;
     }
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView createCity(@ModelAttribute CityAddBindingModel model) {
-        this.cityService.createCity(model.getName());
-        return super.redirect("/city" + "/all");
+    public ModelAndView createCity(@ModelAttribute CityAddBindingModel model, ModelAndView modelAndView) {
+        //TODO ADD VALIDATIONS
+        cityService.createCity(model.getName());
+        modelAndView.setViewName("redirect:/city/all");
+        return modelAndView;
     }
 }

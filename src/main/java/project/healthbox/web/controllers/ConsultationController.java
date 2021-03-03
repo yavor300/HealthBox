@@ -30,8 +30,6 @@ public class ConsultationController {
     private final ConsultationService consultationService;
     private final UserService userService;
 
-    //private final ConsultationFormValidator consultationFormValidator;
-
     @ModelAttribute("consultationSendBindingModel")
     public ConsultationSendBindingModel consultationSendBindingModel() {
         return new ConsultationSendBindingModel();
@@ -42,9 +40,7 @@ public class ConsultationController {
     @PageTitle("Send Consultation")
     public ModelAndView getSendConsultationView(@PathVariable String id, ModelAndView modelAndView) {
         modelAndView.addObject("doctorId", id);
-        //modelAndView.addObject("model", model);
         modelAndView.setViewName("consultation/sendConsultation");
-        //return super.view("consultation/sendConsultation", modelAndView);
         return modelAndView;
     }
 
@@ -57,16 +53,11 @@ public class ConsultationController {
                                              ModelAndView modelAndView,
                                              Principal principal) {
 
-        //this.consultationFormValidator.validate(model, bindingResult);
-
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("consultationSendBindingModel", consultationSendBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.consultationSendBindingModel", bindingResult);
             modelAndView.setViewName("redirect:/consultation/send/" + id);
             return modelAndView;
-//            modelAndView.addObject("doctorId", id);
-//            modelAndView.addObject("model", model);
-//            return super.view("consultation/sendConsultation", modelAndView);
         }
 
         ConsultationServiceModel consultationServiceModel = consultationService.save(modelMapper.map(consultationSendBindingModel, ConsultationServiceModel.class));
@@ -76,18 +67,14 @@ public class ConsultationController {
 
         modelAndView.setViewName("redirect:/user/dashboard");
         return modelAndView;
-        //return super.redirect("/user" + "/dashboard");
     }
 
     @GetMapping("/details/{id}")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Consultation Details")
     public ModelAndView getConsultationDetailsView(@PathVariable String id, ModelAndView modelAndView) {
-        ConsultationServiceModel consultationServiceModel = consultationService.getById(id);
-        ConsultationDetailsViewModel consultation = modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
-        modelAndView.addObject("consultation", consultation);
+        modelAndView.addObject("consultation", modelMapper.map(consultationService.getById(id), ConsultationDetailsViewModel.class));
         modelAndView.setViewName("consultation/details");
         return modelAndView;
-        //return super.view("consultation/details", modelAndView);
     }
 }

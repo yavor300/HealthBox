@@ -23,7 +23,6 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class AnswerController {
     private final AnswerService answerService;
-    //private final AnswerValidator answerValidator;
     private final ConsultationService consultationService;
     private final ModelMapper modelMapper;
 
@@ -36,13 +35,10 @@ public class AnswerController {
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Answer Consultation")
     public ModelAndView getConsultationAnswerView(@PathVariable String id, ModelAndView modelAndView) {
-        ConsultationServiceModel consultationServiceModel = consultationService.getById(id);
-        ConsultationDetailsViewModel consultation = modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
-        modelAndView.addObject("consultation", consultation);
-//        modelAndView.addObject("model", model);
+        modelAndView.addObject("consultation", modelMapper.map(consultationService.getById(id),
+                ConsultationDetailsViewModel.class));
         modelAndView.setViewName("consultation/answer");
         return modelAndView;
-        //return super.view("consultation/answer", modelAndView);
     }
 
     @PostMapping("/answer/{id}")
@@ -53,27 +49,18 @@ public class AnswerController {
                                            @PathVariable String id,
                                            ModelAndView modelAndView) {
 
-        //answerValidator.validate(model, bindingResult);
-
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("answerSendBindingModel", answerSendBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.answerSendBindingModel", bindingResult);
             modelAndView.setViewName("redirect:/consultation/answer/" + id);
             return modelAndView;
-//            ConsultationServiceModel consultationServiceModel = this.consultationService.getById(id);
-//            ConsultationDetailsViewModel consultation = this.modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
-//            modelAndView.addObject("consultation", consultation);
-//            modelAndView.addObject("model", model);
-//            return super.view("consultation/answer", modelAndView);
         }
 
         AnswerServiceModel answerServiceModel = answerService.save(modelMapper.map(answerSendBindingModel, AnswerServiceModel.class));
         ConsultationServiceModel consultationServiceModel = consultationService.getById(id);
-
         consultationService.setAnswer(consultationServiceModel, answerServiceModel);
 
         modelAndView.setViewName("redirect:/doctor/dashboard");
         return modelAndView;
-        //return super.redirect("/doctor" + "/dashboard");
     }
 }

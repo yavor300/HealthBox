@@ -65,83 +65,65 @@ public class DoctorController {
                                       Principal principal, ModelAndView modelAndView,
                                       RedirectAttributes redirectAttributes) throws IOException {
 
-        this.doctorUpdateMultipartFileValidator.validate(doctorUpdateBindingModel, bindingResult);
+        doctorUpdateMultipartFileValidator.validate(doctorUpdateBindingModel, bindingResult);
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("doctorUpdateBindingModel", doctorUpdateBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.doctorUpdateBindingModel", bindingResult);
             modelAndView.setViewName("redirect:complete");
             return modelAndView;
-//            modelAndView.addObject("doctorId", this.doctorService.getByEmail(principal.getName()).getId());
-//            modelAndView.addObject("specialties", this.specialtyService.getAll());
-//            modelAndView.addObject("cities", this.cityService.getAll());
-//            modelAndView.addObject("model", model);
-//            return super.view("user/doctorUpdate", modelAndView);
         }
 
         DoctorServiceModel doctorServiceModel = modelMapper.map(doctorUpdateBindingModel, DoctorServiceModel.class);
-        doctorServiceModel.setId(this.doctorService.getByEmail(principal.getName()).getId());
-
+        doctorServiceModel.setId(doctorService.getByEmail(principal.getName()).getId());
         this.doctorService.update(doctorServiceModel);
+
         modelAndView.setViewName("redirect:/doctor/dashboard");
         return modelAndView;
-        //return super.redirect("/doctor" + "/dashboard");
     }
 
     @GetMapping("/profile/{id}")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Doctor Profile")
     public ModelAndView getProfileView(@PathVariable String id, ModelAndView modelAndView) {
-        DoctorServiceModel doctorServiceModel = this.doctorService.getById(id);
-        DoctorProfileViewModel doctor = this.modelMapper.map(doctorServiceModel, DoctorProfileViewModel.class);
-        modelAndView.addObject("doctor", doctor);
+        modelAndView.addObject("doctor", modelMapper.map(doctorService.getById(id), DoctorProfileViewModel.class));
         modelAndView.setViewName("doctor/profile");
         return modelAndView;
-        //return super.view("doctor/profile", modelAndView);
     }
 
     @GetMapping("/dashboard")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Dashboard")
     public ModelAndView getDashboardDoctorView(Principal principal, ModelAndView modelAndView) {
-        DoctorServiceModel doctor = this.doctorService.getById(this.doctorService.getByEmail(principal.getName()).getId());
-        List<DoctorDashboardViewModel> consultations = doctor.getConsultations()
+        modelAndView.addObject("consultations", doctorService.getByEmail(principal.getName()).getConsultations()
                 .stream()
-                .map(d -> this.modelMapper.map(d, DoctorDashboardViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("consultations", consultations);
+                .map(consultationServiceModel -> modelMapper.map(consultationServiceModel, DoctorDashboardViewModel.class))
+                .collect(Collectors.toList()));
 
         modelAndView.setViewName("doctor/dashboard");
         return modelAndView;
-        //return super.view("doctor/dashboard", modelAndView);
     }
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("All Doctors")
     public ModelAndView getAllView(ModelAndView modelAndView) {
-        List<DoctorsAllViewModel> doctors = this.doctorService.getAll()
+        modelAndView.addObject("doctors", doctorService.getAll()
                 .stream()
-                .map(d -> this.modelMapper.map(d, DoctorsAllViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("doctors", doctors);
+                .map(doctorServiceModel -> modelMapper.map(doctorServiceModel, DoctorsAllViewModel.class))
+                .collect(Collectors.toList()));
 
         modelAndView.setViewName("doctor/all-doctors");
         return modelAndView;
-        //return super.view("doctor/all-doctors", modelAndView);
     }
 
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Delete Doctor")
     public ModelAndView deleteDoctor(@PathVariable String id, ModelAndView modelAndView) {
-        DoctorServiceModel doctorServiceModel = this.doctorService.getById(id);
-        DoctorDeleteViewModel doctor = this.modelMapper.map(doctorServiceModel, DoctorDeleteViewModel.class);
-        modelAndView.addObject("doctor", doctor);
-
+        modelAndView.addObject("doctor", modelMapper.map(doctorService.getById(id), DoctorDeleteViewModel.class));
         modelAndView.setViewName("doctor/delete-doctor");
         return modelAndView;
-        //return super.view("doctor/delete-doctor", modelAndView);
     }
 
     @PostMapping("/delete/{id}")
@@ -150,7 +132,6 @@ public class DoctorController {
         this.doctorService.deleteDoctor(id);
         modelAndView.setViewName("redirect:/doctor/all");
         return modelAndView;
-        //return super.redirect("/doctor" + "/all");
     }
 
     @ExceptionHandler({DoctorsNotFoundException.class})
