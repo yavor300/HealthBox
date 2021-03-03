@@ -40,7 +40,6 @@ public class SpecialtyController extends BaseController {
         return super.view("specialty/all-specialties", modelAndView);
     }
 
-
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Delete Specialty")

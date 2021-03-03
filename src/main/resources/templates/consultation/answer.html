@@ -18,14 +18,14 @@
                 <p>You can find the details about your request and the answer of our specialist.</p>
             </div>
 
-            <form th:method="post" th:action="@{/consultation/answer/{id}(id=${consultation.id})}" class="php-email-form" th:object="${model}">
+            <form th:method="POST" th:action="@{/consultation/answer/{id}(id=${consultation.id})}"
+                  class="php-email-form" th:object="${consultation}">
                 <div class="section-title">
                     <h4>Age</h4>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" disabled="disabled" class="form-control" th:value="${consultation.age}">
-                        <div class="validate"></div>
+                        <input type="text" disabled="disabled" class="form-control" th:field="*{age}">
                     </div>
                 </div>
                 <div class="section-title">
@@ -33,38 +33,32 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" disabled="disabled" class="form-control" th:value="${consultation.gender}">
-                        <div class="validate"></div>
+                        <input type="text" disabled="disabled" class="form-control" th:field="*{gender}">
                     </div>
                 </div>
 
                 <div class="section-title">
                     <h4>Do you have any set diagnoses or chronic illnesses? If yes, what are they?</h4>
                 </div>
-                <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.diagnoses}]]
-                </textarea>
+                <textarea th:field="*{diagnoses}" class="form-control" disabled="disabled" rows="5"></textarea>
 
                 <div class="section-title">
-                    <h4>Do you take any medicaments, vitamins or supplements on regular basis? If yes, what are they and how much do you take?</h4>
+                    <h4>Do you take any medicaments, vitamins or supplements on regular basis? If yes, what are they and
+                        how much do you take?</h4>
                 </div>
-                <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.medicaments}]]
-                </textarea>
+                <textarea th:field="*{medicaments}" class="form-control" disabled="disabled" rows="5"></textarea>
 
                 <div class="section-title">
                     <h4>Do you have any allergies? If yes, what are they?</h4>
                 </div>
-                <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.allergy}]]
-                </textarea>
+                <textarea th:field="*{allergy}" class="form-control" disabled="disabled" rows="5"></textarea>
 
                 <div class="section-title">
                     <h4>Problem title</h4>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" disabled="disabled" class="form-control" th:value="${consultation.problemTitle}">
+                        <input th:field="*{problemTitle}" type="text" disabled="disabled" class="form-control">
                     </div>
                 </div>
 
@@ -72,33 +66,32 @@
                     <h4>What is your problem and what do you want to achieve?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.problemDescription}]]
-                    </textarea>
+                    <textarea th:field="*{problemDescription}" class="form-control" disabled="disabled"
+                              rows="5"></textarea>
                 </div>
 
-                <th:block th:if="${consultation.problemAnswer == null}">
+                <th:block th:if="*{problemAnswer == null}">
                     <div class="section-title">
                         <h4>Your answer</h4>
                     </div>
-                    <div class="form-group">
-                        <textarea class="form-control" id="problemAnswer" name="problemAnswer" rows="5" placeholder="Type your answer..." th:value="*{problemAnswer}"></textarea>
-                        <th:block th:if="${#fields.hasErrors('problemAnswer')}">
-                            <p class="error" th:errors="*{problemAnswer}"></p>
-                        </th:block>
+                    <div class="form-group" th:object="${answerSendBindingModel}">
+                        <textarea th:field="*{problemAnswer}"
+                                  th:classappend="${#fields.hasErrors('problemAnswer')}? 'is-invalid'"
+                                  class="form-control" id="problemAnswer" name="problemAnswer" rows="5"
+                                  placeholder="Type your answer..."></textarea>
+                        <small th:if="${#fields.hasErrors('problemAnswer')}" class="text-danger"
+                               th:errors="*{problemAnswer}"></small>
                     </div>
 
                     <div class="button-holder d-flex justify-content-center">
                         <button class="text-center btn btn-info text-white mb-3" type="submit">Send Answer</button>
                     </div>
                 </th:block>
-                <th:block th:unless="${consultation.problemAnswer == null}">
+                <th:block th:unless="*{problemAnswer == null}">
                     <div class="section-title">
                         <h4>Your sent answer</h4>
                     </div>
-                    <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.problemAnswer}]]
-                    </textarea>
+                    <textarea th:field="*{problemAnswer}" class="form-control" disabled="disabled" rows="5"></textarea>
                 </th:block>
             </form>
 

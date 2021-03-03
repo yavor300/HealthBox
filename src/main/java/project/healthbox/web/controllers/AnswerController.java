@@ -1,65 +1,79 @@
 package project.healthbox.web.controllers;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import project.healthbox.domain.models.binding.SendAnswerBindingModel;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.healthbox.domain.models.binding.AnswerSendBindingModel;
 import project.healthbox.domain.models.service.AnswerServiceModel;
 import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.view.ConsultationDetailsViewModel;
 import project.healthbox.service.AnswerService;
 import project.healthbox.service.ConsultationService;
-import project.healthbox.validation.answer.AnswerValidator;
 import project.healthbox.web.annotations.PageTitle;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/consultation")
-public class AnswerController extends BaseController {
+@AllArgsConstructor
+public class AnswerController {
     private final AnswerService answerService;
-    private final AnswerValidator answerValidator;
+    //private final AnswerValidator answerValidator;
     private final ConsultationService consultationService;
     private final ModelMapper modelMapper;
 
-    public AnswerController(AnswerService answerService, AnswerValidator answerValidator, ConsultationService consultationService, ModelMapper modelMapper) {
-        this.answerService = answerService;
-        this.answerValidator = answerValidator;
-        this.consultationService = consultationService;
-        this.modelMapper = modelMapper;
+    @ModelAttribute("answerSendBindingModel")
+    public AnswerSendBindingModel answerSendBindingModel() {
+        return new AnswerSendBindingModel();
     }
 
     @GetMapping("/answer/{id}")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Answer Consultation")
-    public ModelAndView getConsultationAnswerView(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") SendAnswerBindingModel model) {
-        ConsultationServiceModel consultationServiceModel = this.consultationService.getById(id);
-        ConsultationDetailsViewModel consultation = this.modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
+    public ModelAndView getConsultationAnswerView(@PathVariable String id, ModelAndView modelAndView) {
+        ConsultationServiceModel consultationServiceModel = consultationService.getById(id);
+        ConsultationDetailsViewModel consultation = modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
         modelAndView.addObject("consultation", consultation);
-        modelAndView.addObject("model", model);
-        return super.view("consultation/answer", modelAndView);
+//        modelAndView.addObject("model", model);
+        modelAndView.setViewName("consultation/answer");
+        return modelAndView;
+        //return super.view("consultation/answer", modelAndView);
     }
 
     @PostMapping("/answer/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ModelAndView answerConsultation(@PathVariable String id, ModelAndView modelAndView, @ModelAttribute(name = "model") SendAnswerBindingModel model, BindingResult bindingResult) {
+    public ModelAndView answerConsultation(@Valid @ModelAttribute AnswerSendBindingModel answerSendBindingModel,
+                                           BindingResult bindingResult,
+                                           RedirectAttributes redirectAttributes,
+                                           @PathVariable String id,
+                                           ModelAndView modelAndView) {
 
-        this.answerValidator.validate(model, bindingResult);
+        //answerValidator.validate(model, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            ConsultationServiceModel consultationServiceModel = this.consultationService.getById(id);
-            ConsultationDetailsViewModel consultation = this.modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
-            modelAndView.addObject("consultation", consultation);
-            modelAndView.addObject("model", model);
-            return super.view("consultation/answer", modelAndView);
+            redirectAttributes.addFlashAttribute("answerSendBindingModel", answerSendBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.answerSendBindingModel", bindingResult);
+            modelAndView.setViewName("redirect:/consultation/answer/" + id);
+            return modelAndView;
+//            ConsultationServiceModel consultationServiceModel = this.consultationService.getById(id);
+//            ConsultationDetailsViewModel consultation = this.modelMapper.map(consultationServiceModel, ConsultationDetailsViewModel.class);
+//            modelAndView.addObject("consultation", consultation);
+//            modelAndView.addObject("model", model);
+//            return super.view("consultation/answer", modelAndView);
         }
 
-        AnswerServiceModel answerServiceModel = this.answerService.save(this.modelMapper.map(model, AnswerServiceModel.class));
-        ConsultationServiceModel consultationServiceModel = this.consultationService.getById(id);
+        AnswerServiceModel answerServiceModel = answerService.save(modelMapper.map(answerSendBindingModel, AnswerServiceModel.class));
+        ConsultationServiceModel consultationServiceModel = consultationService.getById(id);
 
-        this.consultationService.setAnswer(consultationServiceModel, answerServiceModel);
+        consultationService.setAnswer(consultationServiceModel, answerServiceModel);
 
-        return super.redirect("/doctor" + "/dashboard");
+        modelAndView.setViewName("redirect:/doctor/dashboard");
+        return modelAndView;
+        //return super.redirect("/doctor" + "/dashboard");
     }
 }
