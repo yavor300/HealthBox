@@ -11,8 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DoctorServiceModel {
-    private String id;
+public class DoctorServiceModel extends BaseService {
     private String firstName;
     private String lastName;
     private String email;

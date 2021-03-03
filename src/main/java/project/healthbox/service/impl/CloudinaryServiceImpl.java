@@ -1,7 +1,7 @@
 package project.healthbox.service.impl;
 
 import com.cloudinary.Cloudinary;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.healthbox.service.CloudinaryService;
@@ -11,13 +11,9 @@ import java.io.IOException;
 import java.util.HashMap;
 
 @Service
+@AllArgsConstructor
 public class CloudinaryServiceImpl implements CloudinaryService {
     private final Cloudinary cloudinary;
-
-    @Autowired
-    public CloudinaryServiceImpl(Cloudinary cloudinary) {
-        this.cloudinary = cloudinary;
-    }
 
     @Override
     public String uploadImage(MultipartFile multipartFile) throws IOException {

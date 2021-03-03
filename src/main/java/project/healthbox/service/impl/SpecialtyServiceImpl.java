@@ -1,8 +1,7 @@
 package project.healthbox.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Specialty;
 import project.healthbox.domain.models.service.SpecialtyServiceModel;
@@ -13,15 +12,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class SpecialtyServiceImpl implements SpecialtyService {
     private final SpecialtyRepository specialtyRepository;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public SpecialtyServiceImpl(SpecialtyRepository specialtyRepository, ModelMapper modelMapper) {
-        this.specialtyRepository = specialtyRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public List<SpecialtyServiceModel> getAll() {

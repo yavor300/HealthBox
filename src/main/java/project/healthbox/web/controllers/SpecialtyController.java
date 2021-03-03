@@ -6,7 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import project.healthbox.domain.models.binding.CreateSpecialtyBindingModel;
+import project.healthbox.domain.models.binding.SpecialtyAddBindingModel;
 import project.healthbox.domain.models.service.SpecialtyServiceModel;
 import project.healthbox.domain.models.view.AllSpecialtiesViewModel;
 import project.healthbox.domain.models.view.DeleteSpecialtyViewModel;
@@ -66,7 +66,7 @@ public class SpecialtyController extends BaseController {
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView createSpecialty(@ModelAttribute CreateSpecialtyBindingModel model) {
+    public ModelAndView createSpecialty(@ModelAttribute SpecialtyAddBindingModel model) {
         this.specialtyService.createSpecialty(model.getName());
         return super.redirect("/specialty" + "/all");
     }

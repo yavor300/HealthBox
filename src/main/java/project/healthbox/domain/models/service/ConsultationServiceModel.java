@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ConsultationServiceModel extends BaseService {
-    private String id;
     private Integer age;
     private String gender;
     private String diagnoses;

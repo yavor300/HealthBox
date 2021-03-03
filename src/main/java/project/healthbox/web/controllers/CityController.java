@@ -6,7 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import project.healthbox.domain.models.binding.CreateCityBindingModel;
+import project.healthbox.domain.models.binding.CityAddBindingModel;
 import project.healthbox.domain.models.service.CityServiceModel;
 import project.healthbox.domain.models.view.CityViewModel;
 import project.healthbox.service.CityService;
@@ -66,7 +66,7 @@ public class CityController extends BaseController {
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView createCity(@ModelAttribute CreateCityBindingModel model) {
+    public ModelAndView createCity(@ModelAttribute CityAddBindingModel model) {
         this.cityService.createCity(model.getName());
         return super.redirect("/city" + "/all");
     }

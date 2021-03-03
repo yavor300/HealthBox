@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateSpecialtyBindingModel {
+public class CityAddBindingModel {
     private String name;
 }
