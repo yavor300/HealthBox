@@ -55,6 +55,7 @@ public class DoctorServiceImpl implements DoctorService {
     public void deleteDoctor(String id) {
         Doctor doctor = this.doctorRepository.getById(id);
         this.doctorRepository.delete(doctor);
+        //TODO FIX THE DELETING, CONSULTATIONS RELATIONSHIP
     }
 
     @Override

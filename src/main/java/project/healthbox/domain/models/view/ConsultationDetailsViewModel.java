@@ -3,7 +3,6 @@ package project.healthbox.domain.models.view;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import project.healthbox.domain.models.service.AnswerServiceModel;
 
 @Getter
 @Setter

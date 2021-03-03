@@ -10,7 +10,7 @@
     <th:block th:include="~{fragments/navbar}"></th:block>
 </header>
 <main>
-    <section id="appointment" class="appointment section-bg">
+    <section id="appointment" class="appointment section-bg" th:object="${consultation}">
         <div class="container">
 
             <div class="section-title">
@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" disabled="disabled" class="form-control" th:value="${consultation.age}">
+                        <input th:field="*{age}" type="text" disabled="disabled" class="form-control">
                         <div class="validate"></div>
                     </div>
                 </div>
@@ -33,38 +33,33 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" disabled="disabled" class="form-control" th:value="${consultation.gender}">
+                        <input th:field="*{gender}" type="text" disabled="disabled" class="form-control">
                         <div class="validate"></div>
                     </div>
                 </div>
 
                 <div class="section-title">
-                <h4>Do you have any set diagnoses or chronic illnesses? If yes, what are they?</h4>
+                    <h4>Do you have any set diagnoses or chronic illnesses? If yes, what are they?</h4>
                 </div>
-                <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.diagnoses}]]
-                </textarea>
+                <textarea th:field="*{diagnoses}" class="form-control" disabled="disabled" rows="5"></textarea>
 
                 <div class="section-title">
-                    <h4>Do you take any medicaments, vitamins or supplements on regular basis? If yes, what are they and how much do you take?</h4>
+                    <h4>Do you take any medicaments, vitamins or supplements on regular basis? If yes, what are they and
+                        how much do you take?</h4>
                 </div>
-                <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.medicaments}]]
-                </textarea>
+                <textarea th:field="*{medicaments}" class="form-control" disabled="disabled" rows="5"></textarea>
 
                 <div class="section-title">
                     <h4>Do you have any allergies? If yes, what are they?</h4>
                 </div>
-                <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.allergy}]]
-                </textarea>
+                <textarea th:field="*{allergy}" class="form-control" disabled="disabled" rows="5"></textarea>
 
                 <div class="section-title">
                     <h4>Problem title</h4>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" disabled="disabled" class="form-control" th:value="${consultation.problemTitle}">
+                        <input th:field="*{problemTitle}" type="text" disabled="disabled" class="form-control">
                     </div>
                 </div>
 
@@ -72,23 +67,20 @@
                     <h4>What is your problem and what do you want to achieve?</h4>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.problemDescription}]]
-                    </textarea>
+                    <textarea th:field="*{problemDescription}" class="form-control" disabled="disabled"
+                              rows="5"></textarea>
                 </div>
 
-                <th:block th:if="${consultation.problemAnswer == null}">
+                <th:block th:if="*{problemAnswer == null}">
                     <div class="section-title">
                         <h3>You don't have any answer yet.</h3>
                     </div>
                 </th:block>
-                <th:block th:unless="${consultation.problemAnswer == null}">
+                <th:block th:unless="*{problemAnswer == null}">
                     <div class="section-title">
                         <h4>Received answer</h4>
                     </div>
-                    <textarea class="form-control" disabled="disabled" rows="5">
-                        [[${consultation.problemAnswer}]]
-                    </textarea>
+                    <textarea th:field="*{problemAnswer}" class="form-control" disabled="disabled" rows="5"></textarea>
                 </th:block>
             </form>
         </div>

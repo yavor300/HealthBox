@@ -25,8 +25,8 @@ public class UserRegisterBindingModel {
     message = "Enter a valid email address!")
     private String email;
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$",
-            message = "Password must contain minimum eight characters, at least one uppercase letter, one lowercase letter and one number!")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d\\w\\W]{8,}$",
+            message = "Password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character!")
     private String password;
 
     private String confirmPassword;
