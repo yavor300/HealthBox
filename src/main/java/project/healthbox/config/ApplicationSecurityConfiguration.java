@@ -42,7 +42,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 //.failureForwardUrl("/user/login-error")
                 .usernameParameter("email")
                 .passwordParameter("password")
-                .successForwardUrl("/")
+//                .successForwardUrl("/")
                 .successHandler(authenticationSuccessHandler)
                 .and()
                 .logout()

@@ -1,16 +1,12 @@
 package project.healthbox.web.filters;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.AllArgsConstructor;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
-import project.healthbox.repostory.DoctorRepository;
-import project.healthbox.repostory.UserRepository;
 import project.healthbox.service.AuthenticatedUserService;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.UserService;
@@ -22,20 +18,12 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 
 @Component
+@AllArgsConstructor
 public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     private final AuthenticatedUserService authenticatedUserService;
     private final UserService userService;
     private final DoctorService doctorService;
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-
-    public UserAuthenticationSuccessHandler(
-            UserService userService,
-            DoctorService doctorService, AuthenticatedUserService authenticatedUserService, UserRepository userRepository, DoctorRepository doctorRepository) {
-        super();
-        this.userService = userService;
-        this.authenticatedUserService = authenticatedUserService;
-        this.doctorService = doctorService;
-    }
 
     @Override
     @Transactional

@@ -1,7 +1,7 @@
 package project.healthbox.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Answer;
 import project.healthbox.domain.models.service.AnswerServiceModel;
@@ -9,15 +9,10 @@ import project.healthbox.repostory.AnswerRepository;
 import project.healthbox.service.AnswerService;
 
 @Service
+@AllArgsConstructor
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
     private final ModelMapper modelMapper;
-
-    @Autowired
-    public AnswerServiceImpl(AnswerRepository answerRepository, ModelMapper modelMapper) {
-        this.answerRepository = answerRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public AnswerServiceModel save(AnswerServiceModel answerServiceModel) {
