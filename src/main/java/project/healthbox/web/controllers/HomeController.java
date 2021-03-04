@@ -14,7 +14,6 @@ import project.healthbox.service.UserService;
 import project.healthbox.web.annotations.PageTitle;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -32,59 +31,25 @@ public class HomeController {
     public ModelAndView getIndexView(ModelAndView modelAndView) {
         modelAndView.setViewName("index");
         return modelAndView;
-        //return super.view("index");
     }
 
     @GetMapping("/home")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Home")
     public ModelAndView getHomeView(ModelAndView modelAndView, Principal principal) {
-        List<SpecialtySearchViewModel> specialties = this.specialtyService.getAll()
+        modelAndView.addObject("specialties", specialtyService.getAll()
                 .stream()
-                .map(s -> this.modelMapper.map(s, SpecialtySearchViewModel.class))
-                .collect(Collectors.toList());
+                .map(specialtyServiceModel -> modelMapper.map(specialtyServiceModel, SpecialtySearchViewModel.class))
+                .collect(Collectors.toList()));
 
-        List<CitySearchViewModel> cities = this.cityService.getAll()
+        modelAndView.addObject("cities", cityService.getAll()
                 .stream()
-                .map(c -> this.modelMapper.map(c, CitySearchViewModel.class))
-                .collect(Collectors.toList());
+                .map(cityServiceModel -> modelMapper.map(cityServiceModel, CitySearchViewModel.class))
+                .collect(Collectors.toList()));
 
-        String userId = this.userService.getByEmail(principal.getName()).getId();
-        modelAndView.addObject("specialties", specialties);
-        modelAndView.addObject("cities", cities);
-        modelAndView.addObject("userId", userId);
+        modelAndView.addObject("userId", userService.getByEmail(principal.getName()).getId());
 
         modelAndView.setViewName("home");
         return modelAndView;
-        //return super.view("home", modelAndView);
     }
-
-//    @PostMapping("/home")
-//    @PreAuthorize("isAuthenticated()")
-//    public ModelAndView register(ModelAndView modelAndView, @ModelAttribute(name = "model") ChooseSpecialistBindingModel model, BindingResult bindingResult, Principal principal) {
-//        List<SpecialtySearchViewModel> specialties = this.specialtyService.getAll()
-//                .stream()
-//                .map(s -> this.modelMapper.map(s, SpecialtySearchViewModel.class))
-//                .collect(Collectors.toList());
-//
-//        List<CitySearchViewModel> cities = this.cityService.getAll()
-//                .stream()
-//                .map(c -> this.modelMapper.map(c, CitySearchViewModel.class))
-//                .collect(Collectors.toList());
-//
-//        this.findDoctorValidator.validate(model, bindingResult);
-//
-//        if (bindingResult.hasErrors()) {
-//            modelAndView.addObject("specialties", specialties);
-//            modelAndView.addObject("cities", cities);
-//            modelAndView.addObject("userId", this.userService.getByEmail(principal.getName()).getId());
-//            modelAndView.addObject("model", model);
-//            return super.view("home", modelAndView);
-//        }
-//
-//        String specialtyId = this.specialtyService.getIdBySpecialtyName(model.getSpecialty());
-//        String cityId = this.cityService.getIdByCityName(model.getLocation());
-//
-//        return super.redirect("/doctor" + "/specialty_id=" + specialtyId + "&city_id=" + cityId + "&name=" + model.getDoctorName());
-//    }
 }
