@@ -4,14 +4,19 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.binding.SpecialtyAddBindingModel;
 import project.healthbox.domain.models.view.SpecialtiesAllViewModel;
 import project.healthbox.domain.models.view.SpecialtyDeleteViewModel;
 import project.healthbox.service.SpecialtyService;
 import project.healthbox.web.annotations.PageTitle;
 
+import javax.validation.Valid;
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 @Controller
@@ -51,6 +56,11 @@ public class SpecialtyController {
         return modelAndView;
     }
 
+    @ModelAttribute("specialtyAddBindingModel")
+    public SpecialtyAddBindingModel specialtyAddBindingModel() {
+        return new SpecialtyAddBindingModel();
+    }
+
     @GetMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Add Specialty")
@@ -59,11 +69,20 @@ public class SpecialtyController {
         return modelAndView;
     }
 
+
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView createSpecialty(@ModelAttribute SpecialtyAddBindingModel model, ModelAndView modelAndView) {
-        specialtyService.createSpecialty(model.getName());
-        //TODO VALIDATE
+    public ModelAndView createSpecialty(@Valid @ModelAttribute SpecialtyAddBindingModel specialtyAddBindingModel, BindingResult bindingResult,
+                                        RedirectAttributes redirectAttributes,
+                                        ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("specialtyAddBindingModel", specialtyAddBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.specialtyAddBindingModel", bindingResult);
+            modelAndView.setViewName("redirect:/specialty/create");
+            return modelAndView;
+        }
+
+        specialtyService.createSpecialty(specialtyAddBindingModel.getName());
         modelAndView.setViewName("redirect:/specialty/all");
         return modelAndView;
     }
