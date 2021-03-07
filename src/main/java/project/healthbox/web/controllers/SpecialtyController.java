@@ -63,7 +63,7 @@ public class SpecialtyController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView createSpecialty(@ModelAttribute SpecialtyAddBindingModel model, ModelAndView modelAndView) {
         specialtyService.createSpecialty(model.getName());
-        //TODO ADD SERVICE MODEL || VALIDATE
+        //TODO VALIDATE
         modelAndView.setViewName("redirect:/specialty/all");
         return modelAndView;
     }
