@@ -19,21 +19,17 @@
             </div>
 
             <form th:method="post" th:action="@{/user/login}" class="php-email-form">
-                <div th:if="${error}" class="alert alert-danger text-center" role="alert">
-                    This email and password combination does not exist.
-                </div>
-<!--                <div th:if="${error}" class="alert alert-danger" role="alert">-->
-<!--                    This username and password combination does not exist.-->
-<!--                </div>-->
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Email..." data-rule="email" data-msg="Please enter a valid email">
+                        <input type="email" class="form-control" name="username" id="email"
+                               placeholder="Email..." data-rule="email" data-msg="Please enter a valid email">
                         <div class="validate"></div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Password..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                        <input type="password" class="form-control" name="password" id="password"
+                               placeholder="Password..." data-rule="minlen:4" data-msg="Please enter at least 4 chars">
                         <div class="validate"></div>
                     </div>
                 </div>

@@ -38,21 +38,11 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         }
 
         if (doctor == null) {
-//            UserDetails userDetails = userService.loadUserByUsername(email);
-//            authentication = new
-//                    UsernamePasswordAuthenticationToken(
-//                    userDetails,
-//                    null,
-//                    userDetails.getAuthorities()
-//            );
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
             redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/home");
         } else {
             if (doctor.getBiography() == null || doctor.getBiography().trim().isEmpty()) {
-                //not completed
                 redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/doctor/complete");
             } else {
-                //is completed
                 redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/doctor/dashboard");
             }
         }

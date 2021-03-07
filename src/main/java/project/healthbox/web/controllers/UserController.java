@@ -3,6 +3,7 @@ package project.healthbox.web.controllers;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -90,18 +91,18 @@ public class UserController extends BaseController {
         return modelAndView;
     }
 
-//    @PostMapping("/login-error")
-//    public ModelAndView onLoginError(
-//            @ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY) String user) {
-//        ModelAndView modelAndView = new ModelAndView();
-//
-//        modelAndView.addObject("error", "bad.credentials");
-//        modelAndView.addObject("username", user);
-//
-//        modelAndView.setViewName("user/login");
-//
-//        return modelAndView;
-//    }
+    @PostMapping("/login-error")
+    public ModelAndView failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
+                                            String email) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.addObject("bad_credentials", true);
+        modelAndView.addObject("email", email);
+
+        modelAndView.setViewName("user/login-error");
+
+        return modelAndView;
+    }
 
 
     @GetMapping("/all")

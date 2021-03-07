@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.binding.SpecialtyAddBindingModel;
 import project.healthbox.domain.models.view.SpecialtiesAllViewModel;
 import project.healthbox.domain.models.view.SpecialtyDeleteViewModel;
@@ -16,7 +15,6 @@ import project.healthbox.service.SpecialtyService;
 import project.healthbox.web.annotations.PageTitle;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.stream.Collectors;
 
 @Controller
@@ -68,7 +66,6 @@ public class SpecialtyController {
         modelAndView.setViewName("specialty/create-specialty");
         return modelAndView;
     }
-
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
