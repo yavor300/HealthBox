@@ -13,7 +13,6 @@ import java.util.Set;
 public class UserServiceModel extends BaseServiceModel {
     private String firstName;
     private String lastName;
-    private String title;
     private String email;
     private String password;
     private List<ConsultationServiceModel> consultations;

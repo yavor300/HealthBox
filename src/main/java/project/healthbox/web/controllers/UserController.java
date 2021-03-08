@@ -58,7 +58,7 @@ public class UserController {
             return modelAndView;
         }
 
-        UserServiceModel registeredUser = userService.register(modelMapper.map(userRegisterBindingModel, UserServiceModel.class));
+        UserServiceModel registeredUser = userService.register(modelMapper.map(userRegisterBindingModel, UserServiceModel.class), userRegisterBindingModel.getTitle());
 
         if (registeredUser == null) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);

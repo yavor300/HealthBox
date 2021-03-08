@@ -27,30 +27,30 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserServiceModel register(UserServiceModel userServiceModel) {
-        this.roleService.seedRolesInDb();
+    public UserServiceModel register(UserServiceModel userServiceModel, String title) {
+        roleService.seedRolesInDb();
 
-        if (this.userRepository.count() == 0 && this.doctorRepository.count() == 0) {
-            userServiceModel.setAuthorities(this.roleService.findAllRoles());
+        if (userRepository.count() == 0 && doctorRepository.count() == 0) {
+            userServiceModel.setAuthorities(roleService.setRolesForRootUser());
         } else {
             userServiceModel.setAuthorities(new LinkedHashSet<>());
-            if (userServiceModel.getTitle().equals("Patient")) {
-                userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
+            if (title.equals("Patient")) {
+                userServiceModel.getAuthorities().add(roleService.findByAuthority("ROLE_USER"));
             } else {
-                userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_DOCTOR"));
+                userServiceModel.getAuthorities().add(roleService.findByAuthority("ROLE_DOCTOR"));
             }
         }
 
-        User user = this.modelMapper.map(userServiceModel, User.class);
-        Doctor doctor = this.modelMapper.map(userServiceModel, Doctor.class);
+        User user = modelMapper.map(userServiceModel, User.class);
+        Doctor doctor = modelMapper.map(userServiceModel, Doctor.class);
 
-        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
-        doctor.setPassword(this.bCryptPasswordEncoder.encode(doctor.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
 
-        if (user.getTitle().equals("Doctor") && !this.doctorRepository.existsByEmail(doctor.getEmail())) {
-            return this.modelMapper.map(this.doctorRepository.saveAndFlush(doctor), UserServiceModel.class);
-        } else if (user.getTitle().equals("Patient") && !this.userRepository.existsByEmail(user.getEmail())) {
-            return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
+        if (title.equals("Doctor") && !doctorRepository.existsByEmail(doctor.getEmail())) {
+            return modelMapper.map(doctorRepository.saveAndFlush(doctor), UserServiceModel.class);
+        } else if (title.equals("Patient") && !userRepository.existsByEmail(user.getEmail())) {
+            return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
         }
 
         return null;

@@ -17,6 +17,7 @@ import javax.persistence.Table;
 public class Answer extends BaseEntity {
     @Column(name = "problem_answer", nullable = false, columnDefinition = "TEXT")
     private String problemAnswer;
+
     @OneToOne(mappedBy = "answer")
     private Consultation consultation;
 }

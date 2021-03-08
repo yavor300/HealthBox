@@ -18,6 +18,7 @@ import java.util.List;
 public class City extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
+
     @OneToMany(mappedBy = "location")
     private List<Doctor> doctors;
 

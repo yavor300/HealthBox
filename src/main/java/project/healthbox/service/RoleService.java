@@ -10,4 +10,6 @@ public interface RoleService {
     Set<RoleServiceModel> findAllRoles();
 
     RoleServiceModel findByAuthority(String authority);
+
+    Set<RoleServiceModel> setRolesForRootUser();
 }
