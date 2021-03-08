@@ -3,6 +3,7 @@ package project.healthbox.domain.models.binding;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.healthbox.validation.annotation.FieldMatch;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -11,6 +12,11 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
+@FieldMatch(
+        first = "password",
+        second = "confirmPassword",
+        message = "Passwords must match!"
+)
 public class UserRegisterBindingModel {
     @Size(min = 2, max = 10, message = "The first name must be between 2 and 10 characters long!")
     private String firstName;

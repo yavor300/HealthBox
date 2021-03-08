@@ -23,7 +23,8 @@
                   th:object="${userRegisterBindingModel}">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input th:field="*{firstName}" th:classappend="${#fields.hasErrors('firstName')}? 'is-invalid'" type="text" name="firstName"
+                        <input th:field="*{firstName}" th:classappend="${#fields.hasErrors('firstName')}? 'is-invalid'"
+                               type="text" name="firstName"
                                class="form-control" id="firstName" placeholder="First Name..." th:value="*{firstName}">
                         <small th:if="${#fields.hasErrors('firstName')}" class="text-danger"
                                th:errors="*{firstName}"></small>
@@ -31,7 +32,8 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input th:field="*{lastName}" th:classappend="${#fields.hasErrors('lastName')}? 'is-invalid'" type="text" name="lastName"
+                        <input th:field="*{lastName}" th:classappend="${#fields.hasErrors('lastName')}? 'is-invalid'"
+                               type="text" name="lastName"
                                class="form-control" id="lastName" placeholder="Last Name...">
                         <small th:if="${#fields.hasErrors('lastName')}" class="text-danger"
                                th:errors="*{lastName}"></small>
@@ -39,7 +41,8 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <select th:field="*{title}" th:classappend="${#fields.hasErrors('title')}? 'is-invalid'" name="title" id="title" class="form-control">
+                        <select th:field="*{title}" th:classappend="${#fields.hasErrors('title')}? 'is-invalid'"
+                                name="title" id="title" class="form-control">
                             <option value="">Select Title</option>
                             <option value="Patient">Patient</option>
                             <option value="Doctor">Doctor</option>
@@ -50,14 +53,16 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input th:field="*{email}" th:classappend="${#fields.hasErrors('email')}? 'is-invalid'" type="email" class="form-control" name="email" id="email" placeholder="Email...">
+                        <input th:field="*{email}" th:classappend="${#fields.hasErrors('email')}? 'is-invalid'"
+                               type="email" class="form-control" name="email" id="email" placeholder="Email...">
                         <small th:if="${#fields.hasErrors('email')}" class="text-danger"
                                th:errors="*{email}"></small>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input th:field="*{password}" th:classappend="${#fields.hasErrors('password')}? 'is-invalid'" type="password" class="form-control" name="password" id="password"
+                        <input th:field="*{password}" th:classappend="${#fields.hasErrors('password')}? 'is-invalid'"
+                               type="password" class="form-control" name="password" id="password"
                                placeholder="Password...">
                         <small th:if="${#fields.hasErrors('password')}" class="text-danger"
                                th:errors="*{password}"></small>
@@ -65,9 +70,12 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input th:field="*{confirmPassword}" th:classappend="${passwordsNotEqual}? 'is-invalid'" type="password" class="form-control" name="confirmPassword" id="confirmPassword"
+                        <input th:field="*{confirmPassword}"
+                               th:classappend="${#fields.hasErrors('confirmPassword')}? 'is-invalid'" type="password"
+                               class="form-control" name="confirmPassword" id="confirmPassword"
                                placeholder="Confirm Password...">
-                        <small th:if="${passwordsNotEqual}" class="text-danger">Passwords don't match!</small>
+                        <small th:if="${#fields.hasErrors('confirmPassword')}" class="text-danger"
+                               th:errors="*{confirmPassword}"></small>
                     </div>
                 </div>
                 <div class="button-holder d-flex justify-content-center">

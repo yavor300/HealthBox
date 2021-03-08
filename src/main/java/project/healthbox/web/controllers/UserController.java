@@ -33,18 +33,15 @@ public class UserController {
         return new UserRegisterBindingModel();
     }
 
+    @ModelAttribute("userAlreadyExists")
+    public boolean userAlreadyExists() {
+        return false;
+    }
+
     @GetMapping("/register")
     @PreAuthorize("isAnonymous()")
     @PageTitle("Register")
     public ModelAndView getRegisterView(ModelAndView modelAndView) {
-        if (!modelAndView.getModel().containsKey("passwordsNotEqual")) {
-            modelAndView.getModel().put("passwordsNotEqual", false);
-        }
-
-        if (!modelAndView.getModel().containsKey("userAlreadyExists")) {
-            modelAndView.getModel().put("userAlreadyExists", false);
-        }
-
         modelAndView.setViewName("user/register");
         return modelAndView;
     }
@@ -57,13 +54,6 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
-            modelAndView.setViewName("redirect:register");
-            return modelAndView;
-        }
-
-        if (!userRegisterBindingModel.getPassword().equals(userRegisterBindingModel.getConfirmPassword())) {
-            redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
-            redirectAttributes.addFlashAttribute("passwordsNotEqual", true);
             modelAndView.setViewName("redirect:register");
             return modelAndView;
         }
