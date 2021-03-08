@@ -29,8 +29,6 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().disable()
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/js/**", "/css/**", "/img/**").permitAll()
                 .antMatchers("/", "/user/register", "/user/login").anonymous()
@@ -38,11 +36,9 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
-                //.failureUrl("/user/login?error=true")
                 .failureForwardUrl("/user/login-error")
                 .usernameParameter("username")
                 .passwordParameter("password")
-//                .successForwardUrl("/")
                 .successHandler(authenticationSuccessHandler)
                 .and()
                 .logout()
