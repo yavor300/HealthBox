@@ -38,8 +38,8 @@
                         <select th:field="*{gender}" th:classappend="${#fields.hasErrors('gender')}? 'is-invalid'"
                                 name="gender" id="gender" class="form-control">
                             <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
+                            <option th:each="g : ${T(project.healthbox.domain.entities.enums.GenderEnum).values()}" th:value="${g}"
+                                    th:text="${#strings.capitalize(g.toString().toLowerCase())}"></option>
                         </select>
                         <small th:if="${#fields.hasErrors('gender')}" class="text-danger"
                                th:errors="*{gender}"></small>

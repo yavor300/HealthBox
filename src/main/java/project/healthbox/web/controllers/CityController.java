@@ -78,6 +78,8 @@ public class CityController {
             return modelAndView;
         }
 
+        //TODO VALIDATE IF ALREADY EXISTING
+
         cityService.createCity(cityAddBindingModel.getName());
         modelAndView.setViewName("redirect:/city/all");
         return modelAndView;

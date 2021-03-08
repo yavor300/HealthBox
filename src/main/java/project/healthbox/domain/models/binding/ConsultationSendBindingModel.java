@@ -3,6 +3,7 @@ package project.healthbox.domain.models.binding;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.healthbox.domain.entities.enums.GenderEnum;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,8 +18,8 @@ public class ConsultationSendBindingModel {
     @NotNull(message = "Age cannot be empty!")
     private Integer age;
 
-    @NotBlank(message = "Gender cannot be empty!")
-    private String gender;
+    @NotNull(message = "Gender cannot be empty!")
+    private GenderEnum gender;
 
     @NotBlank(message = "Diagnoses area cannot be empty!")
     private String diagnoses;

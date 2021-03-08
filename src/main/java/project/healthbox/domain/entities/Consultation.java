@@ -3,6 +3,7 @@ package project.healthbox.domain.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.healthbox.domain.entities.enums.GenderEnum;
 
 import javax.persistence.*;
 
@@ -12,15 +13,16 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 public class Consultation extends BaseEntity {
-    @Column(name = "age", nullable = false)
+    @Column(nullable = false)
     private Integer age;
-    @Column(name = "gender", nullable = false)
-    private String gender;
-    @Column(name = "diagnoses", nullable = false)
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private GenderEnum gender;
+    @Column(nullable = false)
     private String diagnoses;
-    @Column(name = "medicaments", nullable = false)
+    @Column(nullable = false)
     private String medicaments;
-    @Column(name = "allergy", nullable = false)
+    @Column(nullable = false)
     private String allergy;
     @Column(name = "problem_title", nullable = false)
     private String problemTitle;

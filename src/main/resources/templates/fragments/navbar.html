@@ -69,8 +69,6 @@
                                             <th:block sec:authorize="hasRole('ROLE_DOCTOR')">
                                                 <li><a th:href="@{/doctor/dashboard}">Dashboard</a></li>
                                             </th:block>
-<!--
-                                               <li><a th:href="@{/logout}">Logout</a></li>-->
                                             <li>
                                                 <a>
                                                     <form th:action="@{/logout}" method="POST">
@@ -78,7 +76,7 @@
                                                             Logout
                                                         </button>
                                                     </form>
-                                            </a>
+                                                </a>
 
                                             </li>
                                         </ul>

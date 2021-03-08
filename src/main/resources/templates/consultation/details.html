@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input th:field="*{gender}" type="text" disabled="disabled" class="form-control">
+                        <input th:value="${#strings.capitalize(consultation.gender.toLowerCase())}" type="text" disabled="disabled" class="form-control">
                         <div class="validate"></div>
                     </div>
                 </div>

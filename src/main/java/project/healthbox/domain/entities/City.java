@@ -1,6 +1,5 @@
 package project.healthbox.domain.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class City extends BaseEntity {
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
     @OneToMany(mappedBy = "location")
     private List<Doctor> doctors;
