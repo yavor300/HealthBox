@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserDashboardViewModel {
+public class ConsultationDashboardViewModel {
     private String id;
     private String problemTitle;
     private String doctorFirstName;

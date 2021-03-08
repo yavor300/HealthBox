@@ -13,19 +13,18 @@ import project.healthbox.domain.models.binding.UserRegisterBindingModel;
 import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.domain.models.view.UsersAllViewModel;
 import project.healthbox.domain.models.view.UserDeleteViewModel;
-import project.healthbox.domain.models.view.UserDashboardViewModel;
+import project.healthbox.domain.models.view.ConsultationDashboardViewModel;
 import project.healthbox.service.UserService;
 import project.healthbox.web.annotations.PageTitle;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
 @AllArgsConstructor
-public class UserController extends BaseController {
+public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
@@ -38,12 +37,12 @@ public class UserController extends BaseController {
     @PreAuthorize("isAnonymous()")
     @PageTitle("Register")
     public ModelAndView getRegisterView(ModelAndView modelAndView) {
-        if (modelAndView.getModel().containsKey("passwordsNotEqual")) {
-            modelAndView.addObject("passwordsNotEqual", false);
+        if (!modelAndView.getModel().containsKey("passwordsNotEqual")) {
+            modelAndView.getModel().put("passwordsNotEqual", false);
         }
 
-        if (modelAndView.getModel().containsKey("userAlreadyExists")) {
-            modelAndView.addObject("userAlreadyExists", false);
+        if (!modelAndView.getModel().containsKey("userAlreadyExists")) {
+            modelAndView.getModel().put("userAlreadyExists", false);
         }
 
         modelAndView.setViewName("user/register");
@@ -69,7 +68,7 @@ public class UserController extends BaseController {
             return modelAndView;
         }
 
-        UserServiceModel registeredUser = this.userService.register(this.modelMapper.map(userRegisterBindingModel, UserServiceModel.class));
+        UserServiceModel registeredUser = userService.register(modelMapper.map(userRegisterBindingModel, UserServiceModel.class));
 
         if (registeredUser == null) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
@@ -85,81 +84,78 @@ public class UserController extends BaseController {
     @GetMapping("/login")
     @PreAuthorize("isAnonymous()")
     @PageTitle("Login")
-    public ModelAndView getLoginView(@RequestParam(required = false, name = "error") boolean error, ModelAndView modelAndView) {
-        modelAndView.addObject("error", error);
+    public ModelAndView getLoginView(ModelAndView modelAndView) {
         modelAndView.setViewName("user/login");
         return modelAndView;
     }
 
     @PostMapping("/login-error")
     public ModelAndView failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
-                                            String email) {
-        ModelAndView modelAndView = new ModelAndView();
-
+                                            String email, ModelAndView modelAndView) {
         modelAndView.addObject("bad_credentials", true);
         modelAndView.addObject("email", email);
 
         modelAndView.setViewName("user/login-error");
-
         return modelAndView;
     }
-
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("All Users")
     public ModelAndView getAllView(ModelAndView modelAndView) {
-        List<UsersAllViewModel> users = this.userService.getAll()
+        modelAndView.addObject("users", userService.getAll()
                 .stream()
-                .map(u -> this.modelMapper.map(u, UsersAllViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("users", users);
-        return super.view("user/all-users", modelAndView);
+                .map(userServiceModel -> modelMapper.map(userServiceModel, UsersAllViewModel.class))
+                .collect(Collectors.toList()));
+
+        modelAndView.setViewName("user/all-users");
+        return modelAndView;
     }
 
     @GetMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PageTitle("Delete User")
     public ModelAndView deleteUser(@PathVariable String id, ModelAndView modelAndView) {
-        UserServiceModel userServiceModel = this.userService.getById(id);
-        UserDeleteViewModel user = this.modelMapper.map(userServiceModel, UserDeleteViewModel.class);
-        modelAndView.addObject("user", user);
-        return super.view("user/delete-user", modelAndView);
+        modelAndView.addObject("user", modelMapper.map(userService.getById(id), UserDeleteViewModel.class));
+        modelAndView.setViewName("user/delete-user");
+        return modelAndView;
     }
 
     @PostMapping("/delete/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView deleteUserConfirm(@PathVariable String id) {
-        this.userService.deleteUser(id);
-        return super.redirect("/user" + "/all");
+    public ModelAndView deleteUserConfirm(@PathVariable String id, ModelAndView modelAndView) {
+        userService.deleteUser(id);
+        modelAndView.setViewName("redirect:/user/all");
+        return modelAndView;
     }
 
     @PostMapping("/set-admin/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView setAdminRole(@PathVariable String id) {
-        this.userService.makeAdmin(id);
-        return super.redirect("/user" + "/all");
+    public ModelAndView setAdminRole(@PathVariable String id, ModelAndView modelAndView) {
+        userService.makeAdmin(id);
+        modelAndView.setViewName("redirect:/user/all");
+        return modelAndView;
     }
 
     @PostMapping("/set-user/{id}")
     @PreAuthorize("hasRole('ROLE_ROOT')")
-    public ModelAndView setUserRole(@PathVariable String id) {
-        this.userService.makeUser(id);
-
-        return super.redirect("/user" + "/all");
+    public ModelAndView setUserRole(@PathVariable String id, ModelAndView modelAndView) {
+        userService.makeUser(id);
+        modelAndView.setViewName("redirect:/user/all");
+        return modelAndView;
     }
 
     @GetMapping("/dashboard")
     @PreAuthorize("isAuthenticated()")
     @PageTitle("Dashboard")
     public ModelAndView getProfileView(Principal principal, ModelAndView modelAndView) {
-        UserServiceModel user = this.userService.getByEmail(principal.getName());
-        List<UserDashboardViewModel> consultations = user.getConsultations()
+        modelAndView.addObject("consultations", userService.getByEmail(principal.getName())
+                .getConsultations()
                 .stream()
-                .map(u -> this.modelMapper.map(u, UserDashboardViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("consultations", consultations);
-        return super.view("user/dashboard", modelAndView);
-    }
+                .map(consultationServiceModel -> modelMapper.map(consultationServiceModel, ConsultationDashboardViewModel.class))
+                .collect(Collectors.toList()));
 
+        modelAndView.setViewName("user/dashboard");
+        return modelAndView;
+    }
 }
