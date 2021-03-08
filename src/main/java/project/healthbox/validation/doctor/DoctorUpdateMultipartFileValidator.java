@@ -24,46 +24,5 @@ public class DoctorUpdateMultipartFileValidator implements org.springframework.v
                     ValidationConstants.PROFILE_PICTURE_NOT_UPLOADED
             );
         }
-
-
-//        if (doctorUpdateBindingModel.getSpecialty() == null || doctorUpdateBindingModel.getSpecialty().trim().isEmpty()) {
-//            errors.rejectValue(
-//                    "specialty",
-//                    ValidationConstants.SPECIALTY_NOT_SELECTED,
-//                    ValidationConstants.SPECIALTY_NOT_SELECTED
-//            );
-//        }
-//
-//        if (doctorUpdateBindingModel.getLocation() == null || doctorUpdateBindingModel.getLocation().trim().isEmpty()) {
-//            errors.rejectValue(
-//                    "location",
-//                    ValidationConstants.LOCATION_NOT_SELECTED,
-//                    ValidationConstants.LOCATION_NOT_SELECTED
-//            );
-//        }
-//
-//        if (doctorUpdateBindingModel.getBiography() == null || doctorUpdateBindingModel.getBiography().trim().isEmpty()) {
-//            errors.rejectValue(
-//                    "biography",
-//                    ValidationConstants.EMPTY_TEXTAREA,
-//                    ValidationConstants.EMPTY_TEXTAREA
-//            );
-//        }
-//
-//        if (doctorUpdateBindingModel.getEducation() == null || doctorUpdateBindingModel.getEducation().trim().isEmpty()) {
-//            errors.rejectValue(
-//                    "education",
-//                    ValidationConstants.EMPTY_TEXTAREA,
-//                    ValidationConstants.EMPTY_TEXTAREA
-//            );
-//        }
-//
-//        if (doctorUpdateBindingModel.getWorkHistory() == null || doctorUpdateBindingModel.getWorkHistory().trim().isEmpty()) {
-//            errors.rejectValue(
-//                    "workHistory",
-//                    ValidationConstants.EMPTY_TEXTAREA,
-//                    ValidationConstants.EMPTY_TEXTAREA
-//            );
-//        }
     }
 }
