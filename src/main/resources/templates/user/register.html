@@ -44,8 +44,10 @@
                         <select th:field="*{title}" th:classappend="${#fields.hasErrors('title')}? 'is-invalid'"
                                 name="title" id="title" class="form-control">
                             <option value="">Select Title</option>
-                            <option value="Patient">Patient</option>
-                            <option value="Doctor">Doctor</option>
+                            <option th:each="t : ${T(project.healthbox.domain.entities.enums.TitleEnum).values()}"
+                                    th:value="${t}"
+                                    th:text="${#strings.capitalize(t.toString().toLowerCase())}">
+                            </option>
                         </select>
                         <small th:if="${#fields.hasErrors('title')}" class="text-danger"
                                th:errors="*{title}"></small>

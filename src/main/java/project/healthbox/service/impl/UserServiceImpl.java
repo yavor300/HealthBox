@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.entities.User;
+import project.healthbox.domain.entities.enums.TitleEnum;
 import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.UserRepository;
@@ -27,14 +28,14 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserServiceModel register(UserServiceModel userServiceModel, String title) {
+    public UserServiceModel register(UserServiceModel userServiceModel, TitleEnum title) {
         roleService.seedRolesInDb();
 
         if (userRepository.count() == 0 && doctorRepository.count() == 0) {
             userServiceModel.setAuthorities(roleService.setRolesForRootUser());
         } else {
             userServiceModel.setAuthorities(new LinkedHashSet<>());
-            if (title.equals("Patient")) {
+            if (title == TitleEnum.DOCTOR) {
                 userServiceModel.getAuthorities().add(roleService.findByAuthority("ROLE_USER"));
             } else {
                 userServiceModel.getAuthorities().add(roleService.findByAuthority("ROLE_DOCTOR"));
@@ -47,9 +48,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         doctor.setPassword(bCryptPasswordEncoder.encode(doctor.getPassword()));
 
-        if (title.equals("Doctor") && !doctorRepository.existsByEmail(doctor.getEmail())) {
+        if (title == TitleEnum.DOCTOR && !doctorRepository.existsByEmail(doctor.getEmail())) {
             return modelMapper.map(doctorRepository.saveAndFlush(doctor), UserServiceModel.class);
-        } else if (title.equals("Patient") && !userRepository.existsByEmail(user.getEmail())) {
+        } else if (title == TitleEnum.PATIENT && !userRepository.existsByEmail(user.getEmail())) {
             return modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
         }
 
