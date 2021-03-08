@@ -1,3 +1,23 @@
+button#logout.nav-link {
+    color: #102039;
+    font-weight: 600; !important;
+    padding: 10px 10px; !important;
+    display: inline; !important;
+    font-size: 16px; !important;
+    -webkit-transition: .3s; !important;
+    -moz-transition: .3s; !important;
+    -o-transition: .3s; !important;
+    transition: .3s; !important;
+    text-transform: capitalize; !important;
+    position: relative; !important;
+    font-family: "Muli",sans-serif; !important;
+    background: none; !important;
+    border-color: white; !important;
+    border-image: none; !important;
+    border-style: none; !important;
+    border-width: 0; !important;
+}
+
 .alert {
     margin: auto; display: table;
     margin-bottom: 1em;

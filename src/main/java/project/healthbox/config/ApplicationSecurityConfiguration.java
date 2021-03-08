@@ -42,6 +42,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                 .successHandler(authenticationSuccessHandler)
                 .and()
                 .logout()
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID");

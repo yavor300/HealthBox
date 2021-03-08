@@ -12,10 +12,15 @@
 <main>
     <section id="appointment" class="appointment section-bg">
         <div class="container">
-            <form th:method="post" th:action="@{/city/create/}" class="php-email-form" enctype="multipart/form-data">
+            <form th:method="post" th:action="@{/city/create/}" class="php-email-form" enctype="multipart/form-data"
+                  th:object="${cityAddBindingModel}">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" name="name" class="form-control" id="name" placeholder="City Name...">
+                        <input th:field="*{name}"
+                               th:classappend="${#fields.hasErrors('name')}? 'is-invalid'" type="text" name="name"
+                               class="form-control" id="name" placeholder="City Name...">
+                        <small th:if="${#fields.hasErrors('name')}" class="text-danger"
+                               th:errors="*{name}"></small>
                     </div>
                 </div>
 

@@ -4,14 +4,17 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.healthbox.domain.models.binding.CityAddBindingModel;
 import project.healthbox.domain.models.view.CitiesAllViewModel;
 import project.healthbox.domain.models.view.CityDeleteViewModel;
 import project.healthbox.service.CityService;
 import project.healthbox.web.annotations.PageTitle;
 
+import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 @Controller
@@ -58,11 +61,24 @@ public class CityController {
         return modelAndView;
     }
 
+    @ModelAttribute("cityAddBindingModel")
+    public CityAddBindingModel cityAddBindingModel() {
+        return new CityAddBindingModel();
+    }
+
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ModelAndView createCity(@ModelAttribute CityAddBindingModel model, ModelAndView modelAndView) {
-        //TODO ADD VALIDATIONS
-        cityService.createCity(model.getName());
+    public ModelAndView createCity(@Valid @ModelAttribute CityAddBindingModel cityAddBindingModel, BindingResult bindingResult,
+                                   RedirectAttributes redirectAttributes,
+                                   ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("cityAddBindingModel", cityAddBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.cityAddBindingModel", bindingResult);
+            modelAndView.setViewName("redirect:/city/create");
+            return modelAndView;
+        }
+
+        cityService.createCity(cityAddBindingModel.getName());
         modelAndView.setViewName("redirect:/city/all");
         return modelAndView;
     }
