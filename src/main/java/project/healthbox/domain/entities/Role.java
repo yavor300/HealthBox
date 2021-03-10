@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 public class Role extends BaseEntity implements GrantedAuthority {
 
-    @Column(name = "authority", unique = true)
+    @Column(unique = true)
     private String authority;
 
     @ManyToMany(mappedBy = "authorities")

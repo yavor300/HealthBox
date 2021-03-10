@@ -16,8 +16,8 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public AnswerServiceModel save(AnswerServiceModel answerServiceModel) {
-        return this.modelMapper.map(this.answerRepository.saveAndFlush(
-                this.modelMapper.map(answerServiceModel, Answer.class)
+        return modelMapper.map(answerRepository.saveAndFlush(
+                modelMapper.map(answerServiceModel, Answer.class)
         ), AnswerServiceModel.class);
     }
 }

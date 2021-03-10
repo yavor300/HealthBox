@@ -19,9 +19,9 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityServiceModel getByName(String name) {
-        City city = this.cityRepository.getByName(name);
+        City city = cityRepository.getByName(name);
         if (city != null) {
-            return this.modelMapper.map(city, CityServiceModel.class);
+            return modelMapper.map(city, CityServiceModel.class);
         } else {
             return null;
         }
@@ -29,14 +29,14 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public List<CityServiceModel> getAll() {
-        return this.cityRepository.findAll().stream()
-                .map(c -> this.modelMapper.map(c, CityServiceModel.class))
+        return cityRepository.findAll().stream()
+                .map(city -> modelMapper.map(city, CityServiceModel.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public String getIdByCityName(String name) {
-        CityServiceModel cityServiceModel = this.getByName(name);
+        CityServiceModel cityServiceModel = getByName(name);
         if (cityServiceModel == null) {
             return "";
         }
@@ -45,17 +45,20 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityServiceModel getById(String id) {
-        return this.modelMapper.map(this.cityRepository.getById(id), CityServiceModel.class);
+        return modelMapper.map(cityRepository.getById(id), CityServiceModel.class);
     }
 
     @Override
     public void deleteCity(String id) {
-        City city = this.cityRepository.getById(id);
-        this.cityRepository.delete(city);
+        City city = cityRepository.getById(id);
+        cityRepository.delete(city);
     }
 
     @Override
     public CityServiceModel createCity(String name) {
-        return this.modelMapper.map(this.cityRepository.saveAndFlush(new City(name)), CityServiceModel.class);
+        if (cityRepository.findByName(name).isPresent()) {
+            return null;
+        }
+        return modelMapper.map(cityRepository.saveAndFlush(new City(name)), CityServiceModel.class);
     }
 }

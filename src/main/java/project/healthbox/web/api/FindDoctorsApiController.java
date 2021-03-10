@@ -32,6 +32,10 @@ public class FindDoctorsApiController {
                 .map(r -> this.modelMapper.map(r, DoctorFoundViewModel.class))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(result, HttpStatus.FOUND);
+        if (result.isEmpty()) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

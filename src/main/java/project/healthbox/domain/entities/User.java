@@ -24,13 +24,10 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-//    @Column(name = "title", nullable = false)
-//    private String title;
-
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)

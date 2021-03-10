@@ -16,8 +16,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class Specialty extends BaseEntity {
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
+
     @OneToMany(mappedBy = "specialty")
     private List<Doctor> doctors;
 
