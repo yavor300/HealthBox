@@ -32,7 +32,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorServiceModel update(DoctorServiceModel doctorServiceModel) throws IOException {
         Doctor doctor = doctorRepository.findById(doctorServiceModel.getId())
-                .orElseThrow(() -> new DoctorNotFoundException("Invalid doctor!"));
+                .orElseThrow(() -> new DoctorNotFoundException("Invalid doctor identifier!"));
 
         City city = modelMapper.map(cityService.getByName(doctorServiceModel.getLocation().getName()), City.class);
 
@@ -41,7 +41,7 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setBiography(doctorServiceModel.getBiography());
         doctor.setWorkHistory(doctorServiceModel.getWorkHistory());
         doctor.setEducation(doctorServiceModel.getEducation());
-        //TODO USE SERVEICE INSTEAD
+        //TODO USE SERVICE INSTEAD
         doctor.setSpecialty(specialtyRepository.findByName(doctorServiceModel.getSpecialty().getName()));
 
         return modelMapper.map(doctorRepository.saveAndFlush(doctor), DoctorServiceModel.class);
@@ -49,36 +49,36 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<DoctorServiceModel> getAll() {
-        return this.doctorRepository.findAll()
-                .stream().map(d -> this.modelMapper.map(d, DoctorServiceModel.class))
+        return doctorRepository.findAll()
+                .stream().map(doctor -> modelMapper.map(doctor, DoctorServiceModel.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void deleteDoctor(String id) {
-        Doctor doctor = this.doctorRepository.getById(id);
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new DoctorNotFoundException("Invalid doctor identifier!"));
         doctor.getConsultations()
                 .forEach(consultation -> consultation.setDoctor(null));
-        this.doctorRepository.delete(doctor);
+        doctorRepository.delete(doctor);
     }
 
     @Override
     public DoctorServiceModel getById(String id) {
-        Doctor doctor = this.doctorRepository.getById(id);
-        return this.modelMapper.map(
-                doctor,
-                DoctorServiceModel.class
-        );
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new DoctorNotFoundException("Invalid doctor identifier!"));
+        return modelMapper.map(doctor, DoctorServiceModel.class);
     }
 
     @Override
     public DoctorServiceModel getByEmail(String email) {
-        Doctor doctor = this.doctorRepository.findByEmail(email).orElse(null);
+        Doctor doctor = doctorRepository.findByEmail(email)
+                .orElse(null);
 
         if (doctor == null) {
             return null;
         }
 
-        return this.modelMapper.map(doctor, DoctorServiceModel.class);
+        return modelMapper.map(doctor, DoctorServiceModel.class);
     }
 }

@@ -2,7 +2,6 @@ package project.healthbox.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.models.service.CityServiceModel;
@@ -38,13 +37,13 @@ public class CityServiceImpl implements CityService {
     public CityServiceModel getById(String id) {
         return cityRepository.findById(id)
                 .map(city -> modelMapper.map(city, CityServiceModel.class))
-                .orElseThrow(() -> new CityNotFoundException("Invalid city!"));
+                .orElseThrow(() -> new CityNotFoundException("Invalid city identifier!"));
     }
 
     @Override
     public CityServiceModel deleteCity(String id) {
         City city = cityRepository.findById(id)
-                .orElseThrow(() -> new CityNotFoundException("Invalid city!"));
+                .orElseThrow(() -> new CityNotFoundException("Invalid city identifier!"));
         cityRepository.delete(city);
         return modelMapper.map(city, CityServiceModel.class);
     }
