@@ -11,6 +11,7 @@ import project.healthbox.domain.models.service.AnswerServiceModel;
 import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
+import project.healthbox.error.ConsultationNotFoundException;
 import project.healthbox.repostory.ConsultationRepository;
 import project.healthbox.service.ConsultationService;
 
@@ -26,6 +27,8 @@ public class ConsultationServiceImpl implements ConsultationService {
                 modelMapper.map(model, Consultation.class)), ConsultationServiceModel.class);
     }
 
+    //TODO SEPARATE IN TWO METHODS ?
+    //TODO RETURN THE SERVICE MODELS ?
     @Override
     public void setDoctorAndUser(ConsultationServiceModel consultationServiceModel, DoctorServiceModel doctorServiceModel, UserServiceModel userServiceModel) {
         Consultation consultation = modelMapper.map(consultationServiceModel, Consultation.class);
@@ -36,6 +39,7 @@ public class ConsultationServiceImpl implements ConsultationService {
         consultationRepository.saveAndFlush(consultation);
     }
 
+    //TODO RETURN ANSWERSERIVEMODEL ?
     @Override
     public void setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel) {
         Consultation consultation = modelMapper.map(consultationServiceModel, Consultation.class);
@@ -46,6 +50,8 @@ public class ConsultationServiceImpl implements ConsultationService {
 
     @Override
     public ConsultationServiceModel getById(String id) {
-        return this.modelMapper.map(this.consultationRepository.getById(id), ConsultationServiceModel.class);
+        Consultation consultation = consultationRepository.findById(id)
+                .orElseThrow(() -> new ConsultationNotFoundException("Invalid consultation identifier!"));
+        return modelMapper.map(consultation, ConsultationServiceModel.class);
     }
 }

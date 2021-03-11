@@ -74,11 +74,9 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorServiceModel getByEmail(String email) {
         Doctor doctor = doctorRepository.findByEmail(email)
                 .orElse(null);
-
         if (doctor == null) {
             return null;
         }
-
         return modelMapper.map(doctor, DoctorServiceModel.class);
     }
 }
