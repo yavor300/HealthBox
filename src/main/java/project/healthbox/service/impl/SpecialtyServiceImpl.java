@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Specialty;
 import project.healthbox.domain.models.service.SpecialtyServiceModel;
+import project.healthbox.error.SpecialtyNotFoundException;
 import project.healthbox.repostory.SpecialtyRepository;
 import project.healthbox.service.SpecialtyService;
 
@@ -19,28 +20,16 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Override
     public List<SpecialtyServiceModel> getAll() {
-        return this.specialtyRepository.findAll().stream()
-                .map(s -> this.modelMapper.map(s, SpecialtyServiceModel.class))
+        return specialtyRepository.findAll().stream()
+                .map(specialty -> modelMapper.map(specialty, SpecialtyServiceModel.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public SpecialtyServiceModel findByName(String name) {
-        Specialty specialty = this.specialtyRepository.findByName(name);
-        if (specialty != null) {
-            return this.modelMapper.map(specialty, SpecialtyServiceModel.class);
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public String getIdBySpecialtyName(String name) {
-        SpecialtyServiceModel specialtyServiceModel = this.findByName(name);
-        if (specialtyServiceModel == null) {
-            return "";
-        }
-        return specialtyServiceModel.getId();
+    public SpecialtyServiceModel getByName(String name) {
+        return specialtyRepository.findByName(name)
+                .map(specialty -> modelMapper.map(specialty, SpecialtyServiceModel.class))
+                .orElseThrow(() -> new SpecialtyNotFoundException("Invalid specialty name!"));
     }
 
     @Override

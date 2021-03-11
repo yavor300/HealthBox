@@ -13,6 +13,7 @@ import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.view.*;
 import project.healthbox.error.CityNotFoundException;
 import project.healthbox.error.DoctorsNotFoundException;
+import project.healthbox.error.SpecialtyNotFoundException;
 import project.healthbox.service.CityService;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
@@ -76,7 +77,7 @@ public class DoctorController {
 
         DoctorServiceModel doctorServiceModel = modelMapper.map(doctorUpdateBindingModel, DoctorServiceModel.class);
         doctorServiceModel.setId(doctorService.getByEmail(principal.getName()).getId());
-        doctorService.update(doctorServiceModel);
+        doctorService.completeProfile(doctorServiceModel);
 
         modelAndView.setViewName("redirect:/doctor/dashboard");
         return modelAndView;
@@ -131,6 +132,13 @@ public class DoctorController {
     public ModelAndView deleteDoctorConfirm(@PathVariable String id, ModelAndView modelAndView) {
         this.doctorService.deleteDoctor(id);
         modelAndView.setViewName("redirect:/doctor/all");
+        return modelAndView;
+    }
+
+    @ExceptionHandler({SpecialtyNotFoundException.class})
+    public ModelAndView handleSpecialtyNotFoundException(SpecialtyNotFoundException e) {
+        ModelAndView modelAndView = new ModelAndView("error/error");
+        modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
 

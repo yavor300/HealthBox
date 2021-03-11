@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface DoctorService {
-    DoctorServiceModel update(DoctorServiceModel doctorServiceModel) throws IOException;
+    DoctorServiceModel completeProfile(DoctorServiceModel doctorServiceModel) throws IOException;
 
     DoctorServiceModel getById(String id);
 

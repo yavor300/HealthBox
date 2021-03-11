@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.entities.Doctor;
+import project.healthbox.domain.entities.Specialty;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.error.DoctorNotFoundException;
@@ -14,6 +15,7 @@ import project.healthbox.repostory.SpecialtyRepository;
 import project.healthbox.service.CityService;
 import project.healthbox.service.CloudinaryService;
 import project.healthbox.service.DoctorService;
+import project.healthbox.service.SpecialtyService;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,13 +26,13 @@ import java.util.stream.Collectors;
 public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
     private final ModelMapper modelMapper;
-    private final SpecialtyRepository specialtyRepository;
+    private final SpecialtyService specialtyService;
     private final CityService cityService;
     private final CloudinaryService cloudinaryService;
 
 
     @Override
-    public DoctorServiceModel update(DoctorServiceModel doctorServiceModel) throws IOException {
+    public DoctorServiceModel completeProfile(DoctorServiceModel doctorServiceModel) throws IOException {
         Doctor doctor = doctorRepository.findById(doctorServiceModel.getId())
                 .orElseThrow(() -> new DoctorNotFoundException("Invalid doctor identifier!"));
 
@@ -41,8 +43,9 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setBiography(doctorServiceModel.getBiography());
         doctor.setWorkHistory(doctorServiceModel.getWorkHistory());
         doctor.setEducation(doctorServiceModel.getEducation());
-        //TODO USE SERVICE INSTEAD
-        doctor.setSpecialty(specialtyRepository.findByName(doctorServiceModel.getSpecialty().getName()));
+        doctor.setSpecialty(modelMapper.map(
+                specialtyService.getByName(doctorServiceModel.getSpecialty().getName()),
+                Specialty.class));
 
         return modelMapper.map(doctorRepository.saveAndFlush(doctor), DoctorServiceModel.class);
     }

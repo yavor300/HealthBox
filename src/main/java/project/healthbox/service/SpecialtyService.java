@@ -7,9 +7,7 @@ import java.util.List;
 public interface SpecialtyService {
     List<SpecialtyServiceModel> getAll();
 
-    SpecialtyServiceModel findByName(String name);
-
-    String getIdBySpecialtyName(String name);
+    SpecialtyServiceModel getByName(String name);
 
     SpecialtyServiceModel getById(String id);
 

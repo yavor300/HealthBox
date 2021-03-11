@@ -36,9 +36,9 @@ public class UserServiceImpl implements UserService {
         } else {
             userServiceModel.setAuthorities(new LinkedHashSet<>());
             if (title == TitleEnum.DOCTOR) {
-                userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_USER"));
-            } else {
                 userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_DOCTOR"));
+            } else {
+                userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_USER"));
             }
         }
 
