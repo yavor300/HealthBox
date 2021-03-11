@@ -9,7 +9,7 @@ import project.healthbox.error.CityNotFoundException;
 public class GlobalExceptionHandlerController {
     @ExceptionHandler({CityNotFoundException.class})
     public ModelAndView handleCityNotFoundException(CityNotFoundException e) {
-        ModelAndView modelAndView = new ModelAndView("error/city-not-found");
+        ModelAndView modelAndView = new ModelAndView("error/city-error");
         modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
