@@ -14,6 +14,8 @@ import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.domain.models.view.UsersAllViewModel;
 import project.healthbox.domain.models.view.UserDeleteViewModel;
 import project.healthbox.domain.models.view.ConsultationDashboardViewModel;
+import project.healthbox.error.CityNotFoundException;
+import project.healthbox.error.RoleNotFoundException;
 import project.healthbox.service.UserService;
 import project.healthbox.web.annotations.PageTitle;
 
@@ -146,6 +148,13 @@ public class UserController {
                 .collect(Collectors.toList()));
 
         modelAndView.setViewName("user/dashboard");
+        return modelAndView;
+    }
+
+    @ExceptionHandler({RoleNotFoundException.class})
+    public ModelAndView handleRoleNotFoundException(RoleNotFoundException e) {
+        ModelAndView modelAndView = new ModelAndView("error/error");
+        modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
 }
