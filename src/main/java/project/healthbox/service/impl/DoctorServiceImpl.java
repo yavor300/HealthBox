@@ -8,6 +8,7 @@ import project.healthbox.domain.entities.City;
 import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
+import project.healthbox.error.DoctorNotFoundException;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.SpecialtyRepository;
 import project.healthbox.service.CityService;
@@ -30,18 +31,20 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public DoctorServiceModel update(DoctorServiceModel doctorServiceModel) throws IOException {
-        Doctor doctor = doctorRepository.getById(doctorServiceModel.getId());
+        Doctor doctor = doctorRepository.findById(doctorServiceModel.getId())
+                .orElseThrow(() -> new DoctorNotFoundException("Invalid doctor!"));
 
         City city = modelMapper.map(cityService.getByName(doctorServiceModel.getLocation().getName()), City.class);
 
         doctor.setLocation(city);
-        doctor.setImageUrl(this.cloudinaryService.uploadImage(doctorServiceModel.getImage()));
+        doctor.setImageUrl(cloudinaryService.uploadImage(doctorServiceModel.getImage()));
         doctor.setBiography(doctorServiceModel.getBiography());
         doctor.setWorkHistory(doctorServiceModel.getWorkHistory());
         doctor.setEducation(doctorServiceModel.getEducation());
-        doctor.setSpecialty(this.specialtyRepository.findByName(doctorServiceModel.getSpecialty().getName()));
+        //TODO USE SERVEICE INSTEAD
+        doctor.setSpecialty(specialtyRepository.findByName(doctorServiceModel.getSpecialty().getName()));
 
-        return this.modelMapper.map(this.doctorRepository.saveAndFlush(doctor), DoctorServiceModel.class);
+        return modelMapper.map(doctorRepository.saveAndFlush(doctor), DoctorServiceModel.class);
     }
 
     @Override
