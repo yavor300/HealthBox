@@ -29,15 +29,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<RoleServiceModel> findAllRoles() {
-        return roleRepository.findAll()
-                .stream()
-                .map(r -> modelMapper.map(r, RoleServiceModel.class))
-                .collect(Collectors.toSet());
-    }
-
-    @Override
-    public RoleServiceModel findByAuthority(String authority) {
+    public RoleServiceModel getByAuthority(String authority) {
         return roleRepository.findByAuthority(authority)
                 .map(role -> modelMapper.map(role, RoleServiceModel.class))
                 .orElseThrow(() -> new RoleNotFoundException("Invalid role name!"));

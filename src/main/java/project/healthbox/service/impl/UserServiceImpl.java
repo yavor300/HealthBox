@@ -36,9 +36,9 @@ public class UserServiceImpl implements UserService {
         } else {
             userServiceModel.setAuthorities(new LinkedHashSet<>());
             if (title == TitleEnum.DOCTOR) {
-                userServiceModel.getAuthorities().add(roleService.findByAuthority("ROLE_USER"));
+                userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_USER"));
             } else {
-                userServiceModel.getAuthorities().add(roleService.findByAuthority("ROLE_DOCTOR"));
+                userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_DOCTOR"));
             }
         }
 
@@ -93,8 +93,8 @@ public class UserServiceImpl implements UserService {
         UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
         userServiceModel.getAuthorities().clear();
 
-        userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
-        userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_ADMIN"));
+        userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_USER"));
+        userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_ADMIN"));
 
         this.userRepository.saveAndFlush(this.modelMapper.map(userServiceModel, User.class));
     }
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
         UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
         userServiceModel.getAuthorities().clear();
 
-        userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
+        userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_USER"));
 
         this.userRepository.saveAndFlush(this.modelMapper.map(userServiceModel, User.class));
     }
