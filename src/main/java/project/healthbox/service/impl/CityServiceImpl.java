@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.models.service.CityServiceModel;
+import project.healthbox.error.CityAlreadyExistsException;
 import project.healthbox.error.CityNotFoundException;
 import project.healthbox.repostory.CityRepository;
 import project.healthbox.service.CityService;
@@ -35,21 +36,23 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityServiceModel getById(String id) {
-        return modelMapper.map(cityRepository.getById(id), CityServiceModel.class);
+        return cityRepository.findById(id)
+                .map(city -> modelMapper.map(city, CityServiceModel.class))
+                .orElseThrow(() -> new CityNotFoundException("Invalid city!"));
     }
 
     @Override
-    public void deleteCity(String id) {
-        City city = cityRepository.getById(id);
+    public CityServiceModel deleteCity(String id) {
+        City city = cityRepository.findById(id)
+                .orElseThrow(() -> new CityNotFoundException("Invalid city!"));
         cityRepository.delete(city);
+        return modelMapper.map(city, CityServiceModel.class);
     }
 
     @Override
     public CityServiceModel createCity(String name) {
-        //TODO USE OPTIONAL, THROW ERROR IF IS PRESENT
-
         if (cityRepository.findByName(name).isPresent()) {
-            return  null;
+            throw new CityAlreadyExistsException("City with that name is already present in the database!");
         }
         return modelMapper.map(cityRepository.saveAndFlush(new City(name)), CityServiceModel.class);
     }

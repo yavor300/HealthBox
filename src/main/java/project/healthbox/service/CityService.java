@@ -11,7 +11,7 @@ public interface CityService {
 
     CityServiceModel getById(String id);
 
-    void deleteCity(String id);
+    CityServiceModel deleteCity(String id);
 
     CityServiceModel createCity(String name);
 }
