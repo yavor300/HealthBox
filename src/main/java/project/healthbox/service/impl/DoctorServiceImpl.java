@@ -30,9 +30,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public DoctorServiceModel update(DoctorServiceModel doctorServiceModel) throws IOException {
-        Doctor doctor = this.doctorRepository.getById(doctorServiceModel.getId());
+        Doctor doctor = doctorRepository.getById(doctorServiceModel.getId());
 
-        City city = this.modelMapper.map(this.cityService.getByName(doctorServiceModel.getLocation().getName()), City.class);
+        City city = modelMapper.map(cityService.getByName(doctorServiceModel.getLocation().getName()), City.class);
 
         doctor.setLocation(city);
         doctor.setImageUrl(this.cloudinaryService.uploadImage(doctorServiceModel.getImage()));

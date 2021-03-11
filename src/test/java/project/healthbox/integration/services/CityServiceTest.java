@@ -65,31 +65,31 @@ public class CityServiceTest {
         assertEquals(cities.size(), allCities.size());
     }
 
-    @Test
-    public void getIdByCityNameMethodShouldReturnCorrectId() {
-        String cityName = "City name";
+//    @Test
+//    public void getIdByCityNameMethodShouldReturnCorrectId() {
+//        String cityName = "City name";
+//
+//        City city = new City();
+//        city.setId("1");
+//        city.setName(cityName);
+//
+//        Mockito.when(mockCityRepository.getByName(cityName))
+//                .thenReturn(city);
+//
+//        String idByCityName = service.getIdByCityName(cityName);
+//
+//        assertEquals(city.getId(), idByCityName);
+//    }
 
-        City city = new City();
-        city.setId("1");
-        city.setName(cityName);
-
-        Mockito.when(mockCityRepository.getByName(cityName))
-                .thenReturn(city);
-
-        String idByCityName = service.getIdByCityName(cityName);
-
-        assertEquals(city.getId(), idByCityName);
-    }
-
-    @Test
-    public void getIdByCityNameMethodShouldReturnEmptyStringWhenCityDoesNotExist() {
-        String cityName = "City name";
-
-        Mockito.when(mockCityRepository.getByName(cityName))
-                .thenReturn(null);
-
-        String idByCityName = service.getIdByCityName(cityName);
-
-        assertEquals("", idByCityName);
-    }
+//    @Test
+//    public void getIdByCityNameMethodShouldReturnEmptyStringWhenCityDoesNotExist() {
+//        String cityName = "City name";
+//
+//        Mockito.when(mockCityRepository.getByName(cityName))
+//                .thenReturn(null);
+//
+//        String idByCityName = service.getIdByCityName(cityName);
+//
+//        assertEquals("", idByCityName);
+//    }
 }

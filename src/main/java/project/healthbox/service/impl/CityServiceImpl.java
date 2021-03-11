@@ -2,9 +2,11 @@ package project.healthbox.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.models.service.CityServiceModel;
+import project.healthbox.error.CityNotFoundException;
 import project.healthbox.repostory.CityRepository;
 import project.healthbox.service.CityService;
 
@@ -19,12 +21,9 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityServiceModel getByName(String name) {
-        City city = cityRepository.getByName(name);
-        if (city != null) {
-            return modelMapper.map(city, CityServiceModel.class);
-        } else {
-            return null;
-        }
+        return cityRepository.findByName(name)
+                .map(city -> modelMapper.map(city, CityServiceModel.class))
+                .orElseThrow(() -> new CityNotFoundException("Invalid city name!"));
     }
 
     @Override
@@ -32,15 +31,6 @@ public class CityServiceImpl implements CityService {
         return cityRepository.findAll().stream()
                 .map(city -> modelMapper.map(city, CityServiceModel.class))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public String getIdByCityName(String name) {
-        CityServiceModel cityServiceModel = getByName(name);
-        if (cityServiceModel == null) {
-            return "";
-        }
-        return cityServiceModel.getId();
     }
 
     @Override
@@ -56,8 +46,10 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityServiceModel createCity(String name) {
+        //TODO USE OPTIONAL, THROW ERROR IF IS PRESENT
+
         if (cityRepository.findByName(name).isPresent()) {
-            return null;
+            return  null;
         }
         return modelMapper.map(cityRepository.saveAndFlush(new City(name)), CityServiceModel.class);
     }

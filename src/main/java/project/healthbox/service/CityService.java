@@ -9,8 +9,6 @@ public interface CityService {
 
     List<CityServiceModel> getAll();
 
-    String getIdByCityName(String name);
-
     CityServiceModel getById(String id);
 
     void deleteCity(String id);
