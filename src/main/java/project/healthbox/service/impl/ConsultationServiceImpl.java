@@ -22,26 +22,26 @@ public class ConsultationServiceImpl implements ConsultationService {
 
     @Override
     public ConsultationServiceModel save(ConsultationServiceModel model) {
-        return this.modelMapper.map(this.consultationRepository.saveAndFlush(
-                this.modelMapper.map(model, Consultation.class)), ConsultationServiceModel.class);
+        return modelMapper.map(consultationRepository.saveAndFlush(
+                modelMapper.map(model, Consultation.class)), ConsultationServiceModel.class);
     }
 
     @Override
     public void setDoctorAndUser(ConsultationServiceModel consultationServiceModel, DoctorServiceModel doctorServiceModel, UserServiceModel userServiceModel) {
-        Consultation consultation = this.modelMapper.map(consultationServiceModel, Consultation.class);
-        Doctor doctor = this.modelMapper.map(doctorServiceModel, Doctor.class);
-        User user = this.modelMapper.map(userServiceModel, User.class);
+        Consultation consultation = modelMapper.map(consultationServiceModel, Consultation.class);
+        Doctor doctor = modelMapper.map(doctorServiceModel, Doctor.class);
+        User user = modelMapper.map(userServiceModel, User.class);
         consultation.setDoctor(doctor);
         consultation.setUser(user);
-        this.consultationRepository.saveAndFlush(consultation);
+        consultationRepository.saveAndFlush(consultation);
     }
 
     @Override
     public void setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel) {
-        Consultation consultation = this.modelMapper.map(consultationServiceModel, Consultation.class);
-        Answer answer = this.modelMapper.map(answerServiceModel, Answer.class);
+        Consultation consultation = modelMapper.map(consultationServiceModel, Consultation.class);
+        Answer answer = modelMapper.map(answerServiceModel, Answer.class);
         consultation.setAnswer(answer);
-        this.consultationRepository.saveAndFlush(consultation);
+        consultationRepository.saveAndFlush(consultation);
     }
 
     @Override
