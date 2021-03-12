@@ -6,6 +6,7 @@ import org.springframework.web.servlet.ModelAndView;
 import project.healthbox.error.CityNotFoundException;
 import project.healthbox.error.ConsultationNotFoundException;
 import project.healthbox.error.DoctorNotFoundException;
+import project.healthbox.error.SpecialtyNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandlerController {
@@ -25,6 +26,13 @@ public class GlobalExceptionHandlerController {
 
     @ExceptionHandler({ConsultationNotFoundException.class})
     public ModelAndView handleConsultationNotFoundException(ConsultationNotFoundException e) {
+        ModelAndView modelAndView = new ModelAndView("error/error");
+        modelAndView.addObject("message", e.getMessage());
+        return modelAndView;
+    }
+
+    @ExceptionHandler({SpecialtyNotFoundException.class})
+    public ModelAndView handleSpecialtyNotFoundException(SpecialtyNotFoundException e) {
         ModelAndView modelAndView = new ModelAndView("error/error");
         modelAndView.addObject("message", e.getMessage());
         return modelAndView;

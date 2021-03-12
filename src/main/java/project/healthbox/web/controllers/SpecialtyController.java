@@ -11,6 +11,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.healthbox.domain.models.binding.SpecialtyAddBindingModel;
 import project.healthbox.domain.models.view.SpecialtiesAllViewModel;
 import project.healthbox.domain.models.view.SpecialtyDeleteViewModel;
+import project.healthbox.error.CityAlreadyExistsException;
+import project.healthbox.error.SpecialtyAlreadyExistsException;
 import project.healthbox.service.SpecialtyService;
 import project.healthbox.web.annotations.PageTitle;
 
@@ -81,6 +83,13 @@ public class SpecialtyController {
 
         specialtyService.createSpecialty(specialtyAddBindingModel.getName());
         modelAndView.setViewName("redirect:/specialty/all");
+        return modelAndView;
+    }
+
+    @ExceptionHandler({SpecialtyAlreadyExistsException.class})
+    public ModelAndView handleSpecialtyAlreadyExistsException(SpecialtyAlreadyExistsException e) {
+        ModelAndView modelAndView = new ModelAndView("error/error");
+        modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
 }

@@ -5,6 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Specialty;
 import project.healthbox.domain.models.service.SpecialtyServiceModel;
+import project.healthbox.error.CityAlreadyExistsException;
+import project.healthbox.error.SpecialtyAlreadyExistsException;
 import project.healthbox.error.SpecialtyNotFoundException;
 import project.healthbox.repostory.SpecialtyRepository;
 import project.healthbox.service.SpecialtyService;
@@ -34,17 +36,23 @@ public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Override
     public SpecialtyServiceModel getById(String id) {
-        return this.modelMapper.map(this.specialtyRepository.getById(id), SpecialtyServiceModel.class);
+        return specialtyRepository.findById(id)
+                .map(specialty -> modelMapper.map(specialty, SpecialtyServiceModel.class))
+                .orElseThrow(() -> new SpecialtyNotFoundException("Invalid specialty identifier!"));
     }
 
     @Override
     public void deleteSpecialty(String id) {
-        Specialty specialty = this.specialtyRepository.getById(id);
-        this.specialtyRepository.delete(specialty);
+        Specialty specialty = specialtyRepository.findById(id)
+                .orElseThrow(() -> new SpecialtyNotFoundException("Invalid specialty identifier!"));
+        specialtyRepository.delete(specialty);
     }
 
     @Override
     public SpecialtyServiceModel createSpecialty(String name) {
-        return this.modelMapper.map(this.specialtyRepository.saveAndFlush(new Specialty(name)), SpecialtyServiceModel.class);
+        if (specialtyRepository.findByName(name).isPresent()) {
+            throw new SpecialtyAlreadyExistsException("Specialty with that name is already present in the database!");
+        }
+        return modelMapper.map(specialtyRepository.saveAndFlush(new Specialty(name)), SpecialtyServiceModel.class);
     }
 }

@@ -135,13 +135,6 @@ public class DoctorController {
         return modelAndView;
     }
 
-    @ExceptionHandler({SpecialtyNotFoundException.class})
-    public ModelAndView handleSpecialtyNotFoundException(SpecialtyNotFoundException e) {
-        ModelAndView modelAndView = new ModelAndView("error/error");
-        modelAndView.addObject("message", e.getMessage());
-        return modelAndView;
-    }
-
     @ExceptionHandler({DoctorsNotFoundException.class})
     public ModelAndView handleDoctorsNotFoundException(DoctorsNotFoundException e) {
         ModelAndView modelAndView = new ModelAndView("error/noDoctorsFound");
