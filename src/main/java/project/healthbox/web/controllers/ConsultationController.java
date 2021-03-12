@@ -60,10 +60,13 @@ public class ConsultationController {
             return modelAndView;
         }
 
-        ConsultationServiceModel consultationServiceModel = consultationService.save(modelMapper.map(consultationSendBindingModel, ConsultationServiceModel.class));
         UserServiceModel userServiceModel = userService.getByEmail(principal.getName());
         DoctorServiceModel doctorServiceModel = doctorService.getById(id);
-        consultationService.setDoctorAndUser(consultationServiceModel, doctorServiceModel, userServiceModel);
+
+        consultationService.save(
+                modelMapper.map(consultationSendBindingModel, ConsultationServiceModel.class),
+                userServiceModel,
+                doctorServiceModel);
 
         modelAndView.setViewName("redirect:/user/dashboard");
         return modelAndView;

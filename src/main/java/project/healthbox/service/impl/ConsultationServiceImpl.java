@@ -22,30 +22,19 @@ public class ConsultationServiceImpl implements ConsultationService {
     private final ModelMapper modelMapper;
 
     @Override
-    public ConsultationServiceModel save(ConsultationServiceModel model) {
+    public ConsultationServiceModel save(ConsultationServiceModel consultationServiceModel, UserServiceModel userServiceModel, DoctorServiceModel doctorServiceModel) {
+        consultationServiceModel.setUser(userServiceModel);
+        consultationServiceModel.setDoctor(doctorServiceModel);
         return modelMapper.map(consultationRepository.saveAndFlush(
-                modelMapper.map(model, Consultation.class)), ConsultationServiceModel.class);
+                modelMapper.map(consultationServiceModel, Consultation.class)), ConsultationServiceModel.class);
     }
 
-    //TODO SEPARATE IN TWO METHODS ?
-    //TODO RETURN THE SERVICE MODELS ?
     @Override
-    public void setDoctorAndUser(ConsultationServiceModel consultationServiceModel, DoctorServiceModel doctorServiceModel, UserServiceModel userServiceModel) {
-        Consultation consultation = modelMapper.map(consultationServiceModel, Consultation.class);
-        Doctor doctor = modelMapper.map(doctorServiceModel, Doctor.class);
-        User user = modelMapper.map(userServiceModel, User.class);
-        consultation.setDoctor(doctor);
-        consultation.setUser(user);
-        consultationRepository.saveAndFlush(consultation);
-    }
-
-    //TODO RETURN ANSWERSERIVEMODEL ?
-    @Override
-    public void setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel) {
+    public AnswerServiceModel setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel) {
         Consultation consultation = modelMapper.map(consultationServiceModel, Consultation.class);
         Answer answer = modelMapper.map(answerServiceModel, Answer.class);
         consultation.setAnswer(answer);
-        consultationRepository.saveAndFlush(consultation);
+        return modelMapper.map(consultationRepository.saveAndFlush(consultation), AnswerServiceModel.class);
     }
 
     @Override

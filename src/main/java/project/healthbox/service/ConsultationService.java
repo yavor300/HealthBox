@@ -6,11 +6,9 @@ import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
 
 public interface ConsultationService {
-    ConsultationServiceModel save(ConsultationServiceModel model);
+    ConsultationServiceModel save(ConsultationServiceModel consultationServiceModel, UserServiceModel userServiceModel, DoctorServiceModel doctorServiceModel);
 
     ConsultationServiceModel getById(String id);
 
-    void setDoctorAndUser(ConsultationServiceModel consultationServiceModel, DoctorServiceModel doctorServiceModel, UserServiceModel userServiceModel);
-
-    void setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel);
+    AnswerServiceModel setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel);
 }
