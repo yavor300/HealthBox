@@ -11,9 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.view.*;
-import project.healthbox.error.CityNotFoundException;
-import project.healthbox.error.DoctorsNotFoundException;
-import project.healthbox.error.SpecialtyNotFoundException;
 import project.healthbox.service.CityService;
 import project.healthbox.service.DoctorService;
 import project.healthbox.service.SpecialtyService;
@@ -132,14 +129,6 @@ public class DoctorController {
     public ModelAndView deleteDoctorConfirm(@PathVariable String id, ModelAndView modelAndView) {
         this.doctorService.deleteDoctor(id);
         modelAndView.setViewName("redirect:/doctor/all");
-        return modelAndView;
-    }
-
-    @ExceptionHandler({DoctorsNotFoundException.class})
-    public ModelAndView handleDoctorsNotFoundException(DoctorsNotFoundException e) {
-        ModelAndView modelAndView = new ModelAndView("error/noDoctorsFound");
-        modelAndView.addObject("message", e.getMessage());
-        modelAndView.addObject("statusCode", e.getStatusCode());
         return modelAndView;
     }
 }

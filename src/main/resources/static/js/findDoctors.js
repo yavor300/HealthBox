@@ -19,8 +19,6 @@ const toString = ({id, firstName, lastName, locationName, imageUrl, specialtyNam
 };
 
 $('#loadDoctors').click(() => {
-    $('#doctors').removeAttr('hidden');
-
     const specialtyId = document.getElementById('specialty').value;
     const city_id = document.getElementById('location').value;
     const doctorName = document.getElementById('doctorName').value;
@@ -36,21 +34,30 @@ $('#loadDoctors').click(() => {
         lastName = "";
     }
 
-
     fetch('http://localhost:8000/findDoctors/specialty_id=' + specialtyId + '&city_id=' + city_id + '&first_name=' + firstName + '&last_name=' + lastName)
-        .then((response) => response.json())
+        .then((response) => {
+            if (response.status === 404) {
+                $('#doctors').attr('hidden', 'hidden');
+                $('#info').html('' +
+                    '<h2>No Doctors Found!</h2>\n' +
+                    '<p>Try different search criteria!</p>'
+                )
+            }
+            return response.json();
+        })
         .then(items => {
-
-            if (Object.keys(items).length === 0) {
-                $('#nothingFound').text('No results');
-                console.log("No Res.");
-            } else {
+            if (Object.keys(items).length > 0) {
+                $('#doctors').removeAttr('hidden');
                 let result = '';
                 items.forEach(item => {
                     const itemString = toString(item);
                     result += itemString;
                 });
                 $('#showDoctors').html(result);
+                $('#info').html('' +
+                    '<h2>Choose from our specialists.</h2>\n' +
+                    '<p>Find the one who you need.</p>'
+                )
             }
         });
 });

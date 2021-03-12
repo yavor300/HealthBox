@@ -16,24 +16,21 @@
                 <p>Here are the doctors, who correspond to your search. Choose the best specialist for you!</p>
                 <p id="nothingFound"></p>
             </div>
-            <div class="row" style="margin-top: 10em;" id="showDoctors"></div>
+            <div class="row" id="showDoctors"></div>
         </div>
     </section>
     <section id="appointment" class="appointment section-bg">
         <div class="container">
-
-            <div class="section-title">
+            <div class="section-title" id="info">
                 <h2>Choose from our specialists.</h2>
                 <p>Find the one who you need.</p>
             </div>
-
             <form th:method="post" th:action="@{/home}" class="php-email-form">
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
                         <select name="specialty" id="specialty" class="form-control">
                             <option value="">Select Specialty</option>
                             <th:block th:each="specialty : ${specialties}">
-                                <!--                                <option th:value="${specialty.name}">[[${specialty.name}]]</option>-->
                                 <option th:value="${specialty.id}" th:text="${specialty.name}"></option>
                             </th:block>
                         </select>
@@ -45,7 +42,6 @@
                         <select name="location" id="location" class="form-control">
                             <option value="">Select City</option>
                             <th:block th:each="city : ${cities}">
-                                <!--                                <option th:value="${city.name}">[[${city.name}]]</option>-->
                                 <option th:value="${city.id}" th:text="${city.name}"></option>
                             </th:block>
                         </select>
@@ -55,17 +51,9 @@
                     <div class="col-md-4 offset-md-4 form-group">
                         <input type="text" class="form-control" name="doctorName" id="doctorName"
                                placeholder="Or search by doctor name">
-<!--                        <th:block th:if="${#fields.hasErrors('doctorName')}">-->
-<!--                            <p class="error" th:errors="*{doctorName}"></p>-->
-<!--                        </th:block>-->
                     </div>
                 </div>
-
-                <!--                <div class="button-holder d-flex justify-content-center">-->
-                <!--                    <button class="text-center btn btn-info text-white mb-3" type="submit">Search</button>-->
-                <!--                </div>-->
             </form>
-
             <div class="button-holder d-flex justify-content-center">
                 <button id="loadDoctors" class="text-center btn btn-info text-white mb-3" type="submit">Search</button>
             </div>
