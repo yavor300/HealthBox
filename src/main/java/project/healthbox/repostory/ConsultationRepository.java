@@ -6,5 +6,4 @@ import project.healthbox.domain.entities.Consultation;
 
 @Repository
 public interface ConsultationRepository extends JpaRepository<Consultation, String> {
-    Consultation getById(String id);
 }

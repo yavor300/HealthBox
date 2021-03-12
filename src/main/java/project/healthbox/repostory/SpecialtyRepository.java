@@ -9,6 +9,4 @@ import java.util.Optional;
 @Repository
 public interface SpecialtyRepository extends JpaRepository<Specialty, String> {
     Optional<Specialty> findByName(String name);
-
-    Specialty getById(String id);
 }

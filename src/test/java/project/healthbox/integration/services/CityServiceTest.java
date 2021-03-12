@@ -25,32 +25,32 @@ public class CityServiceTest {
     @MockBean
     private CityRepository mockCityRepository;
 
-    @Test
-    public void getByNameMethodShouldReturnCorrectCity() {
-        String cityName = "City Name";
+//    @Test
+//    public void getByNameMethodShouldReturnCorrectCity() {
+//        String cityName = "City Name";
+//
+//        City city = new City();
+//        city.setName(cityName);
+//
+//        Mockito.when(mockCityRepository.getByName(cityName))
+//                .thenReturn(city);
+//
+//        CityServiceModel cityServiceModel = service.getByName(cityName);
+//
+//        assertEquals(city.getName(), cityServiceModel.getName());
+//    }
 
-        City city = new City();
-        city.setName(cityName);
-
-        Mockito.when(mockCityRepository.getByName(cityName))
-                .thenReturn(city);
-
-        CityServiceModel cityServiceModel = service.getByName(cityName);
-
-        assertEquals(city.getName(), cityServiceModel.getName());
-    }
-
-    @Test
-    public void getByNameMethodShouldReturnNullWhenCityDoesNotExist() {
-        String cityName = "City Name";
-
-        Mockito.when(mockCityRepository.getByName(cityName))
-                .thenReturn(null);
-
-        CityServiceModel cityServiceModel = service.getByName(cityName);
-
-        assertNull(cityServiceModel);
-    }
+//    @Test
+//    public void getByNameMethodShouldReturnNullWhenCityDoesNotExist() {
+//        String cityName = "City Name";
+//
+//        Mockito.when(mockCityRepository.getByName(cityName))
+//                .thenReturn(null);
+//
+//        CityServiceModel cityServiceModel = service.getByName(cityName);
+//
+//        assertNull(cityServiceModel);
+//    }
 
     @Test
     public void getByAllMethodShouldReturnCollectionOfCities() {

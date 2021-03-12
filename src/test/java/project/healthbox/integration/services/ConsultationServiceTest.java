@@ -24,18 +24,18 @@ public class ConsultationServiceTest {
     @MockBean
     private ConsultationRepository mockRepository;
 
-    @Test
-    public void getByIdMethodShouldReturnCorrectly() {
-        String id = "id";
-        Consultation consultation = new Consultation();
-        consultation.setId(id);
-
-        Mockito.when(mockRepository.getById(id)).
-                thenReturn(consultation);
-
-        ConsultationServiceModel consultationServiceModel = service.getById(id);
-
-        assertEquals(id, consultationServiceModel.getId());
-    }
+//    @Test
+//    public void getByIdMethodShouldReturnCorrectly() {
+//        String id = "id";
+//        Consultation consultation = new Consultation();
+//        consultation.setId(id);
+//
+//        Mockito.when(mockRepository.getById(id)).
+//                thenReturn(consultation);
+//
+//        ConsultationServiceModel consultationServiceModel = service.getById(id);
+//
+//        assertEquals(id, consultationServiceModel.getId());
+//    }
 
 }

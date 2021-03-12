@@ -96,19 +96,19 @@ public class SpecialtyServiceTest {
 //        assertEquals("", idBySpecialtyName);
 //    }
 
-    @Test
-    public void getByIdMethodShouldReturnCorrectEntity() {
-        String id = "id";
-
-        Specialty specialty = new Specialty();
-        specialty.setId(id);
-
-        Mockito.when(mockSpecialtyRepository.getById(id))
-                .thenReturn(specialty);
-
-        SpecialtyServiceModel byId = service.getById(id);
-
-        assertEquals(specialty.getId(), byId.getId());
-    }
+//    @Test
+//    public void getByIdMethodShouldReturnCorrectEntity() {
+//        String id = "id";
+//
+//        Specialty specialty = new Specialty();
+//        specialty.setId(id);
+//
+//        Mockito.when(mockSpecialtyRepository.getById(id))
+//                .thenReturn(specialty);
+//
+//        SpecialtyServiceModel byId = service.getById(id);
+//
+//        assertEquals(specialty.getId(), byId.getId());
+//    }
 }
 

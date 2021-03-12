@@ -108,20 +108,20 @@ public class DoctorServiceTest {
         assertEquals(doctors.size(), all.size());
     }
 
-    @Test
-    public void getByIdMethodShouldReturnCorrectEntity() {
-        String id = "id";
-
-        Doctor doctor = new Doctor();
-        doctor.setId(id);
-
-        Mockito.when(mockRepository.getById(id))
-                .thenReturn(doctor);
-
-        DoctorServiceModel byId = service.getById(id);
-
-        assertEquals(doctor.getId(), byId.getId());
-    }
+//    @Test
+//    public void getByIdMethodShouldReturnCorrectEntity() {
+//        String id = "id";
+//
+//        Doctor doctor = new Doctor();
+//        doctor.setId(id);
+//
+//        Mockito.when(mockRepository.getById(id))
+//                .thenReturn(doctor);
+//
+//        DoctorServiceModel byId = service.getById(id);
+//
+//        assertEquals(doctor.getId(), byId.getId());
+//    }
 
     @Test
     public void getByEmailShouldReturnCorrectly() {

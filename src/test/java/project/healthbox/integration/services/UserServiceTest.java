@@ -61,20 +61,20 @@ public class UserServiceTest {
         assertNull(result);
     }
 
-    @Test
-    public void getByIdMethodShouldReturnCorrectEntity() {
-        String id = "id";
-
-        User user = new User();
-        user.setId(id);
-
-        Mockito.when(mockUserRepository.getById(id))
-                .thenReturn(user);
-
-        UserServiceModel result = service.getById(id);
-
-        assertEquals(user.getId(), result.getId());
-    }
+//    @Test
+//    public void getByIdMethodShouldReturnCorrectEntity() {
+//        String id = "id";
+//
+//        User user = new User();
+//        user.setId(id);
+//
+//        Mockito.when(mockUserRepository.getById(id))
+//                .thenReturn(user);
+//
+//        UserServiceModel result = service.getById(id);
+//
+//        assertEquals(user.getId(), result.getId());
+//    }
 
     @Test
     public void getByAllMethodShouldReturnCollectionOfUsers() {
