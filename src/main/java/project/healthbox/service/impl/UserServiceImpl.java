@@ -8,6 +8,7 @@ import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.entities.User;
 import project.healthbox.domain.entities.enums.TitleEnum;
 import project.healthbox.domain.models.service.UserServiceModel;
+import project.healthbox.error.UserNotFoundException;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.UserRepository;
 import project.healthbox.service.RoleService;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleService roleService;
 
-
+    //TODO INIT THE ROOT USER
     @Override
     public UserServiceModel register(UserServiceModel userServiceModel, TitleEnum title) {
         roleService.seedRolesInDb();
@@ -59,55 +60,57 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel getByEmail(String email) {
-        User user = this.userRepository.findByEmail(email).orElse(null);
-
-        if (user == null) {
-            return null;
-        }
-
-        return this.modelMapper.map(user, UserServiceModel.class);
+        return userRepository.findByEmail(email)
+                .map(user -> modelMapper.map(user, UserServiceModel.class))
+                .orElse(null);
     }
 
     @Override
     public UserServiceModel getById(String id) {
-        return this.modelMapper.map(this.userRepository.getById(id), UserServiceModel.class);
+        return userRepository.findById(id)
+                .map(user -> modelMapper.map(user, UserServiceModel.class))
+                .orElseThrow(() -> new UserNotFoundException("Invalid user identifier!"));
     }
 
     @Override
     public List<UserServiceModel> getAll() {
-        return this.userRepository.findAll().stream()
-                .map(u -> this.modelMapper.map(u, UserServiceModel.class))
+        return userRepository.findAll().stream()
+                .map(user -> modelMapper.map(user, UserServiceModel.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void deleteUser(String id) {
-        User user = this.userRepository.getById(id);
-        this.userRepository.delete(user);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Invalid user identifier!"));
+
+        userRepository.delete(user);
     }
 
     @Override
     public void makeAdmin(String id) {
-        User user = this.userRepository.getById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Invalid user identifier!"));
 
-        UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
+        UserServiceModel userServiceModel = modelMapper.map(user, UserServiceModel.class);
         userServiceModel.getAuthorities().clear();
 
-        userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_USER"));
-        userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_ADMIN"));
+        userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_USER"));
+        userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_ADMIN"));
 
-        this.userRepository.saveAndFlush(this.modelMapper.map(userServiceModel, User.class));
+        userRepository.saveAndFlush(modelMapper.map(userServiceModel, User.class));
     }
 
     @Override
     public void makeUser(String id) {
-        User user = this.userRepository.getById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Invalid user identifier!"));
 
-        UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
+        UserServiceModel userServiceModel = modelMapper.map(user, UserServiceModel.class);
         userServiceModel.getAuthorities().clear();
 
-        userServiceModel.getAuthorities().add(this.roleService.getByAuthority("ROLE_USER"));
+        userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_USER"));
 
-        this.userRepository.saveAndFlush(this.modelMapper.map(userServiceModel, User.class));
+        userRepository.saveAndFlush(modelMapper.map(userServiceModel, User.class));
     }
 }

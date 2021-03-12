@@ -20,11 +20,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = this.userRepository
+        User user = userRepository
                 .findByEmail(email)
                 .orElse(null);
 
-        Doctor doctor = this.doctorRepository
+        Doctor doctor = doctorRepository
                 .findByEmail(email)
                 .orElse(null);
 

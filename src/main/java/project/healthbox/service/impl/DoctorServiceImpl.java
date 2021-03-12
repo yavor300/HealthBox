@@ -75,11 +75,8 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public DoctorServiceModel getByEmail(String email) {
-        Doctor doctor = doctorRepository.findByEmail(email)
+        return doctorRepository.findByEmail(email)
+                .map(doctor -> modelMapper.map(doctor, DoctorServiceModel.class))
                 .orElse(null);
-        if (doctor == null) {
-            return null;
-        }
-        return modelMapper.map(doctor, DoctorServiceModel.class);
     }
 }
