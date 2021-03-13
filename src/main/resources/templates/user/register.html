@@ -15,12 +15,12 @@
             <div class="section-title">
                 <h2>Register</h2>
                 <p>Take your health to next level.</p>
-                <div th:if="${userAlreadyExists}" class="alert alert-danger text-center" role="alert">
-                    User with that email already exists!
-                </div>
             </div>
             <form th:method="POST" th:action="@{/user/register}" class="php-email-form"
                   th:object="${userRegisterBindingModel}">
+                <div th:if="${userAlreadyExists}" class="alert alert-danger text-center" role="alert">
+                    User with that email already exists!
+                </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
                         <input th:field="*{firstName}" th:classappend="${#fields.hasErrors('firstName')}? 'is-invalid'"

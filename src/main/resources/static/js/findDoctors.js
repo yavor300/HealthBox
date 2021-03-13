@@ -38,16 +38,14 @@ $('#loadDoctors').click(() => {
         .then((response) => {
             if (response.status === 404) {
                 $('#doctors').attr('hidden', 'hidden');
-                $('#info').html('' +
-                    '<h2>No Doctors Found!</h2>\n' +
-                    '<p>Try different search criteria!</p>'
-                )
+                $('#noDoctorsFound').removeAttr('hidden');
             }
             return response.json();
         })
         .then(items => {
             if (Object.keys(items).length > 0) {
                 $('#doctors').removeAttr('hidden');
+                $('#noDoctorsFound').attr('hidden', 'hidden');
                 let result = '';
                 items.forEach(item => {
                     const itemString = toString(item);

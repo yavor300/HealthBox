@@ -21,11 +21,14 @@
     </section>
     <section id="appointment" class="appointment section-bg">
         <div class="container">
-            <div class="section-title" id="info">
+            <div class="section-title">
                 <h2>Choose from our specialists.</h2>
                 <p>Find the one who you need.</p>
             </div>
             <form th:method="post" th:action="@{/home}" class="php-email-form">
+                <div hidden="hidden" id="noDoctorsFound" class="alert alert-danger" role="alert">
+                    No doctors found! Try different search criteria!
+                </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
                         <select name="specialty" id="specialty" class="form-control">
