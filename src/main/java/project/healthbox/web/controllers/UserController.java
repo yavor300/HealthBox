@@ -71,6 +71,16 @@ public class UserController {
         return modelAndView;
     }
 
+    @ModelAttribute("bad_credentials")
+    public boolean badCredentials() {
+        return false;
+    }
+
+    @ModelAttribute("email")
+    private String email() {
+        return null;
+    }
+
     @GetMapping("/login")
     @PreAuthorize("isAnonymous()")
     @PageTitle("Login")
@@ -81,11 +91,12 @@ public class UserController {
 
     @PostMapping("/login-error")
     public ModelAndView failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
-                                            String email, ModelAndView modelAndView) {
-        modelAndView.addObject("bad_credentials", true);
-        modelAndView.addObject("email", email);
+                                            String email, ModelAndView modelAndView, RedirectAttributes redirectAttributes) {
 
-        modelAndView.setViewName("user/login-error");
+        redirectAttributes.addFlashAttribute("bad_credentials", true);
+        redirectAttributes.addFlashAttribute("email", email);
+
+        modelAndView.setViewName("redirect:/user/login");
         return modelAndView;
     }
 
