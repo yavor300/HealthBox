@@ -5,7 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Role;
 import project.healthbox.domain.models.service.RoleServiceModel;
-import project.healthbox.error.RoleNotFoundException;
+import project.healthbox.error.ObjectNotFoundException;
 import project.healthbox.repostory.RoleRepository;
 import project.healthbox.service.RoleService;
 
@@ -32,7 +32,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleServiceModel getByAuthority(String authority) {
         return roleRepository.findByAuthority(authority)
                 .map(role -> modelMapper.map(role, RoleServiceModel.class))
-                .orElseThrow(() -> new RoleNotFoundException("Invalid role name!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid role name!"));
     }
 
     @Override

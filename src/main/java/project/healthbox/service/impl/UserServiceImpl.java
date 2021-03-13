@@ -8,7 +8,7 @@ import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.entities.User;
 import project.healthbox.domain.entities.enums.TitleEnum;
 import project.healthbox.domain.models.service.UserServiceModel;
-import project.healthbox.error.UserNotFoundException;
+import project.healthbox.error.ObjectNotFoundException;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.UserRepository;
 import project.healthbox.service.RoleService;
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceModel getById(String id) {
         return userRepository.findById(id)
                 .map(user -> modelMapper.map(user, UserServiceModel.class))
-                .orElseThrow(() -> new UserNotFoundException("Invalid user identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid user identifier!"));
     }
 
     @Override
@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(String id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Invalid user identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid user identifier!"));
 
         userRepository.delete(user);
     }
@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void makeAdmin(String id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Invalid user identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid user identifier!"));
 
         UserServiceModel userServiceModel = modelMapper.map(user, UserServiceModel.class);
         userServiceModel.getAuthorities().clear();
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void makeUser(String id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Invalid user identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid user identifier!"));
 
         UserServiceModel userServiceModel = modelMapper.map(user, UserServiceModel.class);
         userServiceModel.getAuthorities().clear();

@@ -3,15 +3,12 @@ package project.healthbox.service.impl;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.entities.Specialty;
-import project.healthbox.domain.models.binding.DoctorUpdateBindingModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
-import project.healthbox.error.DoctorNotFoundException;
+import project.healthbox.error.ObjectNotFoundException;
 import project.healthbox.repostory.DoctorRepository;
-import project.healthbox.repostory.SpecialtyRepository;
 import project.healthbox.service.CityService;
 import project.healthbox.service.CloudinaryService;
 import project.healthbox.service.DoctorService;
@@ -34,7 +31,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorServiceModel completeProfile(DoctorServiceModel doctorServiceModel) throws IOException {
         Doctor doctor = doctorRepository.findById(doctorServiceModel.getId())
-                .orElseThrow(() -> new DoctorNotFoundException("Invalid doctor identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid doctor identifier!"));
 
         City city = modelMapper.map(cityService.getByName(doctorServiceModel.getLocation().getName()), City.class);
 
@@ -60,7 +57,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public void deleteDoctor(String id) {
         Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new DoctorNotFoundException("Invalid doctor identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid doctor identifier!"));
         doctor.getConsultations()
                 .forEach(consultation -> consultation.setDoctor(null));
         doctorRepository.delete(doctor);
@@ -69,7 +66,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public DoctorServiceModel getById(String id) {
         Doctor doctor = doctorRepository.findById(id)
-                .orElseThrow(() -> new DoctorNotFoundException("Invalid doctor identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid doctor identifier!"));
         return modelMapper.map(doctor, DoctorServiceModel.class);
     }
 

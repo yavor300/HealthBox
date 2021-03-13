@@ -5,13 +5,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Answer;
 import project.healthbox.domain.entities.Consultation;
-import project.healthbox.domain.entities.Doctor;
-import project.healthbox.domain.entities.User;
 import project.healthbox.domain.models.service.AnswerServiceModel;
 import project.healthbox.domain.models.service.ConsultationServiceModel;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.domain.models.service.UserServiceModel;
-import project.healthbox.error.ConsultationNotFoundException;
+import project.healthbox.error.ObjectNotFoundException;
 import project.healthbox.repostory.ConsultationRepository;
 import project.healthbox.service.ConsultationService;
 
@@ -40,7 +38,7 @@ public class ConsultationServiceImpl implements ConsultationService {
     @Override
     public ConsultationServiceModel getById(String id) {
         Consultation consultation = consultationRepository.findById(id)
-                .orElseThrow(() -> new ConsultationNotFoundException("Invalid consultation identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid consultation identifier!"));
         return modelMapper.map(consultation, ConsultationServiceModel.class);
     }
 }

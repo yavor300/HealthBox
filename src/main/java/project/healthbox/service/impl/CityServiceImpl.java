@@ -5,8 +5,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.models.service.CityServiceModel;
-import project.healthbox.error.CityAlreadyExistsException;
-import project.healthbox.error.CityNotFoundException;
+import project.healthbox.error.ObjectAlreadyExistsException;
+import project.healthbox.error.ObjectNotFoundException;
 import project.healthbox.repostory.CityRepository;
 import project.healthbox.service.CityService;
 
@@ -23,7 +23,7 @@ public class CityServiceImpl implements CityService {
     public CityServiceModel getByName(String name) {
         return cityRepository.findByName(name)
                 .map(city -> modelMapper.map(city, CityServiceModel.class))
-                .orElseThrow(() -> new CityNotFoundException("Invalid city name!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid city name!"));
     }
 
     @Override
@@ -37,13 +37,13 @@ public class CityServiceImpl implements CityService {
     public CityServiceModel getById(String id) {
         return cityRepository.findById(id)
                 .map(city -> modelMapper.map(city, CityServiceModel.class))
-                .orElseThrow(() -> new CityNotFoundException("Invalid city identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid city identifier!"));
     }
 
     @Override
     public CityServiceModel deleteCity(String id) {
         City city = cityRepository.findById(id)
-                .orElseThrow(() -> new CityNotFoundException("Invalid city identifier!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Invalid city identifier!"));
         cityRepository.delete(city);
         return modelMapper.map(city, CityServiceModel.class);
     }
@@ -51,7 +51,7 @@ public class CityServiceImpl implements CityService {
     @Override
     public CityServiceModel createCity(String name) {
         if (cityRepository.findByName(name).isPresent()) {
-            throw new CityAlreadyExistsException("City with that name is already present in the database!");
+            throw new ObjectAlreadyExistsException("City with that name is already present in the database!");
         }
         return modelMapper.map(cityRepository.saveAndFlush(new City(name)), CityServiceModel.class);
     }

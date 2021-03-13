@@ -11,7 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.healthbox.domain.models.binding.CityAddBindingModel;
 import project.healthbox.domain.models.view.CitiesAllViewModel;
 import project.healthbox.domain.models.view.CityDeleteViewModel;
-import project.healthbox.error.CityAlreadyExistsException;
 import project.healthbox.service.CityService;
 import project.healthbox.web.annotations.PageTitle;
 
@@ -83,13 +82,6 @@ public class CityController {
 
         cityService.createCity(cityAddBindingModel.getName());
         modelAndView.setViewName("redirect:/city/all");
-        return modelAndView;
-    }
-
-    @ExceptionHandler({CityAlreadyExistsException.class})
-    public ModelAndView handleCityAlreadyExistsException(CityAlreadyExistsException e) {
-        ModelAndView modelAndView = new ModelAndView("error/error");
-        modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
 }
