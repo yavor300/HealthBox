@@ -4,6 +4,6 @@ import org.springframework.context.ApplicationEvent;
 
 import java.io.IOException;
 
-public interface LoggerService<T extends ApplicationEvent> {
-    void log(T applicationEvent) throws IOException;
+public interface LoggerService {
+    void log(ApplicationEvent applicationEvent) throws IOException;
 }

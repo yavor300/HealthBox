@@ -12,10 +12,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
-public class LoggerServiceImpl<T extends ApplicationEvent> implements LoggerService<T> {
+public class LoggerServiceImpl implements LoggerService {
 
     @Override
-    public void log(T applicationEvent) throws IOException {
+    public void log(ApplicationEvent applicationEvent) throws IOException {
         Logger logger = Logger.getLogger(applicationEvent.getClass().getName());
         logger.setLevel(Level.FINE);
         logger.addHandler(new FileHandler());

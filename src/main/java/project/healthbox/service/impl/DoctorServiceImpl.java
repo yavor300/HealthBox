@@ -8,6 +8,7 @@ import project.healthbox.domain.entities.Doctor;
 import project.healthbox.domain.entities.Specialty;
 import project.healthbox.domain.models.service.DoctorServiceModel;
 import project.healthbox.error.ObjectNotFoundException;
+import project.healthbox.events.register.RegisterEventPublisher;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.service.CityService;
 import project.healthbox.service.CloudinaryService;
@@ -26,6 +27,7 @@ public class DoctorServiceImpl implements DoctorService {
     private final SpecialtyService specialtyService;
     private final CityService cityService;
     private final CloudinaryService cloudinaryService;
+    private final RegisterEventPublisher registerEventPublisher;
 
 
     @Override
@@ -44,7 +46,9 @@ public class DoctorServiceImpl implements DoctorService {
                 specialtyService.getByName(doctorServiceModel.getSpecialty().getName()),
                 Specialty.class));
 
-        return modelMapper.map(doctorRepository.saveAndFlush(doctor), DoctorServiceModel.class);
+        DoctorServiceModel serviceModel = modelMapper.map(doctorRepository.saveAndFlush(doctor), DoctorServiceModel.class);
+        registerEventPublisher.publishDoctorRegisterEvent(serviceModel);
+        return serviceModel;
     }
 
     @Override

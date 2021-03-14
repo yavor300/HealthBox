@@ -9,7 +9,7 @@ import project.healthbox.domain.entities.User;
 import project.healthbox.domain.entities.enums.TitleEnum;
 import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.error.ObjectNotFoundException;
-import project.healthbox.events.register.UserRegisterEventPublisher;
+import project.healthbox.events.register.RegisterEventPublisher;
 import project.healthbox.repostory.DoctorRepository;
 import project.healthbox.repostory.UserRepository;
 import project.healthbox.service.RoleService;
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final DoctorRepository doctorRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleService roleService;
-    private final UserRegisterEventPublisher userRegisterEventPublisher;
+    private final RegisterEventPublisher registerEventPublisher;
 
     //TODO INIT THE ROOT USER
     @Override
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
             return modelMapper.map(doctorRepository.saveAndFlush(doctor), UserServiceModel.class);
         } else if (title == TitleEnum.PATIENT && !userRepository.existsByEmail(user.getEmail())) {
             UserServiceModel savedUser = modelMapper.map(userRepository.saveAndFlush(user), UserServiceModel.class);
-            userRegisterEventPublisher.publishEvent(savedUser);
+            registerEventPublisher.publishUserRegisterEvent(savedUser);
             return savedUser;
         }
         return null;
