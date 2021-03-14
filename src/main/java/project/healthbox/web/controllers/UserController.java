@@ -14,7 +14,6 @@ import project.healthbox.domain.models.service.UserServiceModel;
 import project.healthbox.domain.models.view.ConsultationDashboardViewModel;
 import project.healthbox.domain.models.view.UserDeleteViewModel;
 import project.healthbox.domain.models.view.UsersAllViewModel;
-import project.healthbox.events.register.UserRegisterEventPublisher;
 import project.healthbox.service.UserService;
 import project.healthbox.web.annotations.PageTitle;
 
@@ -28,7 +27,6 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final UserRegisterEventPublisher userRegisterEventPublisher;
 
     @ModelAttribute("userRegisterBindingModel")
     public UserRegisterBindingModel userRegisterBindingModel() {
@@ -69,7 +67,6 @@ public class UserController {
             return modelAndView;
         }
 
-        userRegisterEventPublisher.publishEvent(registeredUser);
         modelAndView.setViewName("redirect:/user/login");
         return modelAndView;
     }

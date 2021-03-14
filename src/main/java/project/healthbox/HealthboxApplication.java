@@ -10,5 +10,4 @@ public class HealthboxApplication {
     public static void main(String[] args) {
         SpringApplication.run(HealthboxApplication.class, args);
     }
-
 }
