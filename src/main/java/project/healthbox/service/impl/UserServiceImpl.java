@@ -58,7 +58,6 @@ public class UserServiceImpl implements UserService {
             userRegisterEventPublisher.publishEvent(savedUser);
             return savedUser;
         }
-
         return null;
     }
 

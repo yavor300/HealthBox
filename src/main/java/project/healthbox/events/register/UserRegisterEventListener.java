@@ -1,28 +1,19 @@
 package project.healthbox.events.register;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import project.healthbox.events.log.formatter.LogFormatter;
+import project.healthbox.service.LoggerService;
 
 import java.io.IOException;
-import java.util.logging.*;
 
 @Component
+@AllArgsConstructor
 public class UserRegisterEventListener {
-    private final Logger logger = Logger.getLogger(UserRegisterEventListener.class.getName());
+    private final LoggerService<UserRegisterEvent> loggerService;
 
     @EventListener(UserRegisterEvent.class)
     public void onUserRegisterEvent(UserRegisterEvent userRegisterEvent) throws IOException {
-        logger.setLevel(Level.FINE);
-        logger.addHandler(new FileHandler());
-        try {
-            Handler fileHandler = new FileHandler("src/main/java/project/healthbox/events/log/files/ApplicationLog.log", true);
-            fileHandler.setFormatter(new LogFormatter());
-            logger.addHandler(fileHandler);
-            logger.log(Level.INFO, userRegisterEvent.toString());
-            fileHandler.close();
-        } catch (SecurityException | IOException e) {
-            e.printStackTrace();
-        }
+        loggerService.log(userRegisterEvent);
     }
 }
