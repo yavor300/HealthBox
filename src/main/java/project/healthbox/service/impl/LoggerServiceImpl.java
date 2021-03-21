@@ -15,15 +15,15 @@ import java.util.logging.Logger;
 public class LoggerServiceImpl implements LoggerService {
 
     @Override
-    public void log(ApplicationEvent applicationEvent) throws IOException {
-        Logger logger = Logger.getLogger(applicationEvent.getClass().getName());
+    public void log(Object object) throws IOException {
+        Logger logger = Logger.getLogger(object.getClass().getName());
         logger.setLevel(Level.FINE);
         logger.addHandler(new FileHandler());
         try {
-            Handler fileHandler = new FileHandler("src/main/java/project/healthbox/events/log/files/ApplicationLog.log", true);
+            Handler fileHandler = new FileHandler("src/main/java/project/healthbox/events/log/files/Registration.log", true);
             fileHandler.setFormatter(new LogFormatter());
             logger.addHandler(fileHandler);
-            logger.log(Level.INFO, applicationEvent.toString());
+            logger.log(Level.INFO, object.toString());
             fileHandler.close();
         } catch (SecurityException | IOException e) {
             e.printStackTrace();
