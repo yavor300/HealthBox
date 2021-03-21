@@ -1,8 +1,7 @@
 package project.healthbox.service.impl;
 
-import org.springframework.context.ApplicationEvent;
 import org.springframework.stereotype.Service;
-import project.healthbox.events.log.formatter.LogFormatter;
+import project.healthbox.log.formatter.LogFormatter;
 import project.healthbox.service.LoggerService;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class LoggerServiceImpl implements LoggerService {
         logger.setLevel(Level.FINE);
         logger.addHandler(new FileHandler());
         try {
-            Handler fileHandler = new FileHandler("src/main/java/project/healthbox/events/log/files/Registration.log", true);
+            Handler fileHandler = new FileHandler("src/main/java/project/healthbox/log/files/Registration.log", true);
             fileHandler.setFormatter(new LogFormatter());
             logger.addHandler(fileHandler);
             logger.log(Level.INFO, object.toString());

@@ -1,0 +1,2 @@
+38::project.healthbox.events.register.UserRegisterEvent::log::Sun Mar 21 21:01:55 EET 2021::UserRegisterEvent{firstName='Test', lastName='Test', email='test@test123.com'}
+44::project.healthbox.events.register.UserRegisterEvent::log::Sun Mar 21 21:10:50 EET 2021::UserRegisterEvent{firstName='John', lastName='Anderson', email='john@patient.com'}

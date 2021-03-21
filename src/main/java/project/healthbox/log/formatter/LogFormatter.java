@@ -1,4 +1,4 @@
-package project.healthbox.events.log.formatter;
+package project.healthbox.log.formatter;
 
 import java.util.Date;
 import java.util.logging.Formatter;

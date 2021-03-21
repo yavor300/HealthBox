@@ -22,7 +22,7 @@ public class ConsultationAspect {
     @AfterReturning(pointcut = "trackSave()", returning = "consultationServiceModel")
     public void loggingAfterReturning(JoinPoint joinPoint, Object consultationServiceModel) throws IOException {
         ConsultationServiceModel consultationDetails = (ConsultationServiceModel) consultationServiceModel;
-        FileWriter myWriter = new FileWriter("src/main/java/project/healthbox/events/log/files/Consultation.log", true);
+        FileWriter myWriter = new FileWriter("src/main/java/project/healthbox/log/files/Consultation.log", true);
         myWriter.write(String.format("User with email - %s - sent consultation to a doctor with email - %s%n",
                 consultationDetails.getUser().getEmail(),
                 consultationDetails.getDoctor().getEmail()));

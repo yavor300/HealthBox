@@ -10,11 +10,11 @@ public class LogClearScheduler {
 
     @Scheduled(cron = "0 0 0 1 */6 *")
     public void clearRegistrationLogEverySixMonths() {
-        new File("src/main/java/project/healthbox/events/log/files/Registration.log").delete();
+        new File("src/main/java/project/healthbox/log/files/Registration.log").delete();
     }
 
     @Scheduled(cron = "0 0 0 1 */6 *")
     public void clearConsultationLogEverySixMonths() {
-        new File("src/main/java/project/healthbox/events/log/files/Consultation.log").delete();
+        new File("src/main/java/project/healthbox/log/files/Consultation.log").delete();
     }
 }
