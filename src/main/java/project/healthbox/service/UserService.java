@@ -16,7 +16,7 @@ public interface UserService {
 
     void deleteUser(String id);
 
-    void makeAdmin(String id);
+    UserServiceModel makeAdmin(String id);
 
-    void makeUser(String id);
+    UserServiceModel makeUser(String id);
 }

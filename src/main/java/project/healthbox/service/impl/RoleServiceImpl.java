@@ -36,7 +36,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<RoleServiceModel> setRolesForRootUser() {
+    public Set<RoleServiceModel> getRolesForRootUser() {
         return roleRepository.findAll()
                 .stream()
                 .filter(role -> !role.getAuthority().equals("ROLE_DOCTOR"))

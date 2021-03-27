@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         roleService.seedRolesInDb();
 
         if (userRepository.count() == 0 && doctorRepository.count() == 0) {
-            userServiceModel.setAuthorities(roleService.setRolesForRootUser());
+            userServiceModel.setAuthorities(roleService.getRolesForRootUser());
         } else {
             userServiceModel.setAuthorities(new LinkedHashSet<>());
             if (title == TitleEnum.DOCTOR) {
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void makeAdmin(String id) {
+    public UserServiceModel makeAdmin(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Invalid user identifier!"));
 
@@ -101,11 +101,11 @@ public class UserServiceImpl implements UserService {
         userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_USER"));
         userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_ADMIN"));
 
-        userRepository.saveAndFlush(modelMapper.map(userServiceModel, User.class));
+        return modelMapper.map(userRepository.saveAndFlush(modelMapper.map(userServiceModel, User.class)), UserServiceModel.class);
     }
 
     @Override
-    public void makeUser(String id) {
+    public UserServiceModel makeUser(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Invalid user identifier!"));
 
@@ -114,6 +114,6 @@ public class UserServiceImpl implements UserService {
 
         userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_USER"));
 
-        userRepository.saveAndFlush(modelMapper.map(userServiceModel, User.class));
+        return modelMapper.map(userRepository.saveAndFlush(modelMapper.map(userServiceModel, User.class)), UserServiceModel.class);
     }
 }

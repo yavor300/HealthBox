@@ -10,5 +10,5 @@ public interface ConsultationService {
 
     ConsultationServiceModel getById(String id);
 
-    AnswerServiceModel setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel);
+    ConsultationServiceModel setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel);
 }

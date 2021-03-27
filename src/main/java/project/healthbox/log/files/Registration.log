@@ -1,2 +1,6 @@
 38::project.healthbox.events.register.UserRegisterEvent::log::Sun Mar 21 21:01:55 EET 2021::UserRegisterEvent{firstName='Test', lastName='Test', email='test@test123.com'}
 44::project.healthbox.events.register.UserRegisterEvent::log::Sun Mar 21 21:10:50 EET 2021::UserRegisterEvent{firstName='John', lastName='Anderson', email='john@patient.com'}
+1::project.healthbox.events.register.DoctorRegisterEvent::log::Sat Mar 27 12:52:23 EET 2021::DoctorRegisterEvent{firstName='LAST_NAME', lastName='null', email='EMAIL', locationName='CITY_NAME', specialtyName='SPECIALTY_NAME'}
+1::project.healthbox.events.register.DoctorRegisterEvent::log::Sat Mar 27 13:00:32 EET 2021::DoctorRegisterEvent{firstName='LAST_NAME', lastName='null', email='EMAIL', locationName='CITY_NAME', specialtyName='SPECIALTY_NAME'}
+1::project.healthbox.events.register.DoctorRegisterEvent::log::Sat Mar 27 13:03:33 EET 2021::DoctorRegisterEvent{firstName='LAST_NAME', lastName='null', email='EMAIL', locationName='CITY_NAME', specialtyName='SPECIALTY_NAME'}
+1::project.healthbox.events.register.DoctorRegisterEvent::log::Sat Mar 27 13:20:47 EET 2021::DoctorRegisterEvent{firstName='FIRST_NAME', lastName='LAST_NAME', email='EMAIL', locationName='CITY_NAME', specialtyName='SPECIALTY_NAME'}

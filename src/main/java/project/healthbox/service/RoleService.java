@@ -9,5 +9,5 @@ public interface RoleService {
 
     RoleServiceModel getByAuthority(String authority);
 
-    Set<RoleServiceModel> setRolesForRootUser();
+    Set<RoleServiceModel> getRolesForRootUser();
 }

@@ -21,18 +21,18 @@ public class ConsultationServiceImpl implements ConsultationService {
 
     @Override
     public ConsultationServiceModel save(ConsultationServiceModel consultationServiceModel, UserServiceModel userServiceModel, DoctorServiceModel doctorServiceModel) {
-        consultationServiceModel.setUser(userServiceModel);
-        consultationServiceModel.setDoctor(doctorServiceModel);
-        return modelMapper.map(consultationRepository.saveAndFlush(
-                modelMapper.map(consultationServiceModel, Consultation.class)), ConsultationServiceModel.class);
+            consultationServiceModel.setUser(userServiceModel);
+            consultationServiceModel.setDoctor(doctorServiceModel);
+            return modelMapper.map(consultationRepository.saveAndFlush(
+                    modelMapper.map(consultationServiceModel, Consultation.class)), ConsultationServiceModel.class);
     }
 
     @Override
-    public AnswerServiceModel setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel) {
+    public ConsultationServiceModel setAnswer(ConsultationServiceModel consultationServiceModel, AnswerServiceModel answerServiceModel) {
         Consultation consultation = modelMapper.map(consultationServiceModel, Consultation.class);
         Answer answer = modelMapper.map(answerServiceModel, Answer.class);
         consultation.setAnswer(answer);
-        return modelMapper.map(consultationRepository.saveAndFlush(consultation), AnswerServiceModel.class);
+        return modelMapper.map(consultationRepository.saveAndFlush(consultation), ConsultationServiceModel.class);
     }
 
     @Override
