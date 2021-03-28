@@ -90,7 +90,7 @@ public class DoctorController {
     }
 
     @GetMapping("/dashboard")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_DOCTOR')")
     @PageTitle("Dashboard")
     public ModelAndView getDashboardDoctorView(Principal principal, ModelAndView modelAndView) {
         modelAndView.addObject("consultations", doctorService.getByEmail(principal.getName()).getConsultations()

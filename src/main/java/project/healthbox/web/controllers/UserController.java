@@ -147,7 +147,7 @@ public class UserController {
     }
 
     @GetMapping("/dashboard")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PageTitle("Dashboard")
     public ModelAndView getProfileView(Principal principal, ModelAndView modelAndView) {
         modelAndView.addObject("consultations", userService.getByEmail(principal.getName())
