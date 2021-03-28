@@ -19,7 +19,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, String> {
             " AND (length(:location_id) = 0 or d.location.id = :location_id) " +
             "AND (length(:firstName) = 0 or d.firstName = :firstName) " +
             "AND (length(:lastName) = 0 or d.lastName = :lastName)")
-    List<Doctor> findAllBySpecialtyIdAndLocationIdAndFirstNameAndLastName(@Param("specialty_id") String specialtyId,
+    List<Doctor> findAllDoctorsByGivenCriteria(@Param("specialty_id") String specialtyId,
                                                                           @Param("location_id") String locationId,
                                                                           @Param("firstName") String firstName,
                                                                           @Param("lastName") String lastName);

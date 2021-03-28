@@ -234,4 +234,21 @@ public class DoctorServiceTests {
 
         assertNull(doctorServiceByEmail);
     }
+
+    @Test
+    public void getAllByGivenCriteria_Should_Return_CollectionOfDoctors() {
+        Mockito.when(mockDoctorRepository.findAllDoctorsByGivenCriteria(ID, ID, FIRST_NAME, LAST_NAME))
+                .thenReturn(List.of(doctor));
+
+        List<DoctorServiceModel> result = doctorService.getAllByGivenCriteria(ID, ID, FIRST_NAME, LAST_NAME);
+        DoctorServiceModel doctorServiceModel = result.get(0);
+
+        assertEquals(1, result.size());
+        assertEquals(doctor.getId(), doctorServiceModel.getId());
+        assertEquals(doctor.getBiography(), doctorServiceModel.getBiography());
+        assertEquals(doctor.getSpecialty().getName(), doctorServiceModel.getSpecialty().getName());
+        assertEquals(doctor.getLocation().getName(), doctorServiceModel.getLocation().getName());
+        assertEquals(doctor.getWorkHistory(), doctorServiceModel.getWorkHistory());
+        assertEquals(doctor.getEducation(), doctorServiceModel.getEducation());
+    }
 }

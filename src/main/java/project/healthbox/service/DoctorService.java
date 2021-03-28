@@ -16,4 +16,6 @@ public interface DoctorService {
     List<DoctorServiceModel> getAll();
 
     void deleteDoctor(String id);
+
+    List<DoctorServiceModel> getAllByGivenCriteria(String specialtyId, String cityId, String firstName, String lastName);
 }

@@ -21,17 +21,23 @@ const toString = ({id, firstName, lastName, locationName, imageUrl, specialtyNam
 $('#loadDoctors').click(() => {
     const specialtyId = document.getElementById('specialty').value;
     const city_id = document.getElementById('location').value;
-    const doctorName = document.getElementById('doctorName').value;
+
+    const doctorFullName = document.getElementById('doctorName').value.trim();
 
     let firstName;
     let lastName;
 
-    if (doctorName && doctorName !== "" && doctorName.includes(" ")) {
-        firstName = document.getElementById('doctorName').value.split(' ')[0];
-        lastName = document.getElementById('doctorName').value.split(' ')[1];
-    } else {
+    if (doctorFullName.length === 0) {
         firstName = "";
         lastName = "";
+        document.getElementById('doctorName').value = "";
+    } else {
+        firstName = doctorFullName.split(/\s+/)[0];
+        if (doctorFullName.includes(' ')) {
+            lastName = doctorFullName.split(/\s+/)[1];
+        } else {
+            lastName = "";
+        }
     }
 
     fetch('http://localhost:8000/findDoctors/specialty_id=' + specialtyId + '&city_id=' + city_id + '&first_name=' + firstName + '&last_name=' + lastName)

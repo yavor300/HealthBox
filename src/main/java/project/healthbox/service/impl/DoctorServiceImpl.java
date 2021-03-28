@@ -68,6 +68,13 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public List<DoctorServiceModel> getAllByGivenCriteria(String specialtyId, String cityId, String firstName, String lastName) {
+        return doctorRepository.findAllDoctorsByGivenCriteria(specialtyId, cityId, firstName, lastName)
+                .stream().map(doctor -> modelMapper.map(doctor, DoctorServiceModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public DoctorServiceModel getById(String id) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Invalid doctor identifier!"));
