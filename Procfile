@@ -1,1 +1,0 @@
-web: java -jar target/postgresql-42.2.19.jar
