@@ -46,7 +46,7 @@ public class RoleServiceTests {
         Mockito.when(mockRoleRepository.saveAndFlush(any(Role.class)))
                 .thenReturn(role);
 
-        roleService.seedRolesInDb();
+        roleService.seedRoles();
 
         Mockito.verify(mockRoleRepository, times(4)).saveAndFlush(any(Role.class));
     }
@@ -82,8 +82,8 @@ public class RoleServiceTests {
                     setAuthority(AUTHORITY);
                 }}));
 
-        Set<RoleServiceModel> rolesForRootUser = roleService.getRolesForRootUser();
-        RoleServiceModel role = rolesForRootUser.iterator().next();
+        Set<Role> rolesForRootUser = roleService.getRolesForRootUser();
+        Role role = rolesForRootUser.iterator().next();
 
         assertEquals(1, rolesForRootUser.size());
         assertEquals(ID, role.getId());

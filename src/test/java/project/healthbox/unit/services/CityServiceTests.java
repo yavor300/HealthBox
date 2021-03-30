@@ -1,10 +1,12 @@
 package project.healthbox.unit.services;
 
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.Resource;
 import project.healthbox.domain.entities.City;
 import project.healthbox.domain.models.service.CityServiceModel;
 import project.healthbox.error.ObjectAlreadyExistsException;
@@ -32,7 +34,7 @@ public class CityServiceTests {
     @Before
     public void init() {
         mockCityRepository = Mockito.mock(CityRepository.class);
-        cityService = new CityServiceImpl(mockCityRepository, new ModelMapper());
+        cityService = new CityServiceImpl(mockCityRepository, new ModelMapper(), Mockito.mock(Resource.class), new Gson());
 
         city = new City();
         city.setId(CITY_ID);

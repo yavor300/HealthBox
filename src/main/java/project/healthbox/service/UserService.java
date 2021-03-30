@@ -19,4 +19,6 @@ public interface UserService {
     UserServiceModel makeAdmin(String id);
 
     UserServiceModel makeUser(String id);
+
+    void seedRootUser();
 }

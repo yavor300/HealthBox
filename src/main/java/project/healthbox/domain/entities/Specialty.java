@@ -1,5 +1,6 @@
 package project.healthbox.domain.entities;
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class Specialty extends BaseEntity {
+    @Expose
     @Column(nullable = false, unique = true)
     private String name;
 

@@ -2,6 +2,7 @@ package project.healthbox.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.healthbox.domain.entities.Doctor;
@@ -29,20 +30,28 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final RegisterEventPublisher registerEventPublisher;
 
-    //TODO INIT THE ROOT USER
+    @Async
+    @Override
+    public void seedRootUser() {
+        if (userRepository.count() == 0 && doctorRepository.count() == 0) {
+            User user = new User();
+            user.setAuthorities(roleService.getRolesForRootUser());
+            user.setFirstName("Yavor");
+            user.setLastName("Chamov");
+            user.setEmail("root@healthbox.com");
+            user.setPassword(bCryptPasswordEncoder.encode("root"));
+            userRepository.save(user);
+        }
+    }
+
     @Override
     public UserServiceModel register(UserServiceModel userServiceModel, TitleEnum title) {
-        roleService.seedRolesInDb();
-
-        if (userRepository.count() == 0 && doctorRepository.count() == 0) {
-            userServiceModel.setAuthorities(roleService.getRolesForRootUser());
+        userServiceModel.setAuthorities(new LinkedHashSet<>());
+        if (title == TitleEnum.DOCTOR) {
+            userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_DOCTOR"));
         } else {
-            userServiceModel.setAuthorities(new LinkedHashSet<>());
-            if (title == TitleEnum.DOCTOR) {
-                userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_DOCTOR"));
-            } else {
-                userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_USER"));
-            }
+            userServiceModel.getAuthorities().add(roleService.getByAuthority("ROLE_USER"));
+
         }
 
         User user = modelMapper.map(userServiceModel, User.class);

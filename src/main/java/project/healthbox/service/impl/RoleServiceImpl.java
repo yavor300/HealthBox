@@ -19,7 +19,7 @@ public class RoleServiceImpl implements RoleService {
     private final ModelMapper modelMapper;
 
     @Override
-    public void seedRolesInDb() {
+    public void seedRoles() {
         if (roleRepository.count() == 0){
             roleRepository.saveAndFlush(new Role("ROLE_DOCTOR"));
             roleRepository.saveAndFlush(new Role("ROLE_USER"));
@@ -36,11 +36,10 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Set<RoleServiceModel> getRolesForRootUser() {
+    public Set<Role> getRolesForRootUser() {
         return roleRepository.findAll()
                 .stream()
                 .filter(role -> !role.getAuthority().equals("ROLE_DOCTOR"))
-                .map(role -> modelMapper.map(role,RoleServiceModel.class))
                 .collect(Collectors.toSet());
     }
 }

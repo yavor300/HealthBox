@@ -280,7 +280,7 @@ public class UserServiceTests {
         Mockito.when(mockUserRepository.saveAndFlush(any(User.class)))
                 .thenReturn(user);
 
-        UserServiceModel result = userService.makeAdmin(ID);
+        UserServiceModel result = userService.makeUser(ID);
 
         Assert.assertEquals(user.getId(), userServiceModel.getId());
         Assert.assertEquals(1, result.getAuthorities().size());

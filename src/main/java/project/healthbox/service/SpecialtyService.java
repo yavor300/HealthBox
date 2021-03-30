@@ -14,4 +14,6 @@ public interface SpecialtyService {
     void deleteSpecialty(String id);
 
     SpecialtyServiceModel createSpecialty(String name);
+
+    void seedSpecialties();
 }

@@ -9,3 +9,10 @@
 1::project.healthbox.events.register.UserRegisterEvent::log::Mon Mar 29 09:12:56 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
 1::project.healthbox.events.register.UserRegisterEvent::log::Mon Mar 29 09:14:27 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
 1::project.healthbox.events.register.UserRegisterEvent::log::Mon Mar 29 09:31:10 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
+1::project.healthbox.events.register.UserRegisterEvent::log::Mon Mar 29 22:56:23 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
+1::project.healthbox.events.register.UserRegisterEvent::log::Mon Mar 29 22:57:53 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
+1::project.healthbox.events.register.UserRegisterEvent::log::Mon Mar 29 22:58:10 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
+1::project.healthbox.events.register.UserRegisterEvent::log::Mon Mar 29 23:35:42 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
+1::project.healthbox.events.register.UserRegisterEvent::log::Tue Mar 30 21:20:06 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
+1::project.healthbox.events.register.UserRegisterEvent::log::Tue Mar 30 21:20:56 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
+1::project.healthbox.events.register.UserRegisterEvent::log::Tue Mar 30 21:26:10 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
