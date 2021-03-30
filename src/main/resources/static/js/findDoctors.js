@@ -40,7 +40,7 @@ $('#loadDoctors').click(() => {
         }
     }
 
-    fetch('http://localhost:8000/findDoctors/specialty_id=' + specialtyId + '&city_id=' + city_id + '&first_name=' + firstName + '&last_name=' + lastName)
+    fetch('http://localhost:8080/findDoctors/specialty_id=' + specialtyId + '&city_id=' + city_id + '&first_name=' + firstName + '&last_name=' + lastName)
         .then((response) => {
             if (response.status === 404) {
                 $('#doctors').attr('hidden', 'hidden');
