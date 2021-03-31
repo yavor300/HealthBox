@@ -18,7 +18,7 @@ public class GlobalExceptionHandlerController {
 
     @ExceptionHandler({ObjectAlreadyExistsException.class})
     public ModelAndView handleObjectAlreadyExistsException(ObjectAlreadyExistsException e) {
-        ModelAndView modelAndView = new ModelAndView("error");
+        ModelAndView modelAndView = new ModelAndView("error/already-exists");
         modelAndView.addObject("message", e.getMessage());
         return modelAndView;
     }
