@@ -2,8 +2,6 @@ package project.healthbox.service;
 
 import project.healthbox.domain.models.service.CityServiceModel;
 
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface CityService {
@@ -13,7 +11,7 @@ public interface CityService {
 
     CityServiceModel getById(String id);
 
-    CityServiceModel deleteCity(String id);
+    void deleteCity(String id);
 
     CityServiceModel createCity(String name);
 

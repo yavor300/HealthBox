@@ -12,7 +12,8 @@
 <main>
     <section id="appointment" class="appointment section-bg">
         <div class="container">
-            <form th:method="post" th:action="@{/user/delete/{id}(id=${user.id})}" class="php-email-form" enctype="multipart/form-data">
+            <form th:method="post" th:action="@{/user/delete/{id}(id=${user.id})}" class="php-email-form"
+                  enctype="multipart/form-data">
                 <div class="section-title">
                     <h4>First Name</h4>
                 </div>
@@ -29,19 +30,9 @@
                         <input type="text" disabled="disabled" class="form-control" th:value="${user.lastName}">
                     </div>
                 </div>
-
                 <div class="section-title">
-                    <h4>Title</h4>
+                    <h4>Email</h4>
                 </div>
-                <div class="form-row">
-                    <div class="col-md-4 offset-md-4 form-group">
-                        <input type="text" disabled="disabled" class="form-control" th:value="${user.title}">
-                    </div>
-                </div>
-
-                <div class="section-title">
-                <h4>Email</h4>
-            </div>
                 <div class="form-row">
                     <div class="col-md-4 offset-md-4 form-group">
                         <input type="text" disabled="disabled" class="form-control" th:value="${user.email}">

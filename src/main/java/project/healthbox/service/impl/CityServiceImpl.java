@@ -70,11 +70,10 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public CityServiceModel deleteCity(String id) {
+    public void deleteCity(String id) {
         City city = cityRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Invalid city identifier!"));
         cityRepository.delete(city);
-        return modelMapper.map(city, CityServiceModel.class);
     }
 
     @Override
