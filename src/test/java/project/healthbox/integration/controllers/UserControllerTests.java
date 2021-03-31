@@ -52,7 +52,7 @@ public class UserControllerTests {
                         with(csrf())).
                 andExpect(status().is3xxRedirection());
 
-        Assertions.assertEquals(1, userRepository.count());
+        Assertions.assertEquals(2, userRepository.count());
         Assertions.assertTrue(userRepository.existsByEmail("test@patient.com"));
     }
 }

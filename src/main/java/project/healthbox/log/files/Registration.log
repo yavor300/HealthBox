@@ -21,3 +21,6 @@
 1::project.healthbox.events.register.UserRegisterEvent::log::Tue Mar 30 23:39:52 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
 1::project.healthbox.events.register.UserRegisterEvent::log::Tue Mar 30 23:42:09 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
 1::project.healthbox.events.register.UserRegisterEvent::log::Tue Mar 30 23:42:25 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
+39::project.healthbox.events.register.DoctorRegisterEvent::log::Wed Mar 31 21:25:40 EEST 2021::DoctorRegisterEvent{firstName='Doctor', lastName='Doctor', email='doctor2@abv.bg', locationName='Blagoevgrad', specialtyName='Anesthetics'}
+1::project.healthbox.events.register.UserRegisterEvent::log::Wed Mar 31 22:09:27 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}
+1::project.healthbox.events.register.UserRegisterEvent::log::Wed Mar 31 22:11:10 EEST 2021::UserRegisterEvent{firstName='First', lastName='Last', email='test@patient.com'}

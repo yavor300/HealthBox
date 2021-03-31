@@ -75,6 +75,16 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public boolean isAccountCompleted(DoctorServiceModel doctorServiceModel) {
+        return (doctorServiceModel.getBiography() != null) &&
+                (doctorServiceModel.getEducation() != null) &&
+                (doctorServiceModel.getImageUrl() != null) &&
+                (doctorServiceModel.getLocation() != null) &&
+                (doctorServiceModel.getSpecialty() != null) &&
+                (doctorServiceModel.getWorkHistory() != null);
+    }
+
+    @Override
     public DoctorServiceModel getById(String id) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Invalid doctor identifier!"));

@@ -28,7 +28,10 @@ public class FindDoctorsAPIController {
 
         List<DoctorServiceModel> found = doctorService.getAllByGivenCriteria(specialtyId, cityId, firstName, lastName);
 
-        List<DoctorFoundAPIViewModel> result = found.stream().map(doctorServiceModel -> modelMapper.map(doctorServiceModel, DoctorFoundAPIViewModel.class))
+        List<DoctorFoundAPIViewModel> result = found
+                .stream()
+                .filter(doctorService::isAccountCompleted)
+                .map(doctorServiceModel -> modelMapper.map(doctorServiceModel, DoctorFoundAPIViewModel.class))
                 .collect(Collectors.toList());
 
         if (result.isEmpty()) {

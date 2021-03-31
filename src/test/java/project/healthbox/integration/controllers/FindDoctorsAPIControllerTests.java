@@ -3,7 +3,6 @@ package project.healthbox.integration.controllers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,12 +37,13 @@ public class FindDoctorsAPIControllerTests {
     private static final String DOCTOR_2_NAME = "DOCTOR_2";
     private static final String DOCTOR_3_NAME = "DOCTOR_3";
     private static final String DOCTOR_3_LAST_NAME = "DOCTOR_3_LAST_NAME";
+    private static final String BIOGRAPHY = "BIOGRAPHY";
+    private static final String IMAGE_URL = "IMAGE_URL";
+    private static final String WORK_HISTORY = "WORK_HISTORY";
+    private static final String EDUCATION = "EDUCATION";
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @MockBean
     private DoctorRepository mockDoctorRepository;
@@ -58,18 +58,42 @@ public class FindDoctorsAPIControllerTests {
         doctor1.setSpecialty(new Specialty() {{
             setId(ID);
         }});
+        doctor1.setLocation(new City() {{
+            setId(ID);
+        }});
+        doctor1.setBiography(BIOGRAPHY);
+        doctor1.setImageUrl(IMAGE_URL);
+        doctor1.setWorkHistory(WORK_HISTORY);
+        doctor1.setEducation(EDUCATION);
 
         doctor2 = new Doctor();
         doctor2.setId(ID);
         doctor2.setFirstName(DOCTOR_2_NAME);
+        doctor2.setSpecialty(new Specialty() {{
+            setId(ID);
+        }});
         doctor2.setLocation(new City() {{
             setId(ID);
         }});
+        doctor2.setBiography(BIOGRAPHY);
+        doctor2.setImageUrl(IMAGE_URL);
+        doctor2.setWorkHistory(WORK_HISTORY);
+        doctor2.setEducation(EDUCATION);
 
         doctor3 = new Doctor();
         doctor3.setId(ID);
         doctor3.setFirstName(DOCTOR_3_NAME);
         doctor3.setLastName(DOCTOR_3_LAST_NAME);
+        doctor3.setLocation(new City() {{
+            setId(ID);
+        }});
+        doctor3.setSpecialty(new Specialty() {{
+            setId(ID);
+        }});
+        doctor3.setBiography(BIOGRAPHY);
+        doctor3.setImageUrl(IMAGE_URL);
+        doctor3.setWorkHistory(WORK_HISTORY);
+        doctor3.setEducation(EDUCATION);
 
         when(mockDoctorRepository.findAllDoctorsByGivenCriteria("", "", "", ""))
                 .thenReturn(List.of(doctor1, doctor2, doctor3));
@@ -105,7 +129,7 @@ public class FindDoctorsAPIControllerTests {
     @Test
     @WithMockUser
     public void findDoctors_Should_FindDoctors_BySpecialtyId() throws Exception {
-        this.mockMvc.
+        mockMvc.
                 perform(get("/findDoctors/specialty_id={specialtyId}&city_id=&first_name=&last_name=", doctor1.getSpecialty().getId())).
                 andExpect(status().isOk()).
                 andExpect(jsonPath("$.[0].firstName", is(doctor1.getFirstName())));
@@ -114,7 +138,7 @@ public class FindDoctorsAPIControllerTests {
     @Test
     @WithMockUser
     public void findDoctors_Should_FindDoctors_ByCityId() throws Exception {
-        this.mockMvc.
+        mockMvc.
                 perform(get("/findDoctors/specialty_id=&city_id={cityId}&first_name=&last_name=", doctor2.getLocation().getId())).
                 andExpect(status().isOk()).
                 andExpect(jsonPath("$.[0].firstName", is(doctor2.getFirstName())));
@@ -123,7 +147,7 @@ public class FindDoctorsAPIControllerTests {
     @Test
     @WithMockUser
     public void findDoctors_Should_FindDoctors_ByFirstAndLastName() throws Exception {
-        this.mockMvc.
+        mockMvc.
                 perform(get("/findDoctors/specialty_id=&city_id=&first_name={firstName}&last_name={lastName}",
                         doctor3.getFirstName(), doctor3.getLastName())).
                 andExpect(status().isOk()).

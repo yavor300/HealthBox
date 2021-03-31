@@ -18,4 +18,6 @@ public interface DoctorService {
     void deleteDoctor(String id);
 
     List<DoctorServiceModel> getAllByGivenCriteria(String specialtyId, String cityId, String firstName, String lastName);
+
+    boolean isAccountCompleted(DoctorServiceModel doctorServiceModel);
 }

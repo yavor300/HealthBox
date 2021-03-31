@@ -1,6 +1,7 @@
 package project.healthbox.web.filters;
 
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -23,6 +24,7 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
     private final AuthenticatedUserService authenticatedUserService;
     private final UserService userService;
     private final DoctorService doctorService;
+    private final ModelMapper modelMapper;
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
@@ -40,7 +42,7 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         if (doctor == null) {
             redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/home");
         } else {
-            if (doctor.getBiography() == null || doctor.getBiography().trim().isEmpty()) {
+            if (!doctorService.isAccountCompleted(modelMapper.map(doctor, DoctorServiceModel.class))) {
                 redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/doctor/complete");
             } else {
                 redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, "/doctor/dashboard");

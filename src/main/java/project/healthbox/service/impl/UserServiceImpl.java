@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
             user.setFirstName("Yavor");
             user.setLastName("Chamov");
             user.setEmail("root@healthbox.com");
-            user.setPassword(bCryptPasswordEncoder.encode(System.getenv("ROOT_USER_PASSWORD")));
+            user.setPassword(bCryptPasswordEncoder.encode("root"));
             userRepository.save(user);
         }
     }
