@@ -1,1 +1,1 @@
-web: java -jar target/classes:target/dependency/* HealthBoxApplication
+web: java -jar target/healthbox-1.0.0.jar
