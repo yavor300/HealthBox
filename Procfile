@@ -1,1 +1,0 @@
-web: java -jar target/healthbox-1.0.0-SNAPSHOT.jar
